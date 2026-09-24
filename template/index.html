@@ -12,9 +12,9 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;background:#E9EBEF;font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased}
-#viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.stage{width:1280px;height:720px;background:var(--card);position:relative;overflow:hidden;
-  box-shadow:0 10px 40px rgba(17,24,39,.12);border-radius:6px;transform-origin:center center;display:flex;flex-direction:column}
+#viewport{position:fixed;inset:0;overflow:hidden;background:var(--card)}
+/* 设计基准 1280×720；屏幕上按窗口比例铺满（fit() 计算逻辑宽高），打印时固定 1280×720 */
+.stage{width:1280px;height:720px;background:var(--card);position:relative;overflow:hidden;transform-origin:0 0;display:flex;flex-direction:column}
 button{font-family:inherit;cursor:pointer}
 
 /* ---------- 顶栏 ---------- */
@@ -84,7 +84,7 @@ button{font-family:inherit;cursor:pointer}
 .c-meta{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex:none}
 .c-meta .kv{font-size:12px;color:var(--ink3);display:flex;gap:14px}
 .c-meta .kv b{color:var(--ink2);font-weight:500}
-.c-mid{display:grid;grid-template-columns:400px 1fr;gap:16px;height:236px;flex:none}
+.c-mid{display:grid;grid-template-columns:400px 1fr;gap:16px;flex:1 1 236px;min-height:236px;max-height:340px}
 .box{border:1px solid var(--line);border-radius:10px;padding:14px 18px;background:#fff;min-height:0;overflow:hidden}
 .h{font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px;margin-bottom:10px;letter-spacing:.04em}
 .h::before{content:"";width:4px;height:14px;border-radius:2px;background:var(--brand)}
@@ -94,7 +94,7 @@ button{font-family:inherit;cursor:pointer}
 .pain .n{flex:none;width:22px;height:22px;border-radius:50%;background:color-mix(in srgb,var(--brand) 12%,#fff);color:var(--brand);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
 .pain b{font-size:14px;display:block;margin-bottom:3px}
 .pain span{font-size:12.5px;color:var(--ink2);line-height:1.55}
-.c-flow{flex:1;display:flex;flex-direction:column;min-height:0}
+.c-flow{flex:1.4 1 300px;display:flex;flex-direction:column;min-height:0}
 .c-flow .h .lg{margin-left:auto}
 .c-flow .h .lg{font-weight:400;font-size:12px;color:var(--ink3);display:flex;gap:14px;letter-spacing:0}
 .c-flow .h .lg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
@@ -124,7 +124,7 @@ button{font-family:inherit;cursor:pointer}
   html,body{background:#fff}
   #viewport{display:none}
   #print{display:block}
-  #print .stage{transform:none!important;box-shadow:none;border-radius:0;page-break-after:always;break-after:page}
+  #print .stage{width:1280px!important;height:720px!important;transform:none!important;box-shadow:none;border-radius:0;page-break-after:always;break-after:page}
   .node{opacity:1;transform:none;animation:none}
   .noprint{display:none!important}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -176,8 +176,10 @@ const tag = (sid, cls = '') => { const s = ST[sid]; return `<span class="tag ${c
 const logo = () => DATA.logo ? `<div class="logo"><img src="${DATA.logo}" alt="yonyou"></div>` : `<div class="logo"><span class="ph">LOGO</span></div>`;
 const langBtn = () => `<button class="btn lang" onclick="setLang(lang === 'en' ? 'zh' : 'en')" title="${U().lang_tip}">${U().lang}<kbd>L</kbd></button>`;
 
-function fit() {
-  const k = Math.min(innerWidth / 1300, innerHeight / 740);
+function fit() {   // 铺满整个窗口：按较小边缩放，另一边的逻辑尺寸随窗口比例延展
+  const k = Math.min(innerWidth / 1280, innerHeight / 720);
+  stage.style.width = innerWidth / k + 'px';
+  stage.style.height = innerHeight / k + 'px';
   stage.style.transform = `scale(${k})`;
 }
 addEventListener('resize', fit);
