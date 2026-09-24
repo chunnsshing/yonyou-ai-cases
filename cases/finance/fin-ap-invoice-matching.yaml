@@ -1,0 +1,42 @@
+# 示例场景（example: true 会显示"示例"角标），正式内容录入后可删除本文件
+id: fin-ap-invoice-matching
+title: 应付发票识别与三单匹配
+domain: finance
+status: to-verify
+owner: ChunShing
+updated: 2026-09-24
+industry: 通用
+products: [YonSuite]
+example: true
+
+summary: 供应商发票自动识别录入，并与采购订单、入库单自动核对
+
+description: >
+  应付会计每月收到大量供应商发票（PDF、扫描件、邮件附件），需要人工录入系统，
+  再逐张与采购订单和入库单核对数量、单价、金额，差异需要回头找采购和仓库确认后才能挂账付款。
+
+pain_points:
+  - title: 手工录入量大
+    detail: 发票格式五花八门，逐张手工录入耗时且容易出错
+  - title: 核对靠人眼
+    detail: 三单逐行比对数量单价，差异难以及时发现
+  - title: 差异沟通慢
+    detail: 发现差异后通过邮件、电话来回确认，挂账周期被拉长
+
+flow:
+  - step: 接收发票
+    role: 应付会计
+    ai: 自动收取邮箱附件，识别发票并提取关键字段
+  - step: 录入应付单
+    role: 应付会计
+    ai: 按识别结果预填应付单，人工只需确认
+  - step: 三单匹配
+    role: 应付会计
+    ai: 自动比对订单、入库、发票，标出差异行
+  - step: 差异处理
+    role: 采购 / 仓库
+    ai: 生成差异说明并推送给对应负责人
+  - step: 审批挂账
+    role: 财务主管
+  - step: 付款
+    role: 出纳
