@@ -34,5 +34,29 @@ flow:                            # 必填。标准业务流程 3–8 步，按�
   - step: 步骤名称
     role: 执行角色
 
+# ---------- 英文版（页面按 L 键切换）----------
+# 结构必须与上面一一对应：痛点条数相同、流程步数相同、标 ai 的步骤相同
+# 英文上限（字符数）：title 34 / summary 95 / description 380 / 痛点 title 26、detail 80
+#   流程 ≤6 步：step 22、role 20、ai 80；7–8 步：step 18、role 16、ai 60
+en:
+  title: Scenario name
+  industry: General              # 选填
+  summary: One line on what AI solves here
+  description: >
+    Who, at which business step, and how it is done today.
+  pain_points:
+    - title: Pain point
+      detail: Short explanation
+    - title: Pain point
+      detail: Short explanation
+  flow:
+    - step: Step name
+      role: Role
+    - step: Step name
+      role: Role
+      ai: What AI does at this step
+    - step: Step name
+      role: Role
+
 sources:                         # 选填。原始资料出处（文件名/链接），便于回溯，不在页面展示
   - raw/xxx.pdf
