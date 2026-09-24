@@ -1,0 +1,41 @@
+# 全站配置：页签（领域）、状态标签、品牌。改这里即可全局生效。
+title: AI 场景案例库
+subtitle: Yonyou Singapore · AI Use Case Library
+brand_color: "#E60012"      # 主色，请按官方VI确认后修改
+logo: assets/logo.svg        # 放官方logo即可（svg/png均可），构建时自动内嵌
+
+# 领域 = 首页页签，顺序即显示顺序。id 必须与 cases/ 下的文件夹名一致
+domains:
+  - id: finance
+    name: 财务
+  - id: supply-chain
+    name: 供应链
+  - id: manufacturing
+    name: 制造
+  - id: hr
+    name: 人力
+  - id: sales
+    name: 销售
+
+# 场景状态标签（固定5种），顺序即图例顺序
+statuses:
+  - id: delivered
+    name: 已交付
+    color: "#16A34A"
+    desc: 已在客户现场上线交付
+  - id: replicable
+    name: 可复制
+    color: "#2563EB"
+    desc: 方案成熟，可直接复制到其他客户
+  - id: demo
+    name: 可Demo
+    color: "#7C3AED"
+    desc: 有可演示的Demo环境
+  - id: to-verify
+    name: 待验证
+    color: "#D97706"
+    desc: 方案已设计，需技术/业务验证
+  - id: future
+    name: 未来可能
+    color: "#0891B2"
+    desc: 方向性构想，依赖产品或技术演进
