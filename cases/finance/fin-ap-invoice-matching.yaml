@@ -40,3 +40,37 @@ flow:
     role: 财务主管
   - step: 付款
     role: 出纳
+
+# ---------- English（按 L 切换；结构与上面一一对应） ----------
+en:
+  title: AP Invoice Capture & 3-Way Match
+  industry: General
+  summary: Capture supplier invoices automatically and match them against POs and goods receipts
+  description: >
+    AP accountants receive a large volume of supplier invoices each month (PDFs, scans, email attachments),
+    key them into the system by hand, then check quantity, unit price and amount line by line against the
+    PO and goods receipt. Any mismatch has to be chased with purchasing and the warehouse before posting and payment.
+  pain_points:
+    - title: Heavy manual data entry
+      detail: Invoice formats vary widely; keying them in one by one is slow and error-prone
+    - title: Matching by eye
+      detail: Line-by-line 3-way checks on quantity and price make mismatches easy to miss
+    - title: Slow exception handling
+      detail: Mismatches are resolved over email and phone, stretching the posting cycle
+  flow:
+    - step: Receive invoice
+      role: AP accountant
+      ai: Pull attachments from the mailbox, recognise invoices and extract key fields
+    - step: Create AP entry
+      role: AP accountant
+      ai: Pre-fill the AP document from extracted data for human confirmation
+    - step: 3-way match
+      role: AP accountant
+      ai: Compare PO, receipt and invoice automatically and flag mismatched lines
+    - step: Resolve exceptions
+      role: Buyer / Warehouse
+      ai: Draft a mismatch note and route it to the right owner
+    - step: Approve & post
+      role: Finance manager
+    - step: Payment
+      role: Cashier
