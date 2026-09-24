@@ -1,6 +1,6 @@
 # Yonyou AI 场景案例库 · AI Use Case Library
 
-按业务领域整理 AI 在企业标准流程中的应用场景。横版单页 HTML，统一模板，可在线浏览、演示、导出 PDF。
+按业务领域整理 AI 在企业标准流程中的应用场景。横版单页 HTML，统一模板，中英双语（按 `L` 切换），可在线浏览、演示、导出 PDF。
 
 **在线预览：** https://chunnsshing.github.io/yonyou-ai-cases/
 
