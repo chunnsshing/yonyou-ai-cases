@@ -1,0 +1,38 @@
+# ============================================================
+# 场景案例模板 —— 复制到 cases/<领域id>/<场景id>.yaml 后填写
+# 规则：只填资料里有的内容，不编造数字/客户/已上线等事实
+# 长度上限是为了保证一页横版放得下，超出构建会报警告
+# ============================================================
+
+id: fin-example-scenario        # 必填。全库唯一，小写英文+连字符，建议 领域缩写-关键词
+title: 场景名称                   # 必填。≤ 18 字
+domain: finance                  # 必填。site.yaml 中的领域 id：finance / supply-chain / manufacturing / hr / sales
+status: to-verify                # 必填。delivered 已交付 / replicable 可复制 / demo 可Demo / to-verify 待验证 / future 未来可能
+owner: ChunShing                 # 必填。负责人，用于同步进度
+updated: 2026-09-24              # 必填。最后更新日期 YYYY-MM-DD
+industry: 通用                    # 选填。适用行业
+client: ""                       # 选填。客户名（对外展示前确认可否公开）
+products: [YonSuite]             # 选填。涉及产品，列表
+
+summary: 一句话说明这个场景用AI解决什么问题     # 必填。≤ 40 字，显示在卡片和标题下
+
+description: >                   # 必填。场景描述 ≤ 140 字：谁、在什么业务环节、现在怎么做
+  在这里写场景描述。
+
+pain_points:                     # 必填。2–4 条
+  - title: 痛点标题               # ≤ 12 字
+    detail: 痛点说明               # ≤ 40 字
+  - title: 痛点标题
+    detail: 痛点说明
+
+flow:                            # 必填。标准业务流程 3–8 步，按先后顺序
+  - step: 步骤名称                 # ≤ 10 字
+    role: 执行角色                 # 选填。≤ 8 字
+  - step: 步骤名称
+    role: 执行角色
+    ai: AI在这一步做什么           # 有AI介入的步骤才写 ai，≤ 36 字；至少1步有 ai
+  - step: 步骤名称
+    role: 执行角色
+
+sources:                         # 选填。原始资料出处（文件名/链接），便于回溯，不在页面展示
+  - raw/xxx.pdf

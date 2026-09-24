@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 场景案例库</title>
+<style>
+:root{
+  --brand:#E60012; --ink:#111827; --ink2:#4B5563; --ink3:#9CA3AF;
+  --line:#E5E7EB; --bg:#F3F4F6; --card:#FFFFFF; --soft:#F9FAFB;
+  --font:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC","Noto Sans SC",-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#E9EBEF;font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased}
+#viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.stage{width:1280px;height:720px;background:var(--card);position:relative;overflow:hidden;
+  box-shadow:0 10px 40px rgba(17,24,39,.12);border-radius:6px;transform-origin:center center;display:flex;flex-direction:column}
+button{font-family:inherit;cursor:pointer}
+
+/* ---------- 顶栏 ---------- */
+.top{height:60px;flex:none;display:flex;align-items:center;gap:16px;padding:0 36px;border-bottom:1px solid var(--line);position:relative}
+.top::before{content:"";position:absolute;left:0;top:0;right:0;height:4px;background:var(--brand)}
+.logo{height:26px;display:flex;align-items:center}
+.logo img{height:26px;width:auto;display:block}
+.logo .ph{height:26px;padding:0 10px;border:1.5px dashed var(--ink3);border-radius:4px;font-size:11px;color:var(--ink3);display:flex;align-items:center;letter-spacing:.1em}
+.top .sep{width:1px;height:22px;background:var(--line)}
+.crumb{font-size:14px;color:var(--ink2);display:flex;gap:8px;align-items:center;white-space:nowrap;overflow:hidden}
+.crumb a{color:var(--ink2);text-decoration:none;cursor:pointer}
+.crumb a:hover{color:var(--brand)}
+.crumb b{color:var(--ink);font-weight:600}
+.top .right{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink3)}
+.btn{height:30px;padding:0 12px;border:1px solid var(--line);background:#fff;border-radius:6px;font-size:12px;color:var(--ink2);display:inline-flex;align-items:center;gap:6px;transition:all .15s ease}
+.btn:hover{border-color:var(--brand);color:var(--brand)}
+.btn:disabled{opacity:.35;pointer-events:none}
+
+/* ---------- 标签 ---------- */
+.tag{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:12px;font-size:12px;font-weight:600;white-space:nowrap;
+  color:var(--c);background:color-mix(in srgb,var(--c) 11%,#fff);border:1px solid color-mix(in srgb,var(--c) 28%,#fff)}
+.tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--c)}
+.tag.lg{height:28px;padding:0 12px;font-size:13px;border-radius:14px}
+.chip-ex{font-size:11px;color:var(--ink3);border:1px dashed var(--ink3);border-radius:4px;padding:1px 6px}
+
+/* ---------- 首页 ---------- */
+.home-head{padding:26px 36px 0;display:flex;align-items:flex-end;justify-content:space-between}
+.home-head h1{font-size:28px;font-weight:700;letter-spacing:.02em}
+.home-head p{font-size:13px;color:var(--ink3);margin-top:4px;letter-spacing:.04em}
+.legend{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.legend .tag{cursor:pointer;transition:opacity .15s ease}
+.legend .tag.off{opacity:.3}
+.legend .tag span{font-weight:400;opacity:.8}
+.tabs{display:flex;gap:4px;padding:18px 36px 0;border-bottom:1px solid var(--line)}
+.tab{border:none;background:none;padding:10px 18px 12px;font-size:15px;color:var(--ink2);position:relative;transition:color .15s ease}
+.tab small{font-size:12px;color:var(--ink3);margin-left:4px}
+.tab:hover{color:var(--ink)}
+.tab.on{color:var(--brand);font-weight:600}
+.tab.on::after{content:"";position:absolute;left:14px;right:14px;bottom:-1px;height:3px;border-radius:2px;background:var(--brand)}
+.grid-wrap{flex:1;overflow:auto;padding:22px 36px 28px;background:var(--soft)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 18px 14px;cursor:pointer;display:flex;flex-direction:column;gap:10px;
+  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;min-height:168px}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(17,24,39,.08);border-color:color-mix(in srgb,var(--brand) 40%,#fff)}
+.card .row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.card h3{font-size:17px;font-weight:600;line-height:1.35}
+.card p{font-size:13px;color:var(--ink2);line-height:1.6;flex:1}
+.card .meta{font-size:12px;color:var(--ink3);display:flex;gap:12px;border-top:1px solid var(--line);padding-top:10px}
+.card .meta .ai{color:var(--brand);font-weight:600}
+.empty{grid-column:1/-1;text-align:center;padding:80px 0;color:var(--ink3);font-size:14px;line-height:2}
+.foot{position:absolute;right:16px;bottom:8px;font-size:10px;color:var(--ink3)}
+
+/* ---------- 场景页 ---------- */
+.case{flex:1;display:flex;flex-direction:column;padding:22px 36px 20px;gap:16px;min-height:0}
+.c-head{display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
+.c-head h1{font-size:26px;font-weight:700;display:flex;align-items:center;gap:12px;line-height:1.25}
+.c-head .sum{font-size:14px;color:var(--ink2);margin-top:6px}
+.c-meta{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex:none}
+.c-meta .kv{font-size:12px;color:var(--ink3);display:flex;gap:14px}
+.c-meta .kv b{color:var(--ink2);font-weight:500}
+.c-mid{display:grid;grid-template-columns:400px 1fr;gap:16px;height:236px;flex:none}
+.box{border:1px solid var(--line);border-radius:10px;padding:14px 18px;background:#fff;min-height:0;overflow:hidden}
+.h{font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px;margin-bottom:10px;letter-spacing:.04em}
+.h::before{content:"";width:4px;height:14px;border-radius:2px;background:var(--brand)}
+.desc{font-size:13.5px;line-height:1.75;color:var(--ink2)}
+.pains{display:grid;gap:8px;height:calc(100% - 30px)}
+.pain{background:var(--soft);border-radius:8px;padding:10px 14px;display:flex;gap:12px;align-items:flex-start;min-height:0}
+.pain .n{flex:none;width:22px;height:22px;border-radius:50%;background:color-mix(in srgb,var(--brand) 12%,#fff);color:var(--brand);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.pain b{font-size:14px;display:block;margin-bottom:3px}
+.pain span{font-size:12.5px;color:var(--ink2);line-height:1.55}
+.c-flow{flex:1;display:flex;flex-direction:column;min-height:0}
+.c-flow .h .lg{margin-left:auto}
+.c-flow .h .lg{font-weight:400;font-size:12px;color:var(--ink3);display:flex;gap:14px;letter-spacing:0}
+.c-flow .h .lg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.flow{flex:1;display:grid;column-gap:30px;row-gap:14px;align-content:center;padding:4px 2px 0}
+.node{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:10px;opacity:0;transform:translateY(6px);animation:rise .45s cubic-bezier(.2,.7,.2,1) forwards}
+.nd{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:12px 10px;text-align:center;position:relative;min-height:74px;display:flex;flex-direction:column;justify-content:center}
+.nd .i{position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:20px;height:20px;border-radius:50%;background:#fff;border:1.5px solid var(--line);font-size:11px;color:var(--ink3);display:flex;align-items:center;justify-content:center;font-weight:600}
+.nd b{font-size:14px;font-weight:600;line-height:1.35}
+.nd small{font-size:11.5px;color:var(--ink3);margin-top:4px}
+.node:not(.last) .nd::after{content:"";position:absolute;right:-24px;top:50%;width:18px;height:2px;background:var(--ink3);opacity:.5}
+.node:not(.last) .nd::before{content:"";position:absolute;right:-26px;top:calc(50% - 4px);border:5px solid transparent;border-left:6px solid var(--ink3);border-right:0;opacity:.5}
+.node.ai .nd{border-color:var(--brand);background:color-mix(in srgb,var(--brand) 5%,#fff);box-shadow:0 4px 14px color-mix(in srgb,var(--brand) 14%,transparent)}
+.node.ai .nd .i{border-color:var(--brand);background:var(--brand);color:#fff}
+.aibox{border:1px dashed color-mix(in srgb,var(--brand) 55%,#fff);border-radius:8px;padding:8px 10px;font-size:12px;line-height:1.55;color:var(--ink);background:#fff;position:relative;min-height:56px}
+.aibox::before{content:"";position:absolute;left:50%;top:-11px;height:10px;border-left:1.5px dashed color-mix(in srgb,var(--brand) 55%,#fff)}
+.aibox em{font-style:normal;display:inline-block;font-size:10px;font-weight:700;color:#fff;background:var(--brand);border-radius:3px;padding:0 5px;margin-right:5px;letter-spacing:.05em;vertical-align:1px}
+.aibox.none{border:none;background:none}
+.aibox.none::before{display:none}
+@keyframes rise{to{opacity:1;transform:none}}
+.fade{animation:fadein .3s ease}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+
+/* ---------- 打印：每个场景一页横版 ---------- */
+#print{display:none}
+@page{size:1280px 720px;margin:0}
+@media print{
+  html,body{background:#fff}
+  #viewport{display:none}
+  #print{display:block}
+  #print .stage{transform:none!important;box-shadow:none;border-radius:0;page-break-after:always;break-after:page}
+  .node{opacity:1;transform:none;animation:none}
+  .noprint{display:none!important}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div id="viewport"><div class="stage" id="stage"></div></div>
+<div id="print"></div>
+<script>
+const DATA = /*__DATA__*/null;
+const S = DATA.site;
+document.documentElement.style.setProperty('--brand', S.brand_color || '#E60012');
+document.title = S.title;
+const esc = t => String(t ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ST = Object.fromEntries(S.statuses.map((s, i) => [s.id, {...s, order: i}]));
+const DM = Object.fromEntries(S.domains.map(d => [d.id, d]));
+const byDomain = id => DATA.cases.filter(c => c.domain === id)
+  .sort((a, b) => ST[a.status].order - ST[b.status].order || a.title.localeCompare(b.title, 'zh'));
+const state = { domain: S.domains[0].id, off: new Set() };
+const stage = document.getElementById('stage');
+
+const tag = (sid, cls = '') => { const s = ST[sid]; return `<span class="tag ${cls}" style="--c:${s.color}" title="${esc(s.desc)}">${esc(s.name)}</span>`; };
+const logo = () => DATA.logo ? `<div class="logo"><img src="${DATA.logo}" alt="logo"></div>` : `<div class="logo"><span class="ph">LOGO</span></div>`;
+
+function fit() {
+  const k = Math.min(innerWidth / 1300, innerHeight / 740);
+  stage.style.transform = `scale(${k})`;
+}
+addEventListener('resize', fit);
+
+/* ---------- 首页 ---------- */
+function renderHome() {
+  const counts = {}; DATA.cases.forEach(c => counts[c.status] = (counts[c.status] || 0) + 1);
+  const list = byDomain(state.domain).filter(c => !state.off.has(c.status));
+  stage.innerHTML = `
+  <div class="top">${logo()}<div class="sep"></div><div class="crumb"><b>${esc(S.title)}</b></div>
+    <div class="right noprint"><button class="btn" onclick="printDomain()">导出本领域 PDF</button></div></div>
+  <div class="home-head fade">
+    <div><h1>${esc(S.title)}</h1><p>${esc(S.subtitle || '')}</p></div>
+    <div class="legend">${S.statuses.map(s => `<span class="tag ${state.off.has(s.id) ? 'off' : ''}" style="--c:${s.color}" title="${esc(s.desc)}" onclick="toggle('${s.id}')">${esc(s.name)} <span>${counts[s.id] || 0}</span></span>`).join('')}</div>
+  </div>
+  <div class="tabs">${S.domains.map(d => `<button class="tab ${d.id === state.domain ? 'on' : ''}" onclick="go('#/${d.id}')">${esc(d.name)}<small>${byDomain(d.id).length}</small></button>`).join('')}</div>
+  <div class="grid-wrap"><div class="grid fade">
+    ${list.length ? list.map(c => `
+      <div class="card" onclick="go('#/case/${c.id}')">
+        <div class="row">${tag(c.status)}${c.example ? '<span class="chip-ex">示例</span>' : ''}</div>
+        <h3>${esc(c.title)}</h3><p>${esc(c.summary)}</p>
+        <div class="meta"><span class="ai">AI × ${c.flow.filter(f => f.ai).length} 环节</span><span>${esc(c.owner)}</span><span style="margin-left:auto">${esc(c.updated)}</span></div>
+      </div>`).join('') : `<div class="empty">该领域暂无场景<br>在 cases/${esc(state.domain)}/ 下新增 yaml 文件即可</div>`}
+  </div></div>
+  <div class="foot">更新于 ${esc(DATA.built)}</div>`;
+}
+function toggle(id) { state.off.has(id) ? state.off.delete(id) : state.off.add(id); renderHome(); }
+
+/* ---------- 场景页 ---------- */
+function caseHTML(c, nav = true) {
+  const list = byDomain(c.domain), i = list.findIndex(x => x.id === c.id);
+  const n = c.flow.length, cols = n <= 8 ? n : Math.ceil(n / 2);
+  const meta = [['行业', c.industry], ['产品', c.products.join(' / ')], ['客户', c.client], ['负责人', c.owner], ['更新', c.updated]].filter(x => x[1]);
+  return `
+  <div class="top">${logo()}<div class="sep"></div>
+    <div class="crumb"><a onclick="go('#/')">${esc(S.title)}</a>›<a onclick="go('#/${c.domain}')">${esc(DM[c.domain].name)}</a>›<b>${esc(c.title)}</b></div>
+    ${nav ? `<div class="right noprint"><span>${i + 1} / ${list.length}</span>
+      <button class="btn" ${i <= 0 ? 'disabled' : ''} onclick="go('#/case/${list[i - 1]?.id}')">← 上一个</button>
+      <button class="btn" ${i >= list.length - 1 ? 'disabled' : ''} onclick="go('#/case/${list[i + 1]?.id}')">下一个 →</button>
+      <button class="btn" onclick="printDomain()">导出 PDF</button>
+      <button class="btn" onclick="go('#/${c.domain}')">返回</button></div>` : ''}
+  </div>
+  <div class="case ${nav ? 'fade' : ''}">
+    <div class="c-head">
+      <div><h1>${esc(c.title)} ${tag(c.status, 'lg')}${c.example ? '<span class="chip-ex">示例</span>' : ''}</h1><div class="sum">${esc(c.summary)}</div></div>
+      <div class="c-meta"><div class="kv">${meta.map(([k, v]) => `<span>${k} <b>${esc(v)}</b></span>`).join('')}</div></div>
+    </div>
+    <div class="c-mid">
+      <div class="box"><div class="h">场景描述</div><div class="desc">${esc(c.description)}</div></div>
+      <div class="box"><div class="h">业务痛点</div>
+        <div class="pains" style="grid-template-columns:repeat(${c.pain_points.length === 4 ? 2 : c.pain_points.length},1fr)">
+        ${c.pain_points.map((p, k) => `<div class="pain"><div class="n">${k + 1}</div><div><b>${esc(p.title)}</b><span>${esc(p.detail)}</span></div></div>`).join('')}
+        </div></div>
+    </div>
+    <div class="box c-flow">
+      <div class="h"><span>标准流程 · AI 介入点</span><span class="lg"><span><i style="background:var(--brand)"></i>AI 介入</span><span><i style="border:1.5px solid #CBD5E1"></i>人工 / 系统</span></span></div>
+      <div class="flow" style="grid-template-columns:repeat(${cols},1fr)">
+        ${c.flow.map((f, k) => `
+          <div class="node ${f.ai ? 'ai' : ''} ${(k === n - 1 || (k + 1) % cols === 0) ? 'last' : ''}" style="animation-delay:${nav ? k * 70 : 0}ms">
+            <div class="nd"><span class="i">${k + 1}</span><b>${esc(f.step)}</b>${f.role ? `<small>${esc(f.role)}</small>` : ''}</div>
+            <div class="aibox ${f.ai ? '' : 'none'}">${f.ai ? `<em>AI</em>${esc(f.ai)}` : ''}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+  </div>
+  <div class="foot">${esc(S.subtitle || '')}</div>`;
+}
+
+/* ---------- 路由 ---------- */
+let current = null;
+function go(h) { location.hash = h; }
+function route() {
+  const h = location.hash.replace(/^#\/?/, '');
+  if (h.startsWith('case/')) {
+    const c = DATA.cases.find(x => x.id === h.slice(5));
+    if (c) { current = c; state.domain = c.domain; stage.innerHTML = caseHTML(c); return; }
+  }
+  current = null;
+  if (DM[h]) state.domain = h;
+  renderHome();
+}
+addEventListener('hashchange', route);
+addEventListener('keydown', e => {
+  if (!current) return;
+  const list = byDomain(current.domain), i = list.findIndex(x => x.id === current.id);
+  if (e.key === 'ArrowRight' && list[i + 1]) go('#/case/' + list[i + 1].id);
+  if (e.key === 'ArrowLeft' && list[i - 1]) go('#/case/' + list[i - 1].id);
+  if (e.key === 'Escape') go('#/' + current.domain);
+});
+function printDomain() {
+  const list = current ? [current] : byDomain(state.domain);
+  if (!list.length) return;
+  document.getElementById('print').innerHTML = list.map(c => `<div class="stage">${caseHTML(c, false)}</div>`).join('');
+  setTimeout(() => print(), 50);
+}
+fit(); route();
+</script>
+</body>
+</html>
