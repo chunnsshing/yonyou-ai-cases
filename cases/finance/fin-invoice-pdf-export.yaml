@@ -1,0 +1,64 @@
+id: fin-invoice-pdf-export
+title: 发票批量导出PDF并上传
+domain: finance
+status: demo
+owner: Fanfan
+updated: 2026-09-26
+industry: 通用
+client: ""
+products: [YonWork]
+
+summary: 按条件查找发票，AI逐条生成独立PDF并自动上传共享文件夹，替代手动逐张打印
+
+description: >
+  财务人员需要查AR/sales invoice，通过系统模板打印生成PDF，但多选发票打印时会把多张合并成一个PDF，
+  客户需要一个invoice对应一个独立PDF，要实现需客制化开发；生成后还要手动逐个上传到共享文件夹服务器。
+
+pain_points:
+  - title: 多选会合并成一个PDF
+    detail: 系统多选发票打印时会把多张合并成一个PDF文件
+  - title: 拆分需要定制开发
+    detail: 一个invoice生成一个独立PDF需要单独开发功能
+  - title: 只能逐条操作
+    detail: 目前只能勾选一条点一次打印，多选会被合并
+  - title: 上传靠手工
+    detail: 生成后还要手动逐个上传到客户共享文件夹服务器
+
+flow:
+  - step: 查询发票
+    role: 财务人员
+    ai: 按条件自动查找所有符合条件的发票供选择
+  - step: 选择导出发票
+    role: 财务人员
+  - step: 生成独立PDF
+    ai: 每张发票自动生成一个独立PDF文件，不合并
+  - step: 自动上传共享文件夹
+    ai: 生成的PDF自动上传到客户指定的共享文件夹服务器
+
+en:
+  title: Invoice PDF Export & Upload
+  industry: General
+  summary: AI finds invoices, generates one PDF per invoice, and auto-uploads to the shared folder
+  description: >
+    Finance staff look up AR and sales invoices and print them to PDF via the system's template. Selecting
+    multiple invoices merges them into a single PDF, but the customer needs one PDF per invoice, which needs
+    custom development. PDFs also have to be uploaded manually, one by one, to the shared folder server.
+  pain_points:
+    - title: Merged into one PDF
+      detail: Selecting multiple invoices to print merges them into a single PDF file
+    - title: Splitting needs custom dev
+      detail: A one-PDF-per-invoice feature would require separate custom development
+    - title: One at a time only
+      detail: Staff can only check one invoice and print at a time; multi-select merges them
+    - title: Manual upload
+      detail: Generated PDFs must be uploaded one by one to the shared folder server
+  flow:
+    - step: Query invoices
+      role: Finance staff
+      ai: Auto-find all AR/sales invoices matching the criteria for selection
+    - step: Select invoices
+      role: Finance staff
+    - step: Generate PDFs
+      ai: Auto-generate one standalone PDF per invoice, no merging
+    - step: Auto-upload files
+      ai: Generated PDFs are automatically uploaded to the customer's shared folder server
