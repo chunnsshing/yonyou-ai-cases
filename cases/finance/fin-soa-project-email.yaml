@@ -31,8 +31,10 @@ flow:
     role: 财务专员
     ai: 按客户自动过滤所属项目，批量查询各项目对账单余额
   - step: 核对余额差异
+    role: 财务专员
     ai: 自动核对余额并标出有欠款或异常的项目
   - step: 生成邮件内容
+    role: 财务专员
     ai: 自动生成对账单邮件内容并附对应项目明细
   - step: 发送邮件
     role: 财务专员
@@ -63,8 +65,10 @@ en:
       role: AR accountant
       ai: Auto-filter projects by customer and batch-query each project's SOA balance
     - step: Check differences
+      role: AR accountant
       ai: Automatically flag projects with outstanding or unusual balances
     - step: Draft email content
+      role: AR accountant
       ai: Auto-generate the SOA email with matching project details
     - step: Send email
       role: AR accountant

@@ -33,10 +33,12 @@ flow:
   - step: 提供出差单据
     role: 出差员工
   - step: 整理报销信息
+    role: 出差员工
     ai: 自动换算汇率、生成备注，整理好报销信息
   - step: 人工核对信息
     role: 出差员工
   - step: 提交至系统
+    role: 出差员工
     ai: 核对无误后AI自动填写并提交报销单据，无需人工操作
 
 en:
@@ -66,8 +68,10 @@ en:
     - step: Provide trip receipts
       role: Traveler
     - step: Organize claim details
+      role: Traveler
       ai: Auto-convert currency, generate remarks, and organize the claim details
     - step: Staff review
       role: Traveler
     - step: Submit to system
+      role: Traveler
       ai: Once confirmed, AI fills in and submits the claim — no manual entry needed
