@@ -8,7 +8,7 @@ industry: 通用
 client: ""
 products: [YonWork]
 
-summary: 按项目/物料/财年自动拆分合同并逐条核对预算，替代人工Excel拆分比对
+summary: 自动拆分合同、核对预算并填单，替代人工Excel拆分与手工录入
 
 description: >
   采购/合同管理人员需要把一份合同按项目、物料、财年拆分成几十条明细，目前用Excel手动拆分，
@@ -32,11 +32,13 @@ flow:
     ai: 自动匹配预算表并逐条核对是否有余额
   - step: 生成核对结果
     ai: 自动标出无预算或余额不足的条目
+  - step: 自动录入系统
+    ai: 有预算的条目自动填入系统，无需人工逐条键入
 
 en:
   title: Contract Split & Budget Check
   industry: General
-  summary: Auto-split contracts by project, material and year, then check budget per line
+  summary: Auto-split contracts, check budget and post lines — no manual Excel or keying
   description: >
     Procurement/contract staff must split a contract into project, material and fiscal-year lines —
     often dozens of lines — done manually in Excel today. Each line is then checked one by one against
@@ -58,3 +60,5 @@ en:
       ai: Auto-match each line against the budget table and check for balance
     - step: Flag results
       ai: Automatically flag lines with no budget or insufficient balance
+    - step: Auto-post to system
+      ai: Lines with budget are posted into the system automatically, no manual keying
