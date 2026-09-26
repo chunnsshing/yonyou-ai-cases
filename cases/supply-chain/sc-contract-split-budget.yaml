@@ -32,7 +32,7 @@ flow:
     ai: 自动匹配预算表并逐条核对是否有余额
   - step: 生成核对结果
     ai: 自动标出无预算或余额不足的条目
-  - step: 自动录入系统
+  - step: 录入系统
     ai: 有预算的条目自动填入系统，无需人工逐条键入
 
 en:
@@ -60,5 +60,5 @@ en:
       ai: Auto-match each line against the budget table and check for balance
     - step: Flag results
       ai: Automatically flag lines with no budget or insufficient balance
-    - step: Auto-post to system
+    - step: Post to system
       ai: Lines with budget are posted into the system automatically, no manual keying

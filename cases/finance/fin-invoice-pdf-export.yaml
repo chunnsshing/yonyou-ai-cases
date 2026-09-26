@@ -32,7 +32,7 @@ flow:
     role: 财务人员
   - step: 生成独立PDF
     ai: 每张发票自动生成一个独立PDF文件，不合并
-  - step: 自动上传共享文件夹
+  - step: 上传共享文件夹
     ai: 生成的PDF自动上传到客户指定的共享文件夹服务器
 
 en:
@@ -60,5 +60,5 @@ en:
       role: Finance staff
     - step: Generate PDFs
       ai: Auto-generate one standalone PDF per invoice, no merging
-    - step: Auto-upload files
+    - step: Upload to shared drive
       ai: Generated PDFs are automatically uploaded to the customer's shared folder server
