@@ -1,0 +1,71 @@
+id: fin-soa-project-email
+title: 按项目核对对账单并发邮件
+domain: finance
+status: demo
+owner: Fanfan
+updated: 2026-09-26
+industry: 通用
+client: ""
+products: [YonWork]
+
+summary: 按客户逐项目自动核对应收对账单并发送邮件，替代逐项目手动查询发送
+
+description: >
+  财务专员需按客户逐项目核对应收对账单（SOA）。系统不支持按项目筛选查询，需单独开发但排期无法及时满足上线需求，
+  目前只能逐项目手动选择搜索，且下拉框显示全部项目而非该客户项目。核对后还需逐项目查询并发送邮件，人工耗时、效率低、催收慢。
+
+pain_points:
+  - title: 项目筛选靠人工
+    detail: 系统不支持按项目筛选，需逐项目手动选择搜索
+  - title: 下拉未按客户过滤
+    detail: 项目下拉显示全部项目，需人工辨认是否属于该客户
+  - title: 定制开发滞后
+    detail: 按项目筛选需单独开发，排期无法及时满足上线需求
+  - title: 发邮件全靠手动
+    detail: 核对后需逐项目查询、点击发送，耗时且容易漏发
+
+flow:
+  - step: 选择客户
+    role: 财务专员
+  - step: 查询项目对账单
+    role: 财务专员
+    ai: 按客户自动过滤所属项目，批量查询各项目对账单余额
+  - step: 核对余额差异
+    ai: 自动核对余额并标出有欠款或异常的项目
+  - step: 生成邮件内容
+    ai: 自动生成对账单邮件内容并附对应项目明细
+  - step: 发送邮件
+    role: 财务专员
+    ai: 自动逐客户、逐项目发送对账单邮件
+
+en:
+  title: Project-Based SOA Check & Email
+  industry: General
+  summary: Auto-check AR statements per project and send emails, replacing manual lookup and send
+  description: >
+    AR accountants check each customer's AR statement (SOA) project by project. The system has no per-project
+    filter, and custom dev could not meet the go-live deadline. Staff select and search each project one by one,
+    and the dropdown lists every project, not just the customer's own. After checking, they still reopen each
+    project to send the email — manual and slow.
+  pain_points:
+    - title: Manual project filtering
+      detail: No per-project filter; staff must select and search each project one by one
+    - title: Dropdown not filtered
+      detail: Project dropdown lists every project, not just the customer's own
+    - title: Custom dev too slow
+      detail: A per-project filter needs custom dev; timelines miss the go-live deadline
+    - title: Manual email sending
+      detail: After checking, staff reopen each project to click send — slow and easy to miss
+  flow:
+    - step: Select customer
+      role: AR accountant
+    - step: Query project SOAs
+      role: AR accountant
+      ai: Auto-filter projects by customer and batch-query each project's SOA balance
+    - step: Check differences
+      ai: Automatically flag projects with outstanding or unusual balances
+    - step: Draft email content
+      ai: Auto-generate the SOA email with matching project details
+    - step: Send email
+      role: AR accountant
+      ai: Automatically send the SOA email per customer and project
