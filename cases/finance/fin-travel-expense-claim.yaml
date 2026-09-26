@@ -8,7 +8,7 @@ industry: 通用
 client: ""
 products: [YonWork]
 
-summary: 出差申请自动预估费用，报销单据自动换汇并生成备注，替代人工查数据与逐单填写
+summary: 出差申请自动预估费用，报销单据AI自动整理并提交，人工只需核对
 
 description: >
   员工出差需手动填报出差信息并预估费用，要查很多数据；出差回来报销时因涉及多币种，需到财务指定网站查汇率，
@@ -32,17 +32,17 @@ flow:
     role: 出差员工
   - step: 提交报销单据
     role: 出差员工
-  - step: 汇率换算
-    ai: 自动查询财务指定网站汇率，换算为记账币种金额
-  - step: 生成报销备注
-    ai: 按财务要求格式自动生成每张单据备注
-  - step: 财务审核
+  - step: AI整理单据
+    ai: 自动换算汇率、生成备注，整理好报销信息
+  - step: 人工核对信息
     role: 财务专员
+  - step: 自动提交系统
+    ai: 核对无误后AI自动填写并提交报销单据，无需人工操作
 
 en:
   title: Travel Estimate & Expense Claim
   industry: General
-  summary: Auto-estimate travel costs and auto-convert currency and remarks for expense claims
+  summary: Auto-estimate costs; AI organizes and submits claims — staff just review
   description: >
     Employees manually fill in trip details and estimate costs by researching data themselves. Expense claims
     after the trip involve multiple currencies — staff look up rates on the finance team's site, convert each
@@ -65,9 +65,9 @@ en:
       role: Traveler
     - step: Submit receipts
       role: Traveler
-    - step: Convert currency
-      ai: Auto-fetch the finance team's exchange rate and convert to functional currency
-    - step: Generate remarks
-      ai: Auto-generate each receipt's remark in the required format
-    - step: Finance review
+    - step: AI organizes claim
+      ai: Auto-convert currency, generate remarks, and organize the claim details
+    - step: Staff review
       role: Finance staff
+    - step: Auto-submit to system
+      ai: Once confirmed, AI fills in and submits the claim — no manual entry needed
