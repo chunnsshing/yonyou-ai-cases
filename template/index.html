@@ -171,10 +171,11 @@ const byDomain = id => DATA.cases.filter(c => c.domain === id)
   .sort((a, b) => ST[a.status].order - ST[b.status].order || a.zh.title.localeCompare(b.zh.title, 'zh'));
 const state = { domain: S.domains[0].id, off: new Set() };
 const stage = document.getElementById('stage');
+stage.addEventListener('click', e => { if (e.target.closest('.btn.lang')) setLang(lang === 'en' ? 'zh' : 'en'); });
 
 const tag = (sid, cls = '') => { const s = ST[sid]; return `<span class="tag ${cls}" style="--c:${s.color}" title="${esc(pick(s, 'desc'))}">${esc(pick(s, 'name'))}</span>`; };
 const logo = () => DATA.logo ? `<div class="logo"><img src="${DATA.logo}" alt="yonyou"></div>` : `<div class="logo"><span class="ph">LOGO</span></div>`;
-const langBtn = () => `<button class="btn lang" onclick="setLang(lang === 'en' ? 'zh' : 'en')" title="${U().lang_tip}">${U().lang}<kbd>L</kbd></button>`;
+const langBtn = () => `<button class="btn lang" title="${U().lang_tip}">${U().lang}<kbd>L</kbd></button>`;
 
 function fit() {   // 铺满整个窗口：按较小边缩放，另一边的逻辑尺寸随窗口比例延展
   const k = Math.min(innerWidth / 1280, innerHeight / 720);
