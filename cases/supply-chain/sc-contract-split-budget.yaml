@@ -1,0 +1,60 @@
+id: sc-contract-split-budget
+title: 合同拆分与预算核对
+domain: supply-chain
+status: demo
+owner: Fanfan
+updated: 2026-09-26
+industry: 通用
+client: ""
+products: [YonWork]
+
+summary: 按项目/物料/财年自动拆分合同并逐条核对预算，替代人工Excel拆分比对
+
+description: >
+  采购/合同管理人员需要把一份合同按项目、物料、财年拆分成几十条明细，目前用Excel手动拆分，
+  拆分后还要逐条按项目、财年、物料去预算表里查找对应预算，一一比对是否有余额，条目多、核对繁琐耗时。
+
+pain_points:
+  - title: 拆分靠人工Excel
+    detail: 一份合同要按项目、物料、财年手动拆成几十条，繁琐易错
+  - title: 预算核对耗时
+    detail: 拆分后还要逐条去预算表查找对应预算，一一比对余额
+  - title: 条目量大
+    detail: 一份合同常拆出十几到几十条，人工逐条核对效率低
+
+flow:
+  - step: 读取合同
+    role: 合同管理员
+  - step: 按维度拆分
+    role: 合同管理员
+    ai: 自动按项目、物料、财年将合同拆分成明细行
+  - step: 核对预算
+    ai: 自动匹配预算表并逐条核对是否有余额
+  - step: 生成核对结果
+    ai: 自动标出无预算或余额不足的条目
+
+en:
+  title: Contract Split & Budget Check
+  industry: General
+  summary: Auto-split contracts by project, material and year, then check budget per line
+  description: >
+    Procurement/contract staff must split a contract into project, material and fiscal-year lines —
+    often dozens of lines — done manually in Excel today. Each line is then checked one by one against
+    the budget table for a matching budget, which is slow and tedious given the line volume.
+  pain_points:
+    - title: Manual Excel splitting
+      detail: A contract is split into project/material/year lines by hand — slow, error-prone
+    - title: Manual budget matching
+      detail: Each line must be checked against the budget table one by one for a match
+    - title: High line volume
+      detail: A contract can split into dozens of lines, making manual checks inefficient
+  flow:
+    - step: Read contract
+      role: Contract admin
+    - step: Split by dimension
+      role: Contract admin
+      ai: Auto-split the contract into project/material/fiscal-year lines
+    - step: Check budget
+      ai: Auto-match each line against the budget table and check for balance
+    - step: Flag results
+      ai: Automatically flag lines with no budget or insufficient balance
