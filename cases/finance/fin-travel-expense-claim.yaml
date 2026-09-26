@@ -1,0 +1,73 @@
+id: fin-travel-expense-claim
+title: 出差费用预估与报销
+domain: finance
+status: demo
+owner: Fanfan
+updated: 2026-09-26
+industry: 通用
+client: ""
+products: [YonWork]
+
+summary: 出差申请自动预估费用，报销单据自动换汇并生成备注，替代人工查数据与逐单填写
+
+description: >
+  员工出差需手动填报出差信息并预估费用，要查很多数据；出差回来报销时因涉及多币种，需到财务指定网站查汇率，
+  把单据币种换算成记账币种，并按财务要求格式为每张单据填写备注，单据多时非常耗时。
+
+pain_points:
+  - title: 预估费用靠查数据
+    detail: 申请时需手动查很多数据才能预估出差费用
+  - title: 多币种换算繁琐
+    detail: 需到财务指定网站逐单查汇率并换算记账币种
+  - title: 备注格式要求严
+    detail: 每张单据需按财务要求格式手动填写备注
+  - title: 单据多耗时长
+    detail: 出差单据多时，逐单核对与填写非常耗时
+
+flow:
+  - step: 提交出差申请
+    role: 出差员工
+    ai: 自动查询相关数据，预填出差信息与预估费用
+  - step: 出差执行
+    role: 出差员工
+  - step: 提交报销单据
+    role: 出差员工
+  - step: 汇率换算
+    ai: 自动查询财务指定网站汇率，换算为记账币种金额
+  - step: 生成报销备注
+    ai: 按财务要求格式自动生成每张单据备注
+  - step: 财务审核
+    role: 财务专员
+
+en:
+  title: Travel Estimate & Expense Claim
+  industry: General
+  summary: Auto-estimate travel costs and auto-convert currency and remarks for expense claims
+  description: >
+    Employees manually fill in trip details and estimate costs by researching data themselves. Expense claims
+    after the trip involve multiple currencies — staff look up rates on the finance team's site, convert each
+    receipt to the functional currency, and write remarks in the required format for every receipt, which is
+    slow when there are many receipts.
+  pain_points:
+    - title: Manual cost estimation
+      detail: Estimating trip costs requires manually researching a lot of data
+    - title: Tedious FX conversion
+      detail: Staff look up rates on the finance site and convert each receipt one by one
+    - title: Strict remark format
+      detail: Every receipt needs a remark written in the finance team's required format
+    - title: Slow at volume
+      detail: Checking and filling in many receipts one by one takes a long time
+  flow:
+    - step: Submit trip request
+      role: Traveler
+      ai: Auto-research data and pre-fill trip info and estimated cost
+    - step: Take the trip
+      role: Traveler
+    - step: Submit receipts
+      role: Traveler
+    - step: Convert currency
+      ai: Auto-fetch the finance team's exchange rate and convert to functional currency
+    - step: Generate remarks
+      ai: Auto-generate each receipt's remark in the required format
+    - step: Finance review
+      role: Finance staff
