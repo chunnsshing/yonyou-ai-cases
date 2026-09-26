@@ -35,7 +35,7 @@ flow:
   - step: AI整理单据
     ai: 自动换算汇率、生成备注，整理好报销信息
   - step: 人工核对信息
-    role: 财务专员
+    role: 出差员工
   - step: 自动提交系统
     ai: 核对无误后AI自动填写并提交报销单据，无需人工操作
 
@@ -68,6 +68,6 @@ en:
     - step: AI organizes claim
       ai: Auto-convert currency, generate remarks, and organize the claim details
     - step: Staff review
-      role: Finance staff
+      role: Traveler
     - step: Auto-submit to system
       ai: Once confirmed, AI fills in and submits the claim — no manual entry needed
