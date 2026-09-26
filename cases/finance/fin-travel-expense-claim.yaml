@@ -30,7 +30,7 @@ flow:
     ai: 自动查询相关数据，预填出差信息与预估费用
   - step: 出差执行
     role: 出差员工
-  - step: 提交报销单据
+  - step: 提供出差单据
     role: 出差员工
   - step: 整理报销信息
     ai: 自动换算汇率、生成备注，整理好报销信息
@@ -63,7 +63,7 @@ en:
       ai: Auto-research data and pre-fill trip info and estimated cost
     - step: Take the trip
       role: Traveler
-    - step: Submit receipts
+    - step: Provide trip receipts
       role: Traveler
     - step: Organize claim details
       ai: Auto-convert currency, generate remarks, and organize the claim details
