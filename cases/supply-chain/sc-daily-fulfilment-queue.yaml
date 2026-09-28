@@ -1,0 +1,85 @@
+id: sc-daily-fulfilment-queue
+title: 每日发货优先队列
+domain: supply-chain
+status: to-verify
+owner: ChunShing
+updated: 2026-09-28
+industry: 宠物食品与用品分销
+products: [YonWork, NCC]
+system: NCC
+
+summary: 每天早上汇总已确认订单并核对库存，排出发货优先级，标出需处理的例外
+
+description: >
+  仓库和物流每天需要从已确认的销售订单中判断哪些能发、先发哪些、哪些卡在缺货上。目前靠人工逐单核对库存；
+  在途到货在系统里只显示“处理中”，没有具体日期，缺货订单何时能发也难以回答。
+
+pain_points:
+  - title: 逐单人工核对
+    detail: 每天逐张订单核对库存，判断能否发货
+  - title: 在途没有日期
+    detail: 到货状态只显示“处理中”，无法估计何时能发
+  - title: 优先级靠经验
+    detail: 先发哪些订单没有统一规则，例外容易漏掉
+
+flow:
+  - step: 每天早上启动
+    lane: ai
+  - step: 读取订单库存
+    lane: erp
+    note: 已确认订单、在手库存、在途采购
+  - step: 逐行检查可用量
+    lane: ai
+    type: decision
+    note: 可发 / 部分可发 / 缺货
+  - step: 排定优先级
+    lane: ai
+    note: 按承诺日期、客户、订单时长
+  - step: 仓库拣货发货
+    lane: user
+    note: 按每日发货队列作业
+    edge: 发货队列
+  - step: 物流跟进例外
+    lane: user
+    type: exception
+    note: 缺货SKU与预计到货日
+
+en:
+  title: Daily Fulfilment Queue
+  industry: Pet food & supplies distribution
+  summary: Each morning, confirmed orders are checked against stock and ranked, with exceptions flagged
+  description: >
+    Every day the warehouse and shipping team decide which confirmed sales orders can ship, which go first and
+    which are held by missing stock. Today each order is checked against stock by hand. Incoming shipments only
+    show as "processing" with no date, so it is hard to say when a held order can go out.
+  pain_points:
+    - title: Manual order checks
+      detail: Each order is checked against stock by hand every day
+    - title: No inbound dates
+      detail: Inbound shows only "processing", so ship dates can't be given
+    - title: Priority by habit
+      detail: No shared rule for what ships first; exceptions slip through
+  flow:
+    - step: Morning run
+      lane: ai
+    - step: Read orders & stock
+      lane: erp
+      note: Confirmed SOs, on hand, incoming POs
+    - step: Check each line
+      lane: ai
+      type: decision
+      note: Ready / partial / short
+    - step: Prioritise
+      lane: ai
+      note: Promised date, customer, order age
+    - step: Pick and ship
+      lane: user
+      note: Works from the daily queue
+      edge: Queue
+    - step: Chase exceptions
+      lane: user
+      type: exception
+      note: Short SKU and expected arrival
+
+sources:
+  - Notion · Client Projects / Yappy Pets

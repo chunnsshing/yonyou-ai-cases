@@ -1,0 +1,99 @@
+id: sc-batch-doc-capture
+title: 批量单据拍照识别入账
+domain: supply-chain
+status: to-verify
+owner: ChunShing
+updated: 2026-09-28
+industry: 轮胎零售与汽车服务
+products: [YonWork, YonSuite]
+system: YonSuite
+
+summary: 一次上传多张手写零售单、收货单照片，逐张识别，确认一次后分别生成系统单据
+
+description: >
+  门店的零售订单和供应商收货单（GRN）很多是手写的，需要人工逐张录入系统，分别生成零售订单和采购入库单。
+  两类单据常混在一起，需要先分辨类型；某张读不清或写入失败时，也要说清是哪一张。
+
+pain_points:
+  - title: 手写单据靠手录
+    detail: 手写零售单、收货单需逐张人工录入系统
+  - title: 单据类型混杂
+    detail: 零售单与收货单混在一起，录入前要先分辨
+
+flow:
+  - step: 上传多张照片
+    lane: user
+    note: 手写零售单与收货单可混传
+  - step: 逐张拆分
+    lane: ai
+    note: 一张照片即一张单据
+    edge: 照片
+  - step: 判断单据类型
+    lane: ai
+    type: decision
+    note: 零售单或收货单，逐张判断
+  - step: 抽取字段
+    lane: ai
+    note: 商品、数量、单价、车牌等
+  - step: 逐张校验
+    lane: ai
+    note: 读不出的只作废那一张
+  - step: 核对后确认
+    lane: user
+    note: 一张确认表，只确认一次
+    edge: 确认表
+  - step: 分类型写入
+    lane: erp
+    note: 零售订单 / 采购入库单
+    edge: 整批放行
+  - step: 收到结果
+    lane: user
+    note: 各自单号；失败则逐张说明
+    edge: 回复
+
+en:
+  title: Batch Photo Document Capture
+  industry: Tyre retail & auto service
+  summary: Photos of handwritten retail orders and GRNs become ERP documents after one confirmation
+  description: >
+    Many store retail orders and supplier goods receipts (GRNs) are handwritten and have to be keyed into the
+    system one by one, as retail orders and purchase receipts respectively. The two types often arrive mixed and
+    must be told apart first, and when one sheet can't be read or fails to post, staff need to know which one.
+  pain_points:
+    - title: Handwritten, hand-keyed
+      detail: Handwritten retail orders and GRNs are keyed in one by one
+    - title: Mixed document types
+      detail: Retail orders and GRNs arrive together and must be sorted first
+  flow:
+    - step: Upload photos
+      lane: user
+      note: Retail orders and GRNs, mixed
+    - step: Split per photo
+      lane: ai
+      note: One photo, one document
+      edge: Photos
+    - step: Classify each
+      lane: ai
+      type: decision
+      note: Retail order or GRN
+    - step: Extract fields
+      lane: ai
+      note: Items, qty, price, plate, supplier
+    - step: Validate each
+      lane: ai
+      note: Unreadable ones dropped alone
+    - step: Confirm once
+      lane: user
+      note: One table covering all sheets
+      edge: Review
+    - step: Post by type
+      lane: erp
+      note: Retail order / purchase receipt
+      edge: Approved
+    - step: Get results
+      lane: user
+      note: Document numbers; failures itemised
+      edge: Reply
+
+sources:
+  - Stamford diagram 02 (screenshot)

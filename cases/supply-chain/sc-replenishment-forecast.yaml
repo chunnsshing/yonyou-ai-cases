@@ -1,0 +1,90 @@
+id: sc-replenishment-forecast
+title: 智能补货预测
+domain: supply-chain
+status: to-verify
+owner: ChunShing
+updated: 2026-09-28
+industry: 宠物食品与用品分销
+products: [YonWork, NCC]
+system: NCC
+
+summary: 按SKU预测需求与断货日期，给出最晚下单日和建议采购量，提前补货
+
+description: >
+  采购需要在合适的时间下合适的量，既不断货也不积压。判断要综合在手库存、历史销售、在途采购、供应商交期、
+  起订量、批次效期和促销计划，目前主要靠人工整理和经验判断，而且仓库库存并未每天及时更新到系统。
+
+pain_points:
+  - title: 断货与积压并存
+    detail: 下单量和时点没算准，有的断货，有的积压
+  - title: 补货偏被动
+    detail: 缺货发生后才下单，难以提前按交期安排
+  - title: 库存数据不及时
+    detail: 仓库未每天更新系统，预测依据的库存数滞后
+
+flow:
+  - step: 定时运行
+    lane: ai
+    note: 每日或每周自动启动
+  - step: 读取库存销售
+    lane: erp
+    note: 在手库存、历史销售、在途采购
+  - step: 补充供应参数
+    lane: user
+    note: 交期、起订量、效期、促销
+  - step: 预测需求
+    lane: ai
+    note: 按SKU预测，算出可售天数
+  - step: 推算下单日
+    lane: ai
+    note: 最晚下单日=断货日−交期
+  - step: 建议采购量
+    lane: ai
+    note: 考虑起订量，标出呆滞库存
+  - step: 采购审核下单
+    lane: user
+    note: 按建议下采购订单
+    edge: 补货预测
+
+en:
+  title: Smart Replenishment Forecast
+  industry: Pet food & supplies distribution
+  summary: Forecasts demand and stock-out dates by SKU, with a latest order date and suggested quantity
+  description: >
+    Procurement has to order the right quantity at the right time, avoiding both stock-outs and overstock.
+    That means weighing stock on hand, sales history, incoming POs, supplier lead times, MOQ, batch expiry and
+    planned campaigns. Today this is compiled by hand and judged on experience, and warehouse stock is not
+    updated in the system every day.
+  pain_points:
+    - title: Stock-outs and overstock
+      detail: Quantities and timing miss; some SKUs run out while others pile up
+    - title: Reactive ordering
+      detail: Orders go in after a stock-out rather than ahead of lead time
+    - title: Stale stock data
+      detail: The warehouse does not update the system daily
+  flow:
+    - step: Scheduled run
+      lane: ai
+      note: Daily or weekly
+    - step: Read stock & sales
+      lane: erp
+      note: On hand, sales history, open POs
+    - step: Supply inputs
+      lane: user
+      note: Lead time, MOQ, expiry, campaigns
+    - step: Forecast demand
+      lane: ai
+      note: Per SKU, with days of cover
+    - step: Latest order date
+      lane: ai
+      note: Stock-out date minus lead time
+    - step: Recommend qty
+      lane: ai
+      note: MOQ-aware; flags slow movers
+    - step: Buyer raises POs
+      lane: user
+      note: Reviews and orders
+      edge: Forecast
+
+sources:
+  - Notion · Client Projects / Yappy Pets
