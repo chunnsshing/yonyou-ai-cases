@@ -25,6 +25,9 @@ domains:
   - id: sales
     name: 销售
     name_en: Sales
+  - id: analytics
+    name: 经营分析
+    name_en: Analytics
 
 # 场景状态标签（固定5种），顺序即图例顺序
 statuses:

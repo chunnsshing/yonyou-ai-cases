@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-本仓库是 Yonyou AI 场景案例库。开始任何工作前先完整阅读 `BRIEFING.md`，并严格按其中第 3、4、5 节执行。
+本仓库是 Yonyou AI 场景案例库。开始任何工作前先完整阅读 `BRIEFING.md`，并严格按其中第 3–6 节执行。
 
 最重要的几条：
 - 只编辑 `cases/<领域id>/<场景id>.yaml`；样式由 `template/index.html` 统一生成，不要为单个场景改模板。

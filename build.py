@@ -17,10 +17,13 @@ except ImportError:
 ROOT = pathlib.Path(__file__).resolve().parent
 LIMITS = {  # 字段: 最大长度（中文按字数，英文按字符数；超出=警告）
     "zh": {"title": 18, "summary": 40, "description": 140, "pain.title": 12, "pain.detail": 40,
-           "flow.step": 10, "flow.role": 8, "flow.ai": 36},
+           "flow.step": 9, "flow.note": 18, "flow.edge": 6},    # 7–8 步时的上限
     "en": {"title": 34, "summary": 95, "description": 380, "pain.title": 26, "pain.detail": 80,
-           "flow.step": 18, "flow.role": 16, "flow.ai": 60},  # 7–8 步时的上限
+           "flow.step": 18, "flow.note": 40, "flow.edge": 14},
 }
+WIDE = {"zh": {"flow.step": 10, "flow.note": 26}, "en": {"flow.step": 24, "flow.note": 80}}   # ≤6 步时节点更宽
+LANES = ("user", "ai", "erp")        # 泳道：使用者 / YonWork / 系统
+TYPES = ("decision", "exception", "future")
 REQUIRED = ["id", "title", "domain", "status", "owner", "updated", "summary", "description", "pain_points", "flow"]
 EN_REQUIRED = ["title", "summary", "description", "pain_points", "flow"]
 
@@ -42,8 +45,8 @@ def check_content(c, lang, E, W, ref_flow=None):
     """校验一套语言内容（中文=顶层字段，英文=en: 块）"""
     tag = "" if lang == "zh" else "en."
     L = dict(LIMITS[lang])
-    if lang == "en" and len(c.get("flow") or []) <= 6:   # 步骤少时每个节点更宽，英文可放宽
-        L.update({"flow.step": 22, "flow.role": 20, "flow.ai": 80})
+    if len(c.get("flow") or []) <= 6:
+        L.update(WIDE[lang])
 
     def ln(key, val, label):
         if len(s(val)) > L[key]:
@@ -67,18 +70,35 @@ def check_content(c, lang, E, W, ref_flow=None):
         if not isinstance(f, dict) or not f.get("step"):
             E(f"{tag}flow 第{i}步需要 step")
             continue
+        if f.get("lane") not in LANES:
+            E(f"{tag}流程{i} 的 lane 必须是 user / ai / erp（使用者 / YonWork / 系统）")
+        if f.get("type") and f["type"] not in TYPES:
+            E(f"{tag}流程{i} 的 type 只能是 decision / exception / future")
         ln("flow.step", f.get("step"), f"流程{i}.step")
-        ln("flow.role", f.get("role"), f"流程{i}.role")
-        ln("flow.ai", f.get("ai"), f"流程{i}.ai")
+        ln("flow.note", f.get("note"), f"流程{i}.note")
+        ln("flow.edge", f.get("edge"), f"流程{i}.edge")
     if ref_flow is None:
-        if flow and not any(isinstance(f, dict) and f.get("ai") for f in flow):
-            E("flow 至少要有一步标注 ai（AI在哪里介入）")
+        if flow and not any(isinstance(f, dict) and f.get("lane") == "ai" for f in flow):
+            E("flow 至少要有一步在 YonWork 泳道（lane: ai）")
     else:
         if len(flow) != len(ref_flow):
             E(f"en.flow 步数（{len(flow)}）必须与中文 flow（{len(ref_flow)}）一致")
-        elif any(bool(a.get("ai")) != bool(b.get("ai")) for a, b in zip(flow, ref_flow)
+        elif any((a.get("lane"), a.get("type")) != (b.get("lane"), b.get("type")) for a, b in zip(flow, ref_flow)
                  if isinstance(a, dict) and isinstance(b, dict)):
-            E("en.flow 标注 ai 的步骤必须与中文 flow 一一对应")
+            E("en.flow 每一步的 lane / type 必须与中文 flow 一一对应")
+
+
+def upgrade_legacy(c):
+    """旧格式（step/role/ai，无 lane）自动转换：有 ai 的步骤进 YonWork 泳道，其余进使用者泳道"""
+    flows = [c.get("flow") or []] + ([c["en"].get("flow") or []] if isinstance(c.get("en"), dict) else [])
+    legacy = any(isinstance(f, dict) and "lane" not in f for fl in flows for f in fl)
+    if legacy:
+        for fl in flows:
+            for f in fl:
+                if isinstance(f, dict) and "lane" not in f:
+                    f["lane"] = "ai" if f.get("ai") else "user"
+                    f["note"] = f.pop("ai", None) or f.get("role")
+    return legacy
 
 
 def validate(case, path, site, errors, warnings):
@@ -98,6 +118,8 @@ def validate(case, path, site, errors, warnings):
         E(f"status `{case['status']}` 无效，可选 {sorted(statuses)}")
     if case.get("id") and path.stem != case["id"]:
         E(f"文件名应与 id 一致：{case['id']}.yaml")
+    if upgrade_legacy(case):
+        W("flow 是旧格式（step/role/ai），已自动转换为泳道；请改为 lane / note 写法")
     check_content(case, "zh", E, W)
 
     en = case.get("en")
@@ -117,7 +139,8 @@ def content(c):
         "title": s(c.get("title")), "summary": s(c.get("summary")), "description": s(c.get("description")),
         "industry": s(c.get("industry")),
         "pain_points": [{"title": s(p.get("title")), "detail": s(p.get("detail"))} for p in c.get("pain_points") or []],
-        "flow": [{"step": s(f.get("step")), "role": s(f.get("role")), "ai": s(f.get("ai"))} for f in c.get("flow") or []],
+        "flow": [{"step": s(f.get("step")), "lane": s(f.get("lane")), "note": s(f.get("note")), "edge": s(f.get("edge")),
+                  "type": s(f.get("type"))} for f in c.get("flow") or []],
     }
 
 
@@ -126,6 +149,7 @@ def normalize(case):
         "id": s(case["id"]), "domain": s(case["domain"]), "status": s(case["status"]),
         "owner": s(case.get("owner")), "updated": s(case.get("updated")), "client": s(case.get("client")),
         "products": [s(x) for x in (case.get("products") or [])], "example": bool(case.get("example")),
+        "system": s(case.get("system")) or "ERP",
         "zh": content(case), "en": content(case["en"]) if case.get("en") else None,
     }
 
