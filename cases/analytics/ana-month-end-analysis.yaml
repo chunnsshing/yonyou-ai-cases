@@ -1,8 +1,8 @@
 id: ana-month-end-analysis
 title: 月结数据分析与预测
 domain: analytics
-status: to-verify
-owner: ChunShing
+status: replicable
+owner: Elmond
 updated: 2026-09-28
 industry: 人力资源服务
 products: [YonWork]
