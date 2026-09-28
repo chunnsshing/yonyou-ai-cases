@@ -1,0 +1,89 @@
+id: fin-ecommerce-settlement-recon
+title: 电商平台结算自动对账
+domain: finance
+status: to-verify
+owner: ChunShing
+updated: 2026-09-28
+industry: 宠物食品与用品分销
+products: [YonWork, NCC]
+system: NCC
+
+summary: 平台结算报告自动拆出费用并与订单、发票、收款匹配，财务只处理例外
+
+description: >
+  公司在 Shopee、Lazada、Shopify、TikTok Shop 等平台销售，每月有数千笔交易。平台结算金额已扣除佣金、
+  优惠券、退款等费用，财务需先扣减平台费用得出实际金额，再与系统中的订单、发票、收款逐笔核对后入账。
+
+pain_points:
+  - title: 交易量大
+    detail: 数千笔电商交易需要重复的人工对账
+  - title: 平台费用要先扣
+    detail: 佣金、优惠券、退款须从平台金额中扣除才得实际数
+  - title: 差异难发现
+    detail: 金额差、漏单、退款混在大量交易里，不易察觉
+
+flow:
+  - step: 提供结算报告
+    lane: user
+    note: 各电商平台的结算与回款报告
+  - step: 解析结算明细
+    lane: ai
+    note: 拆出佣金、优惠券、退款、调整
+  - step: 读取订单发票
+    lane: erp
+    note: 订单、发票与收款记录
+  - step: 逐笔匹配
+    lane: ai
+    type: decision
+    note: 订单↔发票↔收款↔结算
+  - step: 自动入账
+    lane: erp
+    note: 高置信度的连同费用明细入账
+    edge: 匹配成功
+  - step: 财务处理例外
+    lane: user
+    type: exception
+    note: 附差异原因，只看例外
+    edge: 例外队列
+
+en:
+  title: Marketplace Settlement Recon
+  industry: Pet food & supplies distribution
+  summary: Payouts split into fees and matched to orders, invoices, receipts; finance sees exceptions
+  description: >
+    The company sells on Shopee, Lazada, Shopify and TikTok Shop, with thousands of transactions a month.
+    Platform payouts are net of commissions, vouchers and refunds, so finance first deducts platform charges
+    to get the actual amount, then matches each one against orders, invoices and receipts in the ERP before posting.
+  pain_points:
+    - title: High transaction volume
+      detail: Thousands of marketplace transactions reconciled by hand, repeatedly
+    - title: Fees to strip out first
+      detail: Commissions, vouchers and refunds must come off the payout first
+    - title: Gaps are hard to spot
+      detail: Amount gaps, missing orders and refunds hide in the volume
+  flow:
+    - step: Provide reports
+      lane: user
+      note: Settlement and payout reports per platform
+    - step: Parse settlements
+      lane: ai
+      note: Commissions, vouchers, refunds, adjustments
+    - step: Read ERP records
+      lane: erp
+      note: Orders, invoices and receipts
+    - step: Match each line
+      lane: ai
+      type: decision
+      note: Order, invoice, payment, settlement
+    - step: Auto-post
+      lane: erp
+      note: High-confidence matches posted with fee lines
+      edge: Matched
+    - step: Finance reviews
+      lane: user
+      type: exception
+      note: Exceptions only, each with a reason
+      edge: Exceptions
+
+sources:
+  - Notion · Client Projects / Yappy Pets

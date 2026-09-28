@@ -26,16 +26,17 @@ pain_points:
 
 flow:
   - step: 查询发票
-    role: 财务人员
-    ai: 按条件自动查找所有符合条件的发票供选择
+    lane: ai
+    note: 按条件自动查找所有符合条件的发票供选择
   - step: 选择导出发票
-    role: 财务人员
+    lane: user
+    note: 财务人员
   - step: 生成独立PDF
-    role: 财务人员
-    ai: 每张发票自动生成一个独立PDF文件，不合并
+    lane: ai
+    note: 每张发票自动生成一个独立PDF文件，不合并
   - step: 上传共享文件夹
-    role: 财务人员
-    ai: 生成的PDF自动上传到客户指定的共享文件夹服务器
+    lane: ai
+    note: 生成的PDF自动上传到客户指定的共享文件夹服务器
 
 en:
   title: Invoice PDF Export & Upload
@@ -56,13 +57,14 @@ en:
       detail: Generated PDFs must be uploaded one by one to the shared folder server
   flow:
     - step: Query invoices
-      role: Finance staff
-      ai: Auto-find all AR/sales invoices matching the criteria for selection
+      lane: ai
+      note: Auto-find all AR/sales invoices matching the criteria for selection
     - step: Select invoices
-      role: Finance staff
+      lane: user
+      note: Finance staff
     - step: Generate PDFs
-      role: Finance staff
-      ai: Auto-generate one standalone PDF per invoice, no merging
+      lane: ai
+      note: Auto-generate one standalone PDF per invoice, no merging
     - step: Upload to shared drive
-      role: Finance staff
-      ai: Generated PDFs are automatically uploaded to the customer's shared folder server
+      lane: ai
+      note: Generated PDFs are automatically uploaded to the customer's shared folder server

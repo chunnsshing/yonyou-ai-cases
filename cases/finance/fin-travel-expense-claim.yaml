@@ -26,20 +26,23 @@ pain_points:
 
 flow:
   - step: 提交出差申请
-    role: 出差员工
-    ai: 自动查询相关数据，预填出差信息与预估费用
+    lane: ai
+    note: 自动查询相关数据，预填出差信息与预估费用
   - step: 出差执行
-    role: 出差员工
+    lane: user
+    note: 出差员工
   - step: 提供出差单据
-    role: 出差员工
+    lane: user
+    note: 出差员工
   - step: 整理报销信息
-    role: 出差员工
-    ai: 自动换算汇率、生成备注，整理好报销信息
+    lane: ai
+    note: 自动换算汇率、生成备注，整理好报销信息
   - step: 人工核对信息
-    role: 出差员工
+    lane: user
+    note: 出差员工
   - step: 提交至系统
-    role: 出差员工
-    ai: 核对无误后AI自动填写并提交报销单据，无需人工操作
+    lane: ai
+    note: 核对无误后AI自动填写并提交报销单据，无需人工操作
 
 en:
   title: Travel Estimate & Expense Claim
@@ -61,17 +64,20 @@ en:
       detail: Checking and filling in many receipts one by one takes a long time
   flow:
     - step: Submit trip request
-      role: Traveler
-      ai: Auto-research data and pre-fill trip info and estimated cost
+      lane: ai
+      note: Auto-research data and pre-fill trip info and estimated cost
     - step: Take the trip
-      role: Traveler
+      lane: user
+      note: Traveler
     - step: Provide trip receipts
-      role: Traveler
+      lane: user
+      note: Traveler
     - step: Organize claim details
-      role: Traveler
-      ai: Auto-convert currency, generate remarks, and organize the claim details
+      lane: ai
+      note: Auto-convert currency, generate remarks, and organize the claim details
     - step: Staff review
-      role: Traveler
+      lane: user
+      note: Traveler
     - step: Submit to system
-      role: Traveler
-      ai: Once confirmed, AI fills in and submits the claim — no manual entry needed
+      lane: ai
+      note: Once confirmed, AI fills in and submits the claim — no manual entry needed

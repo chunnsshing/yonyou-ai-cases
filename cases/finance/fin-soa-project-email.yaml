@@ -26,19 +26,20 @@ pain_points:
 
 flow:
   - step: 选择客户
-    role: 财务专员
+    lane: user
+    note: 财务专员
   - step: 查询项目对账单
-    role: 财务专员
-    ai: 按客户自动过滤所属项目，批量查询各项目对账单余额
+    lane: ai
+    note: 按客户自动过滤所属项目，批量查询各项目对账单余额
   - step: 核对余额差异
-    role: 财务专员
-    ai: 自动核对余额并标出有欠款或异常的项目
+    lane: ai
+    note: 自动核对余额并标出有欠款或异常的项目
   - step: 生成邮件内容
-    role: 财务专员
-    ai: 自动生成对账单邮件内容并附对应项目明细
+    lane: ai
+    note: 自动生成对账单邮件内容并附对应项目明细
   - step: 发送邮件
-    role: 财务专员
-    ai: 自动逐客户、逐项目发送对账单邮件
+    lane: ai
+    note: 自动逐客户、逐项目发送对账单邮件
 
 en:
   title: Project-Based SOA Check & Email
@@ -60,16 +61,17 @@ en:
       detail: After checking, staff reopen each project to click send — slow and easy to miss
   flow:
     - step: Select customer
-      role: AR accountant
+      lane: user
+      note: AR accountant
     - step: Query project SOAs
-      role: AR accountant
-      ai: Auto-filter projects by customer and batch-query each project's SOA balance
+      lane: ai
+      note: Auto-filter projects by customer and batch-query each project's SOA balance
     - step: Check differences
-      role: AR accountant
-      ai: Automatically flag projects with outstanding or unusual balances
+      lane: ai
+      note: Automatically flag projects with outstanding or unusual balances
     - step: Draft email content
-      role: AR accountant
-      ai: Auto-generate the SOA email with matching project details
+      lane: ai
+      note: Auto-generate the SOA email with matching project details
     - step: Send email
-      role: AR accountant
-      ai: Automatically send the SOA email per customer and project
+      lane: ai
+      note: Automatically send the SOA email per customer and project

@@ -1,0 +1,88 @@
+id: fin-contract-gross-profit
+title: 合同费率到顾问毛利
+domain: finance
+status: to-verify
+owner: ChunShing
+updated: 2026-09-28
+industry: 人力资源服务
+products: [YonWork]
+system: ERP
+
+summary: 从合同读取费率自动计算每个派遣的毛利，按规则分摊到部门并逐级汇总到顾问与公司
+
+description: >
+  员工以不同费率派驻到不同客户，费率写在合同里。目前每月用表格手工重算毛利，再按规则分到 BD、AM、DY 等部门，
+  并归属到对应顾问。归属比例常有争议，汇总数字与底层明细对不上，要等月底才知道各团队进度。
+
+pain_points:
+  - title: 每月手算毛利
+    detail: 每月靠表格手工重新计算各派遣的毛利
+  - title: 归属比例有争议
+    detail: 谁拿哪个派遣的业绩、占多少比例常起争议
+  - title: 数字与明细脱节
+    detail: 汇总数字与产生它的明细之间对不上
+  - title: 月底才知进度
+    detail: 要等月结后才知道各团队的毛利情况
+
+flow:
+  - step: 提供合同
+    lane: user
+    note: 客户条款与费率
+  - step: 读取合同条款
+    lane: ai
+    note: 客户、派遣、收费率、薪资率
+  - step: 按派遣算毛利
+    lane: ai
+    note: 公式直接取自合同
+  - step: 按规则分摊
+    lane: ai
+    note: BD、AM、DY，均分或按比例
+  - step: 逐级汇总
+    lane: ai
+    note: 顾问→团队→部门→公司
+  - step: 查看毛利报表
+    lane: user
+    note: 按年月日筛选，可下钻明细
+    edge: 毛利
+
+en:
+  title: Contract Rate to Consultant GP
+  industry: HR services
+  summary: Reads contract rates, computes GP per placement, splits by rule and rolls up to company
+  description: >
+    Staff are placed with clients on different rates, and the rate sits in the contract. Each month gross profit
+    is recalculated in a spreadsheet, split across departments such as BD, AM and DY, and credited to consultants.
+    Credit shares are disputed, headline numbers don't tie back to entries, and teams only see where they stand at
+    month-end.
+  pain_points:
+    - title: Monthly GP by hand
+      detail: A spreadsheet recalculates gross profit per placement every month
+    - title: Disputed credit shares
+      detail: Who is credited for which placement, and at what share, is argued
+    - title: Numbers don't tie back
+      detail: Headline figures don't trace to the entries that produced them
+    - title: Month-end visibility
+      detail: Teams only learn where they stand after the close
+  flow:
+    - step: Provide contract
+      lane: user
+      note: Client terms and rates
+    - step: Read contract terms
+      lane: ai
+      note: Client, placement, charge and pay rates
+    - step: GP per placement
+      lane: ai
+      note: Formula runs off the contract
+    - step: Split by rule
+      lane: ai
+      note: BD, AM, DY, even or by percentage
+    - step: Roll up
+      lane: ai
+      note: Consultant, team, department, company
+    - step: View GP report
+      lane: user
+      note: Filter by period, drill to entries
+      edge: Gross profit
+
+sources:
+  - raw/FSG_Sharing_Deck.pdf (Flow 1)

@@ -1,0 +1,83 @@
+id: fin-p2p-vendor-invoice
+title: 供应商发票到付款文件
+domain: finance
+status: to-verify
+owner: ChunShing
+updated: 2026-09-28
+industry: 人力资源服务
+products: [YonWork]
+system: ERP
+
+summary: 供应商发票自动识别入账，回复邮件即审批，自动生成付款凭证与银行文件
+
+description: >
+  供应商发票通过邮件发来，需要人工录入系统、找审批人审批、再准备付款凭证和银行付款文件。
+  环节之间靠人转录、等待和催办，时间主要耗在交接上而不是单个环节本身。
+
+pain_points:
+  - title: 发票人工录入
+    detail: 邮件里的供应商发票需逐张转录到系统
+  - title: 审批等待与催办
+    detail: 审批要等、要催，流程停在交接处
+  - title: 付款文件手工准备
+    detail: 批准后还要手工准备付款凭证与银行文件
+
+flow:
+  - step: 发票到邮箱
+    lane: user
+    note: 供应商通过邮件发送
+  - step: 识别发票
+    lane: ai
+    note: OCR读取供应商、金额、明细
+  - step: 过账入系统
+    lane: erp
+    note: 生成应付凭证
+  - step: 回复即审批
+    lane: user
+    note: 审批人回复提醒邮件
+    edge: 审批提醒
+  - step: 生成付款凭证
+    lane: erp
+    edge: 已批准
+  - step: 生成银行文件
+    lane: ai
+    note: 按银行付款文件格式输出
+
+en:
+  title: Vendor Invoice to Payment File
+  industry: HR services
+  summary: Vendor invoices read and posted; approve by reply; payment voucher and bank file follow
+  description: >
+    Vendor invoices arrive by email. Someone keys them into the system, chases an approver, then prepares the payment
+    voucher and the bank payment file. Work is retyped, waited on and chased between steps, so most of the time is
+    lost in the handoffs rather than inside any one step.
+  pain_points:
+    - title: Invoices keyed by hand
+      detail: Each emailed vendor invoice is retyped into the system
+    - title: Waiting and chasing
+      detail: Approvals are waited on and chased; work stalls at handoffs
+    - title: Payment files by hand
+      detail: Voucher and bank file are prepared manually after approval
+  flow:
+    - step: Invoice arrives
+      lane: user
+      note: Emailed by the vendor
+    - step: Read invoice
+      lane: ai
+      note: OCR vendor, amount and lines
+    - step: Post to ERP
+      lane: erp
+      note: AP entry created
+    - step: Approve by reply
+      lane: user
+      note: Approver replies to the alert
+      edge: Alert
+    - step: Payment voucher
+      lane: erp
+      edge: Approved
+    - step: Bank payment file
+      lane: ai
+      note: In the bank's file format
+
+sources:
+  - raw/FSG_Sharing_Deck.pdf (Workstream B)
