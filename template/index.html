@@ -187,7 +187,10 @@ const ST = Object.fromEntries(S.statuses.map((s, i) => [s.id, {...s, order: i}])
 const DM = Object.fromEntries(S.domains.map(d => [d.id, d]));
 const byDomain = id => DATA.cases.filter(c => c.domain === id)
   .sort((a, b) => ST[a.status].order - ST[b.status].order || a.zh.title.localeCompare(b.zh.title, 'zh'));
-const state = { domain: S.domains[0].id, off: new Set() };
+// 没有场景的领域页签 / 状态标签不显示（site.yaml 里保留定义，有场景后自动出现）
+const DOMS = S.domains.filter(d => DATA.cases.some(c => c.domain === d.id));
+const STATS = S.statuses.filter(s => DATA.cases.some(c => c.status === s.id));
+const state = { domain: (DOMS[0] || S.domains[0]).id, off: new Set() };
 const stage = document.getElementById('stage');
 stage.addEventListener('click', e => { if (e.target.closest('.btn.lang')) setLang(lang === 'en' ? 'zh' : 'en'); });
 
@@ -212,9 +215,9 @@ function renderHome() {
     <div class="right noprint"><button class="btn" onclick="printDomain()">${U().export_domain}</button>${langBtn()}</div></div>
   <div class="home-head fade">
     <div><h1>${esc(pick(S, 'title'))}</h1><p>${esc(pick(S, 'subtitle'))}</p></div>
-    <div class="legend">${S.statuses.map(s => `<span class="tag ${state.off.has(s.id) ? 'off' : ''}" style="--c:${s.color}" title="${esc(pick(s, 'desc'))}" onclick="toggle('${s.id}')">${esc(pick(s, 'name'))} <span>${counts[s.id] || 0}</span></span>`).join('')}</div>
+    <div class="legend">${STATS.map(s => `<span class="tag ${state.off.has(s.id) ? 'off' : ''}" style="--c:${s.color}" title="${esc(pick(s, 'desc'))}" onclick="toggle('${s.id}')">${esc(pick(s, 'name'))} <span>${counts[s.id] || 0}</span></span>`).join('')}</div>
   </div>
-  <div class="tabs">${S.domains.map(d => `<button class="tab ${d.id === state.domain ? 'on' : ''}" onclick="go('#/${d.id}')">${esc(pick(d, 'name'))}<small>${byDomain(d.id).length}</small></button>`).join('')}</div>
+  <div class="tabs">${DOMS.map(d => `<button class="tab ${d.id === state.domain ? 'on' : ''}" onclick="go('#/${d.id}')">${esc(pick(d, 'name'))}<small>${byDomain(d.id).length}</small></button>`).join('')}</div>
   <div class="grid-wrap"><div class="grid fade">
     ${list.length ? list.map(c => { const t = C(c); return `
       <div class="card" onclick="go('#/case/${c.id}')">
