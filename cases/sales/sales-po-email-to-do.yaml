@@ -1,0 +1,100 @@
+id: sales-po-email-to-do
+title: 客户PO邮件到发货单全自动
+domain: sales
+status: demo
+owner: ChunShing
+updated: 2026-09-28
+industry: 工作服供应
+products: [YonWork, YonBIP]
+system: YonBIP
+
+summary: 客户PO邮件自动转报价单、销售订单，审批只需回复邮件，库存足够即生成发货单
+
+description: >
+  客户用邮件发送采购订单（正文、PDF 或表格），通常只写品名和数量，而同一品名可能对应多个 SKU。
+  业务需逐单读邮件、确认 SKU 与价格，再依次建报价单、销售订单；审批要登录系统，库存不足往往后知后觉。
+
+pain_points:
+  - title: 品名对不上SKU
+    detail: 客户只写品名，同一品名对应多个SKU，容易报错型号
+  - title: 审批要登录系统
+    detail: 审批请求与客户来信混在同一邮箱，容易被淹没
+  - title: 缺货后知后觉
+    detail: 库存不足时没有主动提示，等到没发货才发现
+
+flow:
+  - step: 客户发送PO
+    lane: user
+    note: 正文、PDF或表格均可
+  - step: 读取PO内容
+    lane: ai
+    note: 提取客户、品名、数量、交期
+    edge: PO邮件
+  - step: 匹配SKU
+    lane: ai
+    note: 按该客户历史订单锁定SKU
+  - step: 生成报价单
+    lane: erp
+    note: 价格取自价目表并回邮客户
+  - step: 转销售订单
+    lane: erp
+    note: 由报价单直接生成，待审批
+  - step: 回复邮件审批
+    lane: user
+    note: 每天14:00汇总，回复即批准
+    edge: 每日汇总
+  - step: 逐行核对库存
+    lane: ai
+    note: 读取回复并标记已审批
+    edge: 回复批准
+  - step: 生成发货单
+    lane: erp
+    note: 缺货则输出缺货报告
+
+en:
+  title: Customer PO Email to Delivery
+  industry: Workwear supply
+  summary: PO emails become quotation and sales order; approve by reply; DO when stock allows
+  description: >
+    Customers email purchase orders in the body, as a PDF or as a spreadsheet, usually with product names and
+    quantities only, and one name can map to several SKUs. Sales reads each email, settles SKU and price, then
+    builds the quotation and sales order by hand. Approval means logging into the ERP, and a stock shortfall is
+    often discovered late.
+  pain_points:
+    - title: Names don't match SKUs
+      detail: Customers write product names; one name can cover several SKUs
+    - title: Approvals need a login
+      detail: Approval requests share the inbox with customer mail and get buried
+    - title: Shortfalls found late
+      detail: No early warning when stock is short; found when nothing ships
+  flow:
+    - step: Customer sends PO
+      lane: user
+      note: Body, PDF or spreadsheet
+    - step: Read the PO
+      lane: ai
+      note: Customer, items, qty, delivery date
+      edge: PO email
+    - step: Resolve SKU
+      lane: ai
+      note: From this customer's past orders
+    - step: Create quotation
+      lane: erp
+      note: Priced from the list, emailed out
+    - step: Convert to SO
+      lane: erp
+      note: Straight from the SQ, pending approval
+    - step: Approve by reply
+      lane: user
+      note: 2pm daily digest; reply to approve
+      edge: Daily digest
+    - step: Check stock
+      lane: ai
+      note: Reads the reply, checks each line
+      edge: Approved
+    - step: Create DO
+      lane: erp
+      note: Or a shortfall report if short
+
+sources:
+  - raw/neptune-ai-solution.html

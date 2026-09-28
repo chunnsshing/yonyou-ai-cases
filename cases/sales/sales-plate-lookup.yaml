@@ -1,0 +1,91 @@
+id: sales-plate-lookup
+title: 车牌查询客户完整历史
+domain: sales
+status: to-verify
+owner: ChunShing
+updated: 2026-09-28
+industry: 轮胎零售与汽车服务
+products: [YonWork, YonSuite]
+system: YonSuite
+
+summary: 输入车牌即查到对应客户，以固定版式展示到店次数、消费、常用规格等完整历史
+
+description: >
+  门店接待时常只知道车牌。车牌只记录在零售订单上，客户档案里没有这个字段；一位客户名下还可能有多个车牌。
+  要查某辆车的客户和历史，只能翻查零售订单，再按客户名称汇总销售、零售和服务记录。
+
+pain_points:
+  - title: 档案里没有车牌
+    detail: 车牌只存在零售订单上，无法直接按车牌查客户
+  - title: 一位客户多辆车
+    detail: 同一客户名下多个车牌，历史需要合并查看
+  - title: 全表扫描慢
+    detail: 每次查询都要翻查全部零售订单
+
+flow:
+  - step: 每周扫描订单
+    lane: ai
+    note: 后台取出车牌与客户名称
+  - step: 更新对照表
+    lane: ai
+    note: 车牌↔客户，查询免全表扫描
+  - step: 输入车牌
+    lane: user
+    note: 空格、大小写不限
+  - step: 车牌→客户
+    lane: ai
+    type: decision
+    note: 查不到则增量扫描，仍无则说明
+  - step: 查客户全部单据
+    lane: erp
+    note: 销售、零售、服务记录
+  - step: 套入固定版式
+    lane: ai
+    note: 版式由客户制定，每次一致
+  - step: 查看客户历史
+    lane: user
+    note: 到店次数、消费、规格、门店
+    edge: 仪表板
+
+en:
+  title: Plate Lookup to Customer History
+  industry: Tyre retail & auto service
+  summary: Enter a plate number and get the customer's full history in a fixed dashboard layout
+  description: >
+    Front-desk staff often know only the car plate. Plates are recorded only on retail orders, not in the customer
+    master, and one customer can own several cars. Finding a car's owner and history means searching retail orders,
+    then pulling that customer's sales, retail and service records together by name.
+  pain_points:
+    - title: No plate in master
+      detail: Plates live only on retail orders, so there's no direct lookup
+    - title: Many cars per customer
+      detail: One customer can have several plates whose history must be combined
+    - title: Full scans are slow
+      detail: Every lookup means searching all retail orders
+  flow:
+    - step: Weekly order scan
+      lane: ai
+      note: In background, plate and customer name
+    - step: Update plate map
+      lane: ai
+      note: Plate to customer, no full scans
+    - step: Enter a plate
+      lane: user
+      note: Any spacing or case
+    - step: Plate to customer
+      lane: ai
+      type: decision
+      note: Incremental scan if missing; else say so
+    - step: Fetch all records
+      lane: erp
+      note: Sales, retail and service
+    - step: Fill fixed layout
+      lane: ai
+      note: Client-defined, same every time
+    - step: View history
+      lane: user
+      note: Visits, spend, sizes, stores
+      edge: Dashboard
+
+sources:
+  - Stamford diagram 03 (screenshot)

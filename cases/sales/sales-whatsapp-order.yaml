@@ -1,0 +1,97 @@
+id: sales-whatsapp-order
+title: WhatsApp订单自动生成销售订单
+domain: sales
+status: demo
+owner: ChunShing
+updated: 2026-09-28
+industry: 宠物食品与用品分销
+products: [YonWork, NCC]
+system: NCC
+
+summary: 读懂WhatsApp文字、语音、图片订单，生成订单草稿，业务只确认不确定行
+
+description: >
+  客户通过 WhatsApp 或邮件下单，形式有文字、语音和图片；商品有时写编码，有时写品名，有时是客户自己的简称。
+  编码、品名、简称之间的对应关系只有负责该客户的业务员清楚，业务员要花大量时间解读订单再录入系统。
+
+pain_points:
+  - title: 对照关系在人脑里
+    detail: 只有负责该客户的业务员知道编码、品名与简称的对应
+  - title: 订单格式五花八门
+    detail: 文字、语音、图片混杂，逐条解读后才能录入
+  - title: 解读订单耗时
+    detail: 业务员大量时间花在解读和处理不同格式的订单上
+
+flow:
+  - step: 客户发送订单
+    lane: user
+    note: 文字、语音或图片
+  - step: 识别客户与内容
+    lane: ai
+    note: 识别发送人，转写语音与图片
+    edge: 聊天订单
+  - step: 解析商品数量
+    lane: ai
+    note: 编码、品名或客户简称
+  - step: 匹配SKU
+    lane: ai
+    note: 按客户历史订单与对照表
+  - step: 校验价格库存
+    lane: erp
+    note: 价格与库存均取自ERP
+  - step: 业务确认
+    lane: user
+    note: 只看标为不确定的行
+    edge: 订单草稿
+  - step: 生成销售订单
+    lane: erp
+    edge: 确认
+  - step: 学习客户叫法
+    lane: ai
+    note: 修正后保存简称与SKU对应
+
+en:
+  title: WhatsApp Order to Sales Order
+  industry: Pet food & supplies distribution
+  summary: Reads WhatsApp text, voice and image orders into a draft SO; sales checks unsure lines only
+  description: >
+    Customers order over WhatsApp or email as text, voice notes or images. Products appear as codes, as names,
+    or as the customer's own abbreviations. Only the salesperson who handles that customer knows how codes,
+    names and abbreviations map, and sales spends a lot of time interpreting orders before keying them in.
+  pain_points:
+    - title: Mapping lives in heads
+      detail: Only the account's salesperson knows how codes, names and nicknames map
+    - title: Mixed order formats
+      detail: Text, voice and images must each be interpreted before entry
+    - title: Slow order handling
+      detail: Sales spends much of its time interpreting orders in different formats
+  flow:
+    - step: Customer orders
+      lane: user
+      note: Text, voice note or image
+    - step: Identify & read
+      lane: ai
+      note: Sender matched; voice and image read
+      edge: WhatsApp
+    - step: Parse items & qty
+      lane: ai
+      note: Code, name or customer nickname
+    - step: Resolve SKU
+      lane: ai
+      note: From order history and mapping table
+    - step: Check ERP price
+      lane: erp
+      note: Price and stock both from the ERP
+    - step: Sales confirms
+      lane: user
+      note: Only lines flagged as uncertain
+      edge: Order draft
+    - step: Create sales order
+      lane: erp
+      edge: Confirmed
+    - step: Learn nicknames
+      lane: ai
+      note: Saves corrected nickname to SKU
+
+sources:
+  - Notion · Client Projects / Yappy Pets
