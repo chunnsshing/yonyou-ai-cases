@@ -1,0 +1,67 @@
+id: ana-management-brief
+title: 管理层异常简报
+domain: analytics
+status: future
+owner: ChunShing
+updated: 2026-09-28
+industry: 宠物食品与用品分销
+products: [YonWork, NCC]
+system: NCC
+
+summary: 汇总各业务流程的未决例外与重大变化，按影响排序，管理层一份简报看重点
+
+description: >
+  管理层需要掌握经营表现、风险和例外，但信息分散在销售、财务、仓库、采购、市场各自的报表里，
+  需要逐份翻看。本场景建立在订单、对账、发货、补货、营销等流程已产出结果的基础上。
+
+pain_points:
+  - title: 报表多且分散
+    detail: 要逐份查看多个部门的运营报表才能掌握全局
+  - title: 重点被淹没
+    detail: 真正需要决策的问题夹在大量常规数据中
+
+flow:
+  - step: 汇总各流程输出
+    lane: ai
+    note: 订单、对账、发货、补货、营销
+  - step: 收集未决例外
+    lane: ai
+    note: 未解决的例外与重大变化
+  - step: 按影响排序
+    lane: ai
+    note: 按业务影响排出先后
+  - step: 管理层查看
+    lane: user
+    note: 可下钻到来源流程
+    edge: 异常简报
+
+en:
+  title: Management Exception Brief
+  industry: Pet food & supplies distribution
+  summary: Rolls up open exceptions and major changes from each workflow, ranked by impact, into one brief
+  description: >
+    Management needs a view of performance, risks and exceptions, but the information is spread across sales,
+    finance, warehouse, procurement and marketing reports that have to be read one by one. This scenario sits on
+    top of the order, reconciliation, fulfilment, replenishment and marketing workflows once they produce output.
+  pain_points:
+    - title: Too many reports
+      detail: Several departmental reports must be read to see the whole picture
+    - title: Issues get buried
+      detail: Decisions that matter sit among large volumes of routine data
+  flow:
+    - step: Collect outputs
+      lane: ai
+      note: Orders, recon, fulfilment, replenishment, marketing
+    - step: Gather exceptions
+      lane: ai
+      note: Unresolved exceptions and major changes
+    - step: Rank by impact
+      lane: ai
+      note: Ordered by business impact
+    - step: Management reviews
+      lane: user
+      note: Drill down to the source workflow
+      edge: Brief
+
+sources:
+  - Notion · Client Projects / Yappy Pets

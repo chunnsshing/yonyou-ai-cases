@@ -1,0 +1,88 @@
+id: ana-month-end-analysis
+title: 月结数据分析与预测
+domain: analytics
+status: to-verify
+owner: ChunShing
+updated: 2026-09-28
+industry: 人力资源服务
+products: [YonWork]
+system: ERP
+
+summary: 关账后自动读取月结数据，做逐月对比、偏差分析、滚动预算与预测
+
+description: >
+  日常交易（AP、AR、薪资）与银行、收款对账后完成月结，目前的输出是系统报表和 Excel，每月需要手工重做一批分析视图。
+  可选两种方式：YonWork 直接读取月结数据，或先载入 BI 层再读取，两者产出相同，差别在后续灵活度与前期建设量。
+
+pain_points:
+  - title: 每月手工重做报表
+    detail: 同一批分析视图每月都要用Excel重新整理一遍
+  - title: 有报表缺解读
+    detail: 输出停留在数字，偏差原因与预测需另外人工撰写
+
+flow:
+  - step: 日常交易
+    lane: erp
+    note: AP、AR、薪资
+  - step: 自动对账
+    lane: erp
+    note: 银行与收款
+  - step: 月结关账
+    lane: erp
+    note: 形成关账数据集
+  - step: 读取关账数据
+    lane: ai
+    type: decision
+    note: 直接读取，或经BI层读取
+  - step: 整理与对比
+    lane: ai
+    note: 逐月对比
+  - step: 撰写简要分析
+    lane: ai
+    note: 解释偏差，滚动预算与预测
+  - step: 查看分析
+    lane: user
+    note: 对比、评注、预算与预测
+    edge: 月度分析
+
+en:
+  title: Month-End Analysis & Forecast
+  industry: HR services
+  summary: After the close, data becomes month-on-month comparison, commentary, budget and forecast
+  description: >
+    Daily transactions (AP, AR, payroll) are reconciled against bank and collections and then closed. Today the
+    output is system reports and Excel, and a set of analysis views is rebuilt by hand each month. There are two
+    routes: YonWork reads the close directly, or reads from a BI layer loaded first. Outputs are the same; they
+    differ in later flexibility and up-front build.
+  pain_points:
+    - title: Views rebuilt monthly
+      detail: The same analysis views are rebuilt in Excel every month
+    - title: Numbers, no commentary
+      detail: Variance explanations and forecasts are written separately by hand
+  flow:
+    - step: Transactions
+      lane: erp
+      note: AP, AR, payroll
+    - step: Auto reconcile
+      lane: erp
+      note: Bank and collections
+    - step: Month-end close
+      lane: erp
+      note: The closed data set
+    - step: Read the close
+      lane: ai
+      type: decision
+      note: Directly, or via a BI layer
+    - step: Organise & compare
+      lane: ai
+      note: Month on month
+    - step: Brief analysis
+      lane: ai
+      note: Explains variances; rolling forecast
+    - step: Review analysis
+      lane: user
+      note: Comparison, commentary, forecast
+      edge: Analysis
+
+sources:
+  - raw/FSG_Sharing_Deck.pdf (Flow 2)

@@ -1,0 +1,90 @@
+id: ana-store-peak-heatmap
+title: 门店高峰时段热力图
+domain: analytics
+status: demo
+owner: ChunShing
+updated: 2026-09-28
+industry: 轮胎零售与汽车服务
+products: [YonWork, YonSuite]
+system: YonSuite
+
+summary: 一句话询问，即按小时×星期生成各门店热力图，回答今天的高峰时段与客户数
+
+description: >
+  门店管理者想知道各门店每天什么时段最忙、有多少客户。销售发票上只有结账时间，看不出客户实际在店占用的时段，
+  需要按门店、日期把发票逐一统计、换算后才能判断高峰。第一阶段为只读，所有服务统一按 30 分钟计算。
+
+pain_points:
+  - title: 发票只有结账时间
+    detail: 看不出客户实际在店占用的时段
+  - title: 需逐店逐日统计
+    detail: 要按门店、日期把发票整理换算后才能判断高峰
+
+flow:
+  - step: 询问高峰时段
+    lane: user
+    note: 可问全部门店或指定门店
+  - step: 读取销售发票
+    lane: erp
+    note: 每张发票的结账时间
+    edge: 门店+日期
+  - step: 推算占用时段
+    lane: ai
+    note: 结账前30分钟为服务时段
+  - step: 小时×星期归集
+    lane: ai
+    note: 每格记录客户数与金额
+  - step: 生成热力图
+    lane: ai
+    note: 找出最忙的时段，写成中文回复
+  - step: 收到回复
+    lane: user
+    note: 高峰时段、客户数、附热力图
+    edge: 回复
+  - step: 按服务类型计时
+    lane: ai
+    type: future
+    note: 换胎、定位等各用各的时长
+
+en:
+  title: Store Peak-Hour Heatmap
+  industry: Tyre retail & auto service
+  summary: One question returns an hour-by-weekday heatmap per store with the peak slot and customer count
+  description: >
+    Store managers want to know when each store is busiest and how many customers come in. Sales invoices only
+    carry the checkout time, not the time a customer actually occupied the bay, so invoices have to be compiled
+    and converted store by store and day by day to find the peak. Phase 1 is read-only and treats every service
+    as 30 minutes.
+  pain_points:
+    - title: Checkout time only
+      detail: Invoices don't show when a customer actually occupied the bay
+    - title: Store-by-store tallying
+      detail: Invoices must be compiled per store and date to find the peak
+  flow:
+    - step: Ask for peak hours
+      lane: user
+      note: All stores or one store
+    - step: Read invoices
+      lane: erp
+      note: Checkout timestamp per invoice
+      edge: Store + date
+    - step: Infer busy window
+      lane: ai
+      note: 30 minutes before checkout
+    - step: Hour × day grid
+      lane: ai
+      note: Customers and value per cell
+    - step: Build heatmap
+      lane: ai
+      note: Busiest slot, written up as a reply
+    - step: Receive answer
+      lane: user
+      note: Peak slot, customer count, heatmap
+      edge: Reply
+    - step: Time by service
+      lane: ai
+      type: future
+      note: Tyre change, alignment each timed
+
+sources:
+  - Stamford diagram 01 (screenshot)

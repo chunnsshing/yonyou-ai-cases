@@ -1,0 +1,85 @@
+id: ana-document-query
+title: 可关联查询的文档库
+domain: analytics
+status: to-verify
+owner: ChunShing
+updated: 2026-09-28
+industry: 人力资源服务
+products: [YonWork]
+system: 文档库
+
+summary: 文件入库时自动分类、抽取实体并互相关联，一句话提问返回答案及所有关联记录
+
+description: >
+  合同、派遣、发票、付款等文件来自邮件、扫描和上传，存放在云盘里。要找资料只能按文件名搜索、打开文件，
+  再自己去找相关的其他文件；文件之间的关系只存在于经办人的记忆中。
+
+pain_points:
+  - title: 只能按文件名搜
+    detail: 云盘只给文件夹，要逐个打开文件才知道内容
+  - title: 关联靠人记
+    detail: 合同、派遣、发票、付款之间的关系只在经办人脑中
+
+flow:
+  - step: 文件进入
+    lane: user
+    note: 邮件、扫描、上传
+  - step: 读取并分类
+    lane: ai
+    note: 类型、客户、合同、期间
+  - step: 存入文档库
+    lane: erp
+    note: 存在客户自己的云租户内
+  - step: 建索引与关联
+    lane: ai
+    note: 合同↔派遣↔发票↔付款↔顾问
+  - step: 一句话提问
+    lane: user
+    note: 用业务语言直接问
+  - step: 通过API查询
+    lane: ai
+    note: 按索引解析问题，不搜文件名
+  - step: 得到答案
+    lane: user
+    note: 连同所有关联记录一起返回
+    edge: 答案
+
+en:
+  title: Queryable Document Store
+  industry: HR services
+  summary: Files are classified and linked on arrival; one question returns the answer and linked records
+  description: >
+    Contracts, placements, invoices and payments arrive by email, scan and upload and sit in cloud storage. Finding
+    anything means searching a file name, opening the file, then hunting for the related files yourself. How the
+    documents relate lives only in someone's head.
+  pain_points:
+    - title: Filename search only
+      detail: Cloud storage gives a folder; files must be opened to see content
+    - title: Links live in heads
+      detail: How contracts, placements, invoices and payments relate isn't recorded
+  flow:
+    - step: Documents arrive
+      lane: user
+      note: Email, scans, uploads
+    - step: Read & classify
+      lane: ai
+      note: Type, client, contract, period
+    - step: Store
+      lane: erp
+      note: In the client's own cloud tenancy
+    - step: Index & link
+      lane: ai
+      note: Contract, placement, invoice, payment
+    - step: Ask a question
+      lane: user
+      note: In plain words
+    - step: Query via API
+      lane: ai
+      note: Uses the index, not filenames
+    - step: Get the answer
+      lane: user
+      note: Plus every record it links to
+      edge: Answer
+
+sources:
+  - raw/FSG_Sharing_Deck.pdf (Flow 3)

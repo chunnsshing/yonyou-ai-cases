@@ -1,0 +1,83 @@
+id: ana-marketing-intelligence
+title: 营销洞察简报
+domain: analytics
+status: to-verify
+owner: ChunShing
+updated: 2026-09-28
+industry: 宠物食品与用品分销
+products: [YonWork, NCC]
+system: NCC
+
+summary: 定期对比销售数据，找出显著变化及驱动的SKU、客户、渠道，评估促销效果
+
+description: >
+  市场部希望把 ERP 与各电商平台的销售数据变成可行动的洞察：销售增长是促销带来的还是其他原因、哪些 SKU、
+  客户、渠道在驱动变化、哪些是快销或滞销品，并希望有一个覆盖全部产品、每天更新的统一视图。目前靠人工分析。
+
+pain_points:
+  - title: 人工分析耗时
+    detail: 数据分散在ERP和多个电商平台，需手工整理分析
+  - title: 看不清增长原因
+    detail: 难以判断销售变化来自促销活动还是其他因素
+  - title: 缺少统一日报
+    detail: 没有覆盖全部产品、每天更新的统一视图
+
+flow:
+  - step: 定时运行
+    lane: ai
+    note: 每日或每周自动启动
+  - step: 读取销售数据
+    lane: erp
+    note: 按SKU、客户、渠道、价格
+  - step: 读取平台数据
+    lane: ai
+    note: Shopee、Lazada等平台数据
+  - step: 识别显著变化
+    lane: ai
+    note: 分期对比，归因到SKU与渠道
+  - step: 评估促销效果
+    lane: ai
+    note: 活动期对比基线，识别快慢销
+  - step: 市场部查看
+    lane: user
+    note: 关键变化、驱动、风险与机会
+    edge: 营销简报
+
+en:
+  title: Marketing Intelligence Brief
+  industry: Pet food & supplies distribution
+  summary: Finds significant sales changes and the SKUs, customers and channels driving them
+  description: >
+    Marketing wants ERP and marketplace sales data turned into insight it can act on: whether growth came from a
+    campaign or something else, which SKUs, customers and channels drive a change, and which lines are fast or
+    slow movers. It also wants one daily view across all products. Today the analysis is done by hand.
+  pain_points:
+    - title: Slow manual analysis
+      detail: Data sits in the ERP and several marketplaces, compiled by hand
+    - title: Unclear growth drivers
+      detail: Hard to tell whether a change came from a campaign or elsewhere
+    - title: No single daily view
+      detail: No one view of all products, refreshed every day
+  flow:
+    - step: Scheduled run
+      lane: ai
+      note: Daily or weekly
+    - step: Read ERP sales
+      lane: erp
+      note: By SKU, customer, channel, price
+    - step: Read marketplaces
+      lane: ai
+      note: Shopee, Lazada and other platforms
+    - step: Detect changes
+      lane: ai
+      note: Period comparison, attributed to SKU and channel
+    - step: Campaign impact
+      lane: ai
+      note: Campaign window vs baseline; fast and slow movers
+    - step: Marketing reviews
+      lane: user
+      note: Changes, drivers, risks, opportunities
+      edge: Brief
+
+sources:
+  - Notion · Client Projects / Yappy Pets
