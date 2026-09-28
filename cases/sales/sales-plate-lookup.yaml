@@ -1,8 +1,8 @@
 id: sales-plate-lookup
 title: 车牌查询客户完整历史
 domain: sales
-status: to-verify
-owner: ChunShing
+status: replicable
+owner: Elmond
 updated: 2026-09-28
 industry: 轮胎零售与汽车服务
 products: [YonWork, YonSuite]

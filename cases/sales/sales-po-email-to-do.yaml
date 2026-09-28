@@ -2,7 +2,7 @@ id: sales-po-email-to-do
 title: 客户PO邮件到发货单全自动
 domain: sales
 status: demo
-owner: ChunShing
+owner: Elmond
 updated: 2026-09-28
 industry: 工作服供应
 products: [YonWork, YonBIP]
