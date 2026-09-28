@@ -1,8 +1,8 @@
 id: sc-daily-fulfilment-queue
 title: 每日发货优先队列
 domain: supply-chain
-status: to-verify
-owner: ChunShing
+status: replicable
+owner: Elmond
 updated: 2026-09-28
 industry: 宠物食品与用品分销
 products: [YonWork, NCC]

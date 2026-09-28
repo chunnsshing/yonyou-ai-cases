@@ -1,8 +1,8 @@
 id: sc-batch-doc-capture
 title: 批量单据拍照识别入账
 domain: supply-chain
-status: to-verify
-owner: ChunShing
+status: replicable
+owner: Elmond
 updated: 2026-09-28
 industry: 轮胎零售与汽车服务
 products: [YonWork, YonSuite]
