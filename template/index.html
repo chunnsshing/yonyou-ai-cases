@@ -38,8 +38,8 @@ button{font-family:inherit;cursor:pointer}
 .card .row>span{display:flex;gap:6px}
 .case.en .desc{font-size:13px;line-height:1.6}
 .case.en .pain span{font-size:12px;line-height:1.45}
-.case.en .aibox{font-size:11.5px;line-height:1.45}
-.case.en .nd b{font-size:13.5px}
+.case.en .nd b{font-size:12.5px;line-height:1.25}
+.case.en .nd small{font-size:10.5px;line-height:1.3}
 .logo,.logo img{height:30px}
 
 /* ---------- 标签 ---------- */
@@ -84,35 +84,53 @@ button{font-family:inherit;cursor:pointer}
 .c-meta{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex:none}
 .c-meta .kv{font-size:12px;color:var(--ink3);display:flex;gap:14px}
 .c-meta .kv b{color:var(--ink2);font-weight:500}
-.c-mid{display:grid;grid-template-columns:400px 1fr;gap:16px;flex:1 1 236px;min-height:236px;max-height:340px}
+.c-mid{display:grid;grid-template-columns:420px 1fr;gap:16px;flex:1 1 186px;min-height:150px;max-height:290px}
 .box{border:1px solid var(--line);border-radius:10px;padding:14px 18px;background:#fff;min-height:0;overflow:hidden}
 .h{font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px;margin-bottom:10px;letter-spacing:.04em}
 .h::before{content:"";width:4px;height:14px;border-radius:2px;background:var(--brand)}
-.desc{font-size:13.5px;line-height:1.75;color:var(--ink2)}
+.desc{font-size:13px;line-height:1.62;color:var(--ink2)}
 .pains{display:grid;gap:8px;height:calc(100% - 30px)}
-.pain{background:var(--soft);border-radius:8px;padding:10px 14px;display:flex;gap:12px;align-items:flex-start;min-height:0}
-.pain .n{flex:none;width:22px;height:22px;border-radius:50%;background:color-mix(in srgb,var(--brand) 12%,#fff);color:var(--brand);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
-.pain b{font-size:14px;display:block;margin-bottom:3px}
+.pain{background:var(--soft);border-radius:8px;padding:10px 12px;min-height:0;overflow:hidden}
+.pain .pt{display:flex;gap:8px;align-items:center;margin-bottom:4px}
+.pain .n{flex:none;width:20px;height:20px;border-radius:50%;background:color-mix(in srgb,var(--brand) 12%,#fff);color:var(--brand);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.pain b{font-size:13.5px;line-height:1.3}
+.pain > span{display:block}
 .pain span{font-size:12.5px;color:var(--ink2);line-height:1.55}
-.c-flow{flex:1.4 1 300px;display:flex;flex-direction:column;min-height:0}
+.c-flow{flex:1.6 0 auto;display:flex;flex-direction:column;min-height:0}
 .c-flow .h .lg{margin-left:auto}
 .c-flow .h .lg{font-weight:400;font-size:12px;color:var(--ink3);display:flex;gap:14px;letter-spacing:0}
 .c-flow .h .lg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
-.flow{flex:1;display:grid;column-gap:30px;row-gap:14px;align-content:center;padding:4px 2px 0}
-.node{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:10px;opacity:0;transform:translateY(6px);animation:rise .45s cubic-bezier(.2,.7,.2,1) forwards}
-.nd{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:12px 10px;text-align:center;position:relative;min-height:74px;display:flex;flex-direction:column;justify-content:center}
-.nd .i{position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:20px;height:20px;border-radius:50%;background:#fff;border:1.5px solid var(--line);font-size:11px;color:var(--ink3);display:flex;align-items:center;justify-content:center;font-weight:600}
-.nd b{font-size:14px;font-weight:600;line-height:1.35}
-.nd small{font-size:11.5px;color:var(--ink3);margin-top:4px}
-.node:not(.last) .nd::after{content:"";position:absolute;right:-24px;top:50%;width:18px;height:2px;background:var(--ink3);opacity:.5}
-.node:not(.last) .nd::before{content:"";position:absolute;right:-26px;top:calc(50% - 4px);border:5px solid transparent;border-left:6px solid var(--ink3);border-right:0;opacity:.5}
-.node.ai .nd{border-color:var(--brand);background:color-mix(in srgb,var(--brand) 5%,#fff);box-shadow:0 4px 14px color-mix(in srgb,var(--brand) 14%,transparent)}
+/* ---------- 泳道流程图：三行（使用者 / YonWork / 系统），步骤从左到右 ---------- */
+.flow{flex:1;position:relative;display:grid;column-gap:26px;row-gap:8px;padding:2px 0 0;min-height:0}
+.lane-bg{grid-column:1/-1;border-radius:8px;z-index:0}
+.lane-bg.user{background:#fff;border:1px dashed var(--line)}
+.lane-bg.ai{background:color-mix(in srgb,var(--brand) 5%,#fff);border:1px solid color-mix(in srgb,var(--brand) 18%,#fff)}
+.lane-bg.erp{background:var(--soft);border:1px solid var(--line)}
+.lane-lbl{grid-column:1;z-index:1;display:flex;align-items:center;justify-content:center;text-align:center;font-size:12px;font-weight:700;color:var(--ink2);padding:0 6px;line-height:1.3}
+.lane-lbl.ai{color:var(--brand)}
+.node{position:relative;z-index:2;display:flex;align-items:center;min-height:0;padding:4px 0;opacity:0;transform:translateY(6px);animation:rise .45s cubic-bezier(.2,.7,.2,1) forwards}
+.nd{width:100%;border:1.5px solid #CBD5E1;background:#fff;border-radius:9px;padding:10px 7px 6px;text-align:center;position:relative;display:flex;flex-direction:column;justify-content:center;gap:3px}
+.nd .i{position:absolute;top:-9px;left:10px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:#fff;border:1.5px solid #CBD5E1;font-size:10.5px;color:var(--ink3);display:flex;align-items:center;justify-content:center;font-weight:700}
+.nd b{font-size:13px;font-weight:700;line-height:1.3}
+.nd small{font-size:11px;color:var(--ink2);line-height:1.35}
+.nd .edge{position:absolute;top:-9px;left:30px;max-width:calc(100% - 40px);height:16px;line-height:14px;padding:0 5px;border-radius:4px;background:#F1F5F9;border:1px solid #CBD5E1;color:var(--ink2);font-size:9.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.node.user .nd .edge{background:color-mix(in srgb,var(--brand) 8%,#fff);border-color:color-mix(in srgb,var(--brand) 35%,#fff);color:var(--brand)}
+.nd .chip{position:absolute;top:-9px;right:8px;font-size:9.5px;font-weight:700;padding:0 5px;height:16px;line-height:14px;border-radius:4px;background:#fff;border:1px solid currentColor}
+.node.user .nd{border-color:var(--ink)}
+.node.ai .nd{border-color:var(--brand);background:#fff;box-shadow:0 3px 12px color-mix(in srgb,var(--brand) 16%,transparent)}
 .node.ai .nd .i{border-color:var(--brand);background:var(--brand);color:#fff}
-.aibox{border:1px dashed color-mix(in srgb,var(--brand) 55%,#fff);border-radius:8px;padding:8px 10px;font-size:12px;line-height:1.55;color:var(--ink);background:#fff;position:relative;min-height:56px}
-.aibox::before{content:"";position:absolute;left:50%;top:-11px;height:10px;border-left:1.5px dashed color-mix(in srgb,var(--brand) 55%,#fff)}
-.aibox em{font-style:normal;display:inline-block;font-size:10px;font-weight:700;color:#fff;background:var(--brand);border-radius:3px;padding:0 5px;margin-right:5px;letter-spacing:.05em;vertical-align:1px}
-.aibox.none{border:none;background:none}
-.aibox.none::before{display:none}
+.node.decision .nd{border-radius:22px;border-style:solid}
+.node.decision .chip{color:var(--ink2)}
+.node.exception .nd{border-style:dashed;border-color:var(--ink3);background:#fff;box-shadow:none}
+.node.exception .chip{color:var(--ink3)}
+.node.future .nd{border-style:dashed;border-color:var(--brand);background:#fff;box-shadow:none}
+.node.future .chip{color:var(--brand)}
+svg.links{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;overflow:visible}
+svg.links path{fill:none;stroke:#94A3B8;stroke-width:1.5}
+svg.links path.hot{stroke:var(--brand)}
+svg.links path.dash{stroke-dasharray:4 4}
+svg.links text{font-size:10.5px;fill:var(--ink3);font-family:var(--font)}
+svg.links text.hot{fill:var(--brand);font-weight:600}
 @keyframes rise{to{opacity:1;transform:none}}
 .fade{animation:fadein .3s ease}
 @keyframes fadein{from{opacity:0}to{opacity:1}}
@@ -145,12 +163,12 @@ const UI = {
   zh: { export_domain: '导出本领域 PDF', export: '导出 PDF', prev: '← 上一个', next: '下一个 →', back: '返回',
         example: '示例', steps: n => `AI × ${n} 环节`, empty: d => `该领域暂无场景<br>在 cases/${d}/ 下新增 yaml 文件即可`,
         built: '更新于', industry: '行业', products: '产品', client: '客户', owner: '负责人', updated: '更新',
-        desc: '场景描述', pains: '业务痛点', flow: '标准流程 · AI 介入点', ai: 'AI 介入', manual: '人工 / 系统',
+        desc: '场景描述', pains: '业务痛点', flow: '标准流程 · AI 介入点', ai: 'AI 环节（YonWork）', manual: '例外 / 后续阶段', lanes: ['使用者', 'YonWork'], types: {decision: '判断', exception: '例外', future: '后续阶段'},
         fallback: '', lang: 'EN', lang_tip: '按 L 切换英文' },
   en: { export_domain: 'Export PDF', export: 'Export PDF', prev: '← Prev', next: 'Next →', back: 'Back',
         example: 'Sample', steps: n => `AI × ${n} step${n > 1 ? 's' : ''}`, empty: d => `No use cases yet<br>Add a yaml file under cases/${d}/`,
         built: 'Updated', industry: 'Industry', products: 'Products', client: 'Client', owner: 'Owner', updated: 'Updated',
-        desc: 'Scenario', pains: 'Pain Points', flow: 'Standard Process · Where AI Fits', ai: 'AI-enabled', manual: 'Manual / System',
+        desc: 'Scenario', pains: 'Pain Points', flow: 'Standard Process · Where AI Fits', ai: 'AI step (YonWork)', manual: 'Exception / later phase', lanes: ['User', 'YonWork'], types: {decision: 'Decision', exception: 'Exception', future: 'Next phase'},
         fallback: '中文 only', lang: '中文', lang_tip: 'Press L for Chinese' },
 };
 let lang = S.default_lang === 'en' ? 'en' : 'zh';
@@ -183,7 +201,7 @@ function fit() {   // 铺满整个窗口：按较小边缩放，另一边的逻�
   stage.style.height = innerHeight / k + 'px';
   stage.style.transform = `scale(${k})`;
 }
-addEventListener('resize', fit);
+addEventListener('resize', () => { fit(); drawLinks(stage); });
 
 /* ---------- 首页 ---------- */
 function renderHome() {
@@ -202,7 +220,7 @@ function renderHome() {
       <div class="card" onclick="go('#/case/${c.id}')">
         <div class="row">${tag(c.status)}<span>${fb(c)}${c.example ? `<span class="chip-ex">${U().example}</span>` : ''}</span></div>
         <h3>${esc(t.title)}</h3><p>${esc(t.summary)}</p>
-        <div class="meta"><span class="ai">${U().steps(t.flow.filter(f => f.ai).length)}</span><span>${esc(c.owner)}</span><span style="margin-left:auto">${esc(c.updated)}</span></div>
+        <div class="meta"><span class="ai">${U().steps(t.flow.filter(f => f.lane === 'ai').length)}</span><span>${esc(c.owner)}</span><span style="margin-left:auto">${esc(c.updated)}</span></div>
       </div>`; }).join('') : `<div class="empty">${U().empty(esc(state.domain))}</div>`}
   </div></div>
   <div class="foot">${U().built} ${esc(DATA.built)}</div>`;
@@ -213,7 +231,7 @@ function toggle(id) { state.off.has(id) ? state.off.delete(id) : state.off.add(i
 function caseHTML(c, nav = true) {
   const t = C(c), u = U();
   const list = byDomain(c.domain), i = list.findIndex(x => x.id === c.id);
-  const n = t.flow.length, cols = n <= 8 ? n : Math.ceil(n / 2);
+  const n = t.flow.length, LN = {user: 1, ai: 2, erp: 3};
   const meta = [[u.industry, t.industry || c.zh.industry], [u.products, c.products.join(' / ')], [u.client, c.client], [u.owner, c.owner], [u.updated, c.updated]].filter(x => x[1]);
   return `
   <div class="top">${logo()}<div class="sep"></div>
@@ -232,22 +250,46 @@ function caseHTML(c, nav = true) {
     <div class="c-mid">
       <div class="box"><div class="h">${u.desc}</div><div class="desc">${esc(t.description)}</div></div>
       <div class="box"><div class="h">${u.pains}</div>
-        <div class="pains" style="grid-template-columns:repeat(${t.pain_points.length === 4 ? 2 : t.pain_points.length},1fr)">
-        ${t.pain_points.map((p, k) => `<div class="pain"><div class="n">${k + 1}</div><div><b>${esc(p.title)}</b><span>${esc(p.detail)}</span></div></div>`).join('')}
+        <div class="pains" style="grid-template-columns:repeat(${t.pain_points.length},1fr)">
+        ${t.pain_points.map((p, k) => `<div class="pain"><div class="pt"><div class="n">${k + 1}</div><b>${esc(p.title)}</b></div><span>${esc(p.detail)}</span></div>`).join('')}
         </div></div>
     </div>
     <div class="box c-flow">
-      <div class="h"><span>${u.flow}</span><span class="lg"><span><i style="background:var(--brand)"></i>${u.ai}</span><span><i style="border:1.5px solid #CBD5E1"></i>${u.manual}</span></span></div>
-      <div class="flow" style="grid-template-columns:repeat(${cols},1fr)">
+      <div class="h"><span>${u.flow}</span><span class="lg"><span><i style="background:#fff;border:1.5px solid var(--brand)"></i>${u.ai}</span><span><i style="border:1.5px dashed var(--ink3)"></i>${u.manual}</span></span></div>
+      <div class="flow" data-case="${c.id}" style="grid-template-columns:72px repeat(${n},minmax(0,1fr));grid-template-rows:repeat(3,minmax(min-content,1fr))">
+        ${['user', 'ai', 'erp'].map((l, r) => `<div class="lane-bg ${l}" style="grid-row:${r + 1}"></div>
+          <div class="lane-lbl ${l}" style="grid-row:${r + 1}">${esc(r < 2 ? u.lanes[r] : (c.system || 'ERP'))}</div>`).join('')}
         ${t.flow.map((f, k) => `
-          <div class="node ${f.ai ? 'ai' : ''} ${(k === n - 1 || (k + 1) % cols === 0) ? 'last' : ''}" style="animation-delay:${nav ? k * 70 : 0}ms">
-            <div class="nd"><span class="i">${k + 1}</span><b>${esc(f.step)}</b>${f.role ? `<small>${esc(f.role)}</small>` : ''}</div>
-            <div class="aibox ${f.ai ? '' : 'none'}">${f.ai ? `<em>AI</em>${esc(f.ai)}` : ''}</div>
+          <div class="node ${f.lane} ${f.type || ''}" data-k="${k}" data-lane="${f.lane}" data-edge="${esc(f.edge)}" style="grid-row:${LN[f.lane]};grid-column:${k + 2};animation-delay:${nav ? k * 60 : 0}ms">
+            <div class="nd"><span class="i">${k + 1}</span>${f.edge ? `<span class="edge">${esc(f.edge)}</span>` : ''}${f.type && u.types[f.type] ? `<span class="chip">${u.types[f.type]}</span>` : ''}<b>${esc(f.step)}</b>${f.note ? `<small>${esc(f.note)}</small>` : ''}</div>
           </div>`).join('')}
+        <svg class="links"></svg>
       </div>
     </div>
   </div>
   <div class="foot">${esc(pick(S, 'subtitle'))}</div>`;
+}
+
+
+/* ---------- 泳道连线：按实际布局计算（offset 值不受缩放影响） ---------- */
+function drawLinks(root = document) {
+  root.querySelectorAll('.flow').forEach(fl => {
+    const svg = fl.querySelector('svg.links'); if (!svg) return;
+    const nodes = [...fl.querySelectorAll('.node')].map(n => {
+      const d = n.querySelector('.nd');
+      return { x: n.offsetLeft, y: n.offsetTop + d.offsetTop, w: n.offsetWidth, h: d.offsetHeight, lane: n.dataset.lane, edge: n.dataset.edge,
+               dash: n.classList.contains('exception') || n.classList.contains('future') };
+    });
+    let out = `<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#94A3B8" stroke="none"/></marker>
+      <marker id="ahh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="var(--brand)" stroke="none"/></marker></defs>`;
+    for (let k = 1; k < nodes.length; k++) {
+      const a = nodes[k - 1], b = nodes[k], hot = b.lane === 'user';
+      const ay = a.y + a.h / 2, by = b.y + b.h / 2, ax = a.x + a.w, bx = b.x - 2, mx = (ax + bx) / 2;
+      const d = Math.abs(ay - by) < 2 ? `M${ax},${ay} H${bx}` : `M${ax},${ay} H${mx} V${by} H${bx}`;
+      out += `<path class="${hot ? 'hot' : ''} ${b.dash ? 'dash' : ''}" d="${d}" marker-end="url(#${hot ? 'ahh' : 'ah'})"/>`;
+    }
+    svg.innerHTML = out;
+  });
 }
 
 /* ---------- 路由 ---------- */
@@ -258,7 +300,7 @@ function route() {
   const h = location.hash.replace(/^#\/?/, '');
   if (h.startsWith('case/')) {
     const c = DATA.cases.find(x => x.id === h.slice(5));
-    if (c) { current = c; state.domain = c.domain; stage.innerHTML = caseHTML(c); return; }
+    if (c) { current = c; state.domain = c.domain; stage.innerHTML = caseHTML(c); requestAnimationFrame(() => drawLinks(stage)); return; }
   }
   current = null;
   if (DM[h]) state.domain = h;
@@ -278,7 +320,7 @@ function printDomain() {
   const list = current ? [current] : byDomain(state.domain);
   if (!list.length) return;
   document.getElementById('print').innerHTML = list.map(c => `<div class="stage">${caseHTML(c, false)}</div>`).join('');
-  setTimeout(() => print(), 50);
+  requestAnimationFrame(() => { drawLinks(document.getElementById('print')); setTimeout(() => print(), 80); });
 }
 document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
 fit(); route();

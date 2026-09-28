@@ -6,13 +6,14 @@
 
 id: fin-example-scenario        # 必填。全库唯一，小写英文+连字符，建议 领域缩写-关键词
 title: 场景名称                   # 必填。≤ 18 字
-domain: finance                  # 必填。site.yaml 中的领域 id：finance / supply-chain / manufacturing / hr / sales
+domain: finance                  # 必填。site.yaml 中的领域 id：finance / supply-chain / manufacturing / hr / sales / analytics
 status: to-verify                # 必填。delivered 已交付 / replicable 可复制 / demo 可Demo / to-verify 待验证 / future 未来可能
 owner: ChunShing                 # 必填。负责人，用于同步进度
-updated: 2026-09-24              # 必填。最后更新日期 YYYY-MM-DD
+updated: 2026-09-28              # 必填。最后更新日期 YYYY-MM-DD
 industry: 通用                    # 选填。适用行业
-client: ""                       # 选填。客户名（对外展示前确认可否公开）
-products: [YonSuite]             # 选填。涉及产品，列表
+client: ""                       # 选填。公开仓库：未确认可公开的客户名一律不写，industry 写行业即可
+products: [YonWork, YonSuite]    # 选填。涉及产品，列表
+system: YonSuite                 # 选填。泳道图第三行（系统）的名字，如 YonSuite / YonBIP / NCC；默认 ERP
 
 summary: 一句话说明这个场景用AI解决什么问题     # 必填。≤ 40 字，显示在卡片和标题下
 
@@ -25,19 +26,31 @@ pain_points:                     # 必填。2–4 条
   - title: 痛点标题
     detail: 痛点说明
 
-flow:                            # 必填。标准业务流程 3–8 步，按先后顺序
-  - step: 步骤名称                 # ≤ 10 字
-    role: 执行角色                 # 选填。≤ 8 字
-  - step: 步骤名称
-    role: 执行角色
-    ai: AI在这一步做什么           # 有AI介入的步骤才写 ai，≤ 36 字；至少1步有 ai
-  - step: 步骤名称
-    role: 执行角色
+flow:                            # 必填。标准业务流程 3–8 步，按先后顺序，画成三行泳道图
+  # lane（必填）：user 使用者 / ai YonWork（AI 做的步骤）/ erp 系统（ERP 里生成或读取数据）
+  # step ≤ 10 字（7–8 步时 ≤ 9）；note 选填，≤ 26 字（7–8 步时 ≤ 18）
+  # edge 选填：传入这一步的是什么，≤ 6 字，显示在节点上方，如「PO邮件」「回复」
+  # type 选填：decision 判断 / exception 例外路径（虚线）/ future 后续阶段（红色虚线）
+  # 至少 1 步在 ai 泳道
+  - step: 客户发送订单
+    lane: user
+    note: 邮件、WhatsApp等
+  - step: 读取订单内容
+    lane: ai
+    note: 提取客户、品名、数量
+    edge: 订单
+  - step: 生成销售订单
+    lane: erp
+    note: 价格取自价目表
+  - step: 业务确认
+    lane: user
+    note: 只看不确定的行
+    edge: 订单草稿
 
 # ---------- 英文版（页面按 L 键切换）----------
-# 结构必须与上面一一对应：痛点条数相同、流程步数相同、标 ai 的步骤相同
+# 结构必须与上面一一对应：痛点条数相同、流程步数相同、每步 lane / type 相同
 # 英文上限（字符数）：title 34 / summary 95 / description 380 / 痛点 title 26、detail 80
-#   流程 ≤6 步：step 22、role 20、ai 80；7–8 步：step 18、role 16、ai 60
+#   流程 ≤6 步：step 24、note 80；7–8 步：step 18、note 40；edge 14
 en:
   title: Scenario name
   industry: General              # 选填
@@ -50,13 +63,20 @@ en:
     - title: Pain point
       detail: Short explanation
   flow:
-    - step: Step name
-      role: Role
-    - step: Step name
-      role: Role
-      ai: What AI does at this step
-    - step: Step name
-      role: Role
+    - step: Customer orders
+      lane: user
+      note: Email, WhatsApp, etc.
+    - step: Read the order
+      lane: ai
+      note: Customer, items, quantities
+      edge: Order
+    - step: Create sales order
+      lane: erp
+      note: Priced from the price list
+    - step: Sales confirms
+      lane: user
+      note: Only uncertain lines
+      edge: Draft
 
 sources:                         # 选填。原始资料出处（文件名/链接），便于回溯，不在页面展示
   - raw/xxx.pdf
