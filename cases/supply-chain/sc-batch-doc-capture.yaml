@@ -1,7 +1,7 @@
 id: sc-batch-doc-capture
 title: 批量单据拍照识别入账
 domain: supply-chain
-status: replicable
+status: [replicable, to-verify]
 owner: Elmond
 updated: 2026-09-28
 industry: 轮胎零售与汽车服务
