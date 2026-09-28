@@ -25,12 +25,17 @@ pain_points:
     detail: 生成后还要手动逐个上传到客户共享文件夹服务器
 
 flow:
-  - step: 查询发票
-    lane: ai
-    note: 按条件自动查找所有符合条件的发票供选择
+  - step: 设定查询条件
+    lane: user
+    note: 财务人员
+  - step: 读取符合条件发票
+    lane: erp
+    note: 系统按条件返回匹配的发票清单
+    edge: 查询条件
   - step: 选择导出发票
     lane: user
     note: 财务人员
+    edge: 发票清单
   - step: 生成独立PDF
     lane: ai
     note: 每张发票自动生成一个独立PDF文件，不合并
@@ -56,12 +61,17 @@ en:
     - title: Manual upload
       detail: Generated PDFs must be uploaded one by one to the shared folder server
   flow:
-    - step: Query invoices
-      lane: ai
-      note: Auto-find all AR/sales invoices matching the criteria for selection
+    - step: Set search criteria
+      lane: user
+      note: Finance staff
+    - step: Read matching invoices
+      lane: erp
+      note: System returns invoices matching the criteria
+      edge: Criteria
     - step: Select invoices
       lane: user
       note: Finance staff
+      edge: Invoice list
     - step: Generate PDFs
       lane: ai
       note: Auto-generate one standalone PDF per invoice, no merging

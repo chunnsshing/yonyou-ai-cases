@@ -30,7 +30,12 @@ flow:
     note: 财务专员
   - step: 查询项目对账单
     lane: ai
-    note: 按客户自动过滤所属项目，批量查询各项目对账单余额
+    note: 按客户自动过滤所属项目
+    edge: 客户
+  - step: 读取对账单余额
+    lane: erp
+    note: 系统返回各项目对账单余额
+    edge: 项目清单
   - step: 核对余额差异
     lane: ai
     note: 自动核对余额并标出有欠款或异常的项目
@@ -65,7 +70,12 @@ en:
       note: AR accountant
     - step: Query project SOAs
       lane: ai
-      note: Auto-filter projects by customer and batch-query each project's SOA balance
+      note: Auto-filter projects by customer
+      edge: Customer
+    - step: Read SOA balances
+      lane: erp
+      note: System returns each project's SOA balance
+      edge: Project list
     - step: Check differences
       lane: ai
       note: Automatically flag projects with outstanding or unusual balances
