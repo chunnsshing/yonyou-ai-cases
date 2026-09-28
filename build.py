@@ -101,6 +101,13 @@ def upgrade_legacy(c):
     return legacy
 
 
+def status_list(v):
+    """status 可写一个或多个：status: demo 或 status: [demo, replicable]"""
+    if not v:
+        return []
+    return [s(x) for x in (v if isinstance(v, list) else [v])]
+
+
 def validate(case, path, site, errors, warnings):
     rel = path.relative_to(ROOT)
     E = lambda m: errors.append(f"{rel}: {m}")
@@ -114,8 +121,9 @@ def validate(case, path, site, errors, warnings):
         E(f"domain `{case['domain']}` 不在 site.yaml 领域列表 {sorted(domains)}")
     if case.get("domain") and path.parent.name != case.get("domain"):
         E(f"文件应放在 cases/{case.get('domain')}/ 下（当前在 {path.parent.name}/）")
-    if case.get("status") and case["status"] not in statuses:
-        E(f"status `{case['status']}` 无效，可选 {sorted(statuses)}")
+    for st in status_list(case.get("status")):
+        if st not in statuses:
+            E(f"status `{st}` 无效，可选 {sorted(statuses)}")
     if case.get("id") and path.stem != case["id"]:
         E(f"文件名应与 id 一致：{case['id']}.yaml")
     if upgrade_legacy(case):
@@ -146,7 +154,7 @@ def content(c):
 
 def normalize(case):
     return {
-        "id": s(case["id"]), "domain": s(case["domain"]), "status": s(case["status"]),
+        "id": s(case["id"]), "domain": s(case["domain"]), "status": status_list(case["status"]),
         "owner": s(case.get("owner")), "updated": s(case.get("updated")), "client": s(case.get("client")),
         "products": [s(x) for x in (case.get("products") or [])], "example": bool(case.get("example")),
         "system": s(case.get("system")) or "ERP",

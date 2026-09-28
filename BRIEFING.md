@@ -4,13 +4,13 @@
 
 ## 1. 项目是什么
 
-ChunShing 和同事共同维护的 **AI 场景案例库**：按业务领域整理"AI 可以用在企业标准流程的哪里"，最终输出一个 **横版（16:9）、简约、带 Yonyou logo 的 HTML 页面**，可在线浏览、演示、导出 PDF。
+Elmond 和同事共同维护的 **AI 场景案例库**：按业务领域整理"AI 可以用在企业标准流程的哪里"，最终输出一个 **横版（16:9）、简约、带 Yonyou logo 的 HTML 页面**，可在线浏览、演示、导出 PDF。
 
 - 仓库：`https://github.com/chunnsshing/yonyou-ai-cases`（公开仓库）
 - 在线预览：`https://chunnsshing.github.io/yonyou-ai-cases/`（push 到 main 后约 1 分钟自动更新）
 - 页面结构：首页按 **领域页签**（财务 / 供应链 / 制造 / 人力 / 销售 / 经营分析）→ 点击场景卡片 → **每个场景一页**，内容固定为：场景描述、业务痛点、标准流程图（标出 AI 介入的步骤）
 - **中英双语**：页面按 `L` 键（或右上角按钮）切换中文 / English，选择会被记住；也可用链接参数 `?lang=en` 直接打开英文版
-- 每个场景有一个 **状态标签**：已交付 `delivered` / 可复制 `replicable` / 可Demo `demo` / 待验证 `to-verify` / 未来可能 `future`
+- 每个场景可有 **一个或多个状态标签**（如同时「可Demo」+「可复制」）：已交付 `delivered` / 可复制 `replicable` / 可Demo `demo` / 待验证 `to-verify` / 未来可能 `future`
 
 **核心原则：内容和样式分离。** 人只写数据文件（YAML），样式全部由模板统一生成。所以无论原始资料是什么格式，最后都长一个样子。
 
@@ -33,7 +33,7 @@ raw/                       本地放原始资料用，已被 .gitignore 忽略�
 id: fin-ap-invoice-matching     # 全库唯一，小写英文+连字符，且与文件名一致
 title: 应付发票识别与三单匹配      # ≤18字
 domain: finance                 # finance / supply-chain / manufacturing / hr / sales / analytics，且文件放在同名文件夹
-status: to-verify               # delivered / replicable / demo / to-verify / future
+status: [demo, replicable]       # 可多选：delivered / replicable / demo / to-verify / future
 owner: 负责人名字                 # 谁在跟进
 updated: 2026-09-24             # 最后修改日期
 industry: 通用                   # 选填
@@ -81,7 +81,8 @@ en:                             # 英文版，结构与中文一一对应（痛�
    - 场景描述 = 现状（谁、在哪个环节、现在怎么做），不写方案
    - 痛点 = 现状的问题，每条一个点，标题短、说明具体
    - 流程 = **标准业务流程**（不是 AI 方案的步骤），每一步按“谁在做”放进泳道：人做的放 `user`，AI 做的放 `ai`，系统里生成/读取数据的放 `erp`
-   - 状态：按资料中的事实判断；判断不了默认 `to-verify` 并告诉用户
+   - 状态：按资料中的事实判断，可多选；判断不了默认 `to-verify` 并告诉用户
+   - 「可复制」判断口径：看板/报表类、批量识别并写入系统类，换个客户基本只需换数据源 → 可复制；依赖邮件、WhatsApp 等沟通渠道接入的场景，每个客户的收发方式不同 → 一般不标可复制
 4. **压缩到字数上限内**，用业务语言，删掉形容词和营销话术。
 5. **中英双语都要写**：资料是中文就译出 `en:`，资料是英文就写出中文顶层字段。用企业/ERP 常用术语（如 AP、PO、3-way match），不要逐字直译；两种语言表达同一件事，不增不减。
 6. **不编造**：资料里没有的数字、客户名、效果指标、"已上线"等事实一律不写；缺必填内容时列出来问用户，而不是自己补。
@@ -96,7 +97,7 @@ en:                             # 英文版，结构与中文一一对应（痛�
 
 ## 5. 接入 GitHub（按你所在的环境选一种）
 
-仓库 owner 是 ChunShing（GitHub: `chunnsshing`）。**先让你的用户确认已接受仓库的 Collaborator 邀请**（GitHub 通知或邮件里点 Accept），否则没有写权限。
+仓库 owner 是 Elmond（GitHub 账号: `chunnsshing`）。**先让你的用户确认已接受仓库的 Collaborator 邀请**（GitHub 通知或邮件里点 Accept），否则没有写权限。
 
 **A. 本地终端 / Claude Code（首选）**
 ```bash
@@ -125,7 +126,7 @@ cd yonyou-ai-cases && pip install pyyaml && python build.py --strict
   ```
 - **commit 信息**：`新增：…` / `更新：…（状态 to-verify→demo）` / `删除：…`
 - **归属**：`owner` 写你用户的名字；不改别人 `owner` 的场景，除非对方同意，并在 commit 信息里写明。
-- **共享配置**：`site.yaml`（领域、状态、中英文名）、`template/`、`build.py`、`.github/` 改之前先让用户和 ChunShing 确认，并单独提交。
+- **共享配置**：`site.yaml`（领域、状态、中英文名）、`template/`、`build.py`、`.github/` 改之前先让用户和 Elmond 确认，并单独提交。
 - **不要提交** `dist/`、`raw/`（已忽略）。
 - **看进度**：在线预览首页的状态图例有各状态数量，卡片上有负责人和更新日期；或看 `git log`。
 
