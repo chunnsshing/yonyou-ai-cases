@@ -36,6 +36,8 @@ button{font-family:inherit;cursor:pointer}
 .btn.lang{font-weight:600;color:var(--ink)}
 .btn.lang kbd{font-family:inherit;font-size:10px;color:var(--ink3);border:1px solid var(--line);border-radius:3px;padding:0 4px;line-height:14px}
 .card .row>span{display:flex;gap:6px}
+.card .row .tags{flex-wrap:wrap}
+.c-head h1 .tag+.tag{margin-left:-4px}
 .case.en .desc{font-size:13px;line-height:1.6}
 .case.en .pain span{font-size:12px;line-height:1.45}
 .case.en .nd b{font-size:12.5px;line-height:1.25}
@@ -185,11 +187,13 @@ function setLang(l) {
 
 const ST = Object.fromEntries(S.statuses.map((s, i) => [s.id, {...s, order: i}]));
 const DM = Object.fromEntries(S.domains.map(d => [d.id, d]));
+const rank = c => Math.min(...c.status.map(s => ST[s].order));   // 多个标签时按最靠前的状态排序
+const tags = (c, cls = '') => [...c.status].sort((a, b) => ST[a].order - ST[b].order).map(s => tag(s, cls)).join('');
 const byDomain = id => DATA.cases.filter(c => c.domain === id)
-  .sort((a, b) => ST[a.status].order - ST[b.status].order || a.zh.title.localeCompare(b.zh.title, 'zh'));
+  .sort((a, b) => rank(a) - rank(b) || a.zh.title.localeCompare(b.zh.title, 'zh'));
 // 没有场景的领域页签 / 状态标签不显示（site.yaml 里保留定义，有场景后自动出现）
 const DOMS = S.domains.filter(d => DATA.cases.some(c => c.domain === d.id));
-const STATS = S.statuses.filter(s => DATA.cases.some(c => c.status === s.id));
+const STATS = S.statuses.filter(s => DATA.cases.some(c => c.status.includes(s.id)));
 const state = { domain: (DOMS[0] || S.domains[0]).id, off: new Set() };
 const stage = document.getElementById('stage');
 stage.addEventListener('click', e => { if (e.target.closest('.btn.lang')) setLang(lang === 'en' ? 'zh' : 'en'); });
@@ -208,8 +212,8 @@ addEventListener('resize', () => { fit(); drawLinks(stage); });
 
 /* ---------- 首页 ---------- */
 function renderHome() {
-  const counts = {}; DATA.cases.forEach(c => counts[c.status] = (counts[c.status] || 0) + 1);
-  const list = byDomain(state.domain).filter(c => !state.off.has(c.status));
+  const counts = {}; DATA.cases.forEach(c => c.status.forEach(s => counts[s] = (counts[s] || 0) + 1));
+  const list = byDomain(state.domain).filter(c => c.status.some(s => !state.off.has(s)));
   stage.innerHTML = `
   <div class="top">${logo()}<div class="sep"></div><div class="crumb"><b>${esc(pick(S, 'title'))}</b></div>
     <div class="right noprint"><button class="btn" onclick="printDomain()">${U().export_domain}</button>${langBtn()}</div></div>
@@ -221,7 +225,7 @@ function renderHome() {
   <div class="grid-wrap"><div class="grid fade">
     ${list.length ? list.map(c => { const t = C(c); return `
       <div class="card" onclick="go('#/case/${c.id}')">
-        <div class="row">${tag(c.status)}<span>${fb(c)}${c.example ? `<span class="chip-ex">${U().example}</span>` : ''}</span></div>
+        <div class="row"><span class="tags">${tags(c)}</span><span>${fb(c)}${c.example ? `<span class="chip-ex">${U().example}</span>` : ''}</span></div>
         <h3>${esc(t.title)}</h3><p>${esc(t.summary)}</p>
         <div class="meta"><span class="ai">${U().steps(t.flow.filter(f => f.lane === 'ai').length)}</span><span>${esc(c.owner)}</span><span style="margin-left:auto">${esc(c.updated)}</span></div>
       </div>`; }).join('') : `<div class="empty">${U().empty(esc(state.domain))}</div>`}
@@ -247,7 +251,7 @@ function caseHTML(c, nav = true) {
   </div>
   <div class="case ${nav ? 'fade' : ''} ${lang}">
     <div class="c-head">
-      <div><h1>${esc(t.title)} ${tag(c.status, 'lg')}${fb(c)}${c.example ? `<span class="chip-ex">${u.example}</span>` : ''}</h1><div class="sum">${esc(t.summary)}</div></div>
+      <div><h1>${esc(t.title)} ${tags(c, 'lg')}${fb(c)}${c.example ? `<span class="chip-ex">${u.example}</span>` : ''}</h1><div class="sum">${esc(t.summary)}</div></div>
       <div class="c-meta"><div class="kv">${meta.map(([k, v]) => `<span>${k} <b>${esc(v)}</b></span>`).join('')}</div></div>
     </div>
     <div class="c-mid">
