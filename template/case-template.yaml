@@ -17,6 +17,7 @@ system: YonSuite                 # 选填。泳道图第三行（系统）的名
 demo_video:                       # 选填。status 含 demo 时才有意义；点击场景页的"可Demo"标签会在新页签打开视频
   - path: demos/<场景id>/xxx.mp4  # 相对仓库根目录；demos/ 已 .gitignore，不进公开仓库，只在本机可播
     label: 完整流程               # 选填。多条视频时显示在切换器上，用来区分片段
+    label_en: Full flow           # 选填。label 的英文版，切到英文页面时显示
 
 summary: 一句话说明这个场景用AI解决什么问题     # 必填。≤ 40 字，显示在卡片和标题下
 

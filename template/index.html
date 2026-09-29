@@ -52,13 +52,14 @@ button{font-family:inherit;cursor:pointer}
 .chip-ex{font-size:11px;color:var(--ink3);border:1px dashed var(--ink3);border-radius:4px;padding:1px 6px}
 .tag.play{cursor:pointer}
 .tag.play:hover{filter:brightness(.92)}
+.tag.play::before{display:none}
 
 /* ---------- Demo 视频页 ---------- */
 .video-page{position:absolute;inset:0;background:#0B0D10;display:flex;flex-direction:column}
 .video-page .vtop{height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 20px;color:#fff;font-size:13px}
 .video-page .vtop button{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:6px;height:26px;padding:0 12px;font-size:12px}
 .video-page .vbody{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;position:relative}
-.video-page video{max-width:100%;max-height:100%;background:#000}
+.video-page video{width:100%;height:100%;object-fit:contain;background:#000}
 .video-page .vnav{height:44px;flex:none;display:flex;align-items:center;justify-content:center;gap:16px;color:#fff;font-size:13px}
 .video-page .vnav button{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:6px;height:26px;padding:0 10px;font-size:12px}
 .video-page .vnav button:disabled{opacity:.3;cursor:default}
@@ -320,6 +321,7 @@ function drawLinks(root = document) {
 /* ---------- Demo 视频页 ---------- */
 let vstate = null;   // { case, idx } 仅在视频页非空
 function openVideo(id) { window.open('#/video/' + id, '_blank'); }
+const clipLabel = v => (lang === 'en' && v.label_en) || v.label || '';
 function renderVideo(c) {
   const t = C(c), clips = c.demo_video;
   vstate = { case: c, idx: 0 };
@@ -329,7 +331,7 @@ function renderVideo(c) {
     <div class="vbody"><video id="vid" src="${esc(clips[0].path)}" autoplay controls></video><div class="rate-badge" id="rateBadge">4x</div></div>
     ${clips.length > 1 ? `<div class="vnav">
       <button onclick="videoNav(-1)" disabled id="vprev">‹</button>
-      <span id="vcount">${esc(clips[0].label || '')} 1 / ${clips.length}</span>
+      <span id="vcount">${esc(clipLabel(clips[0]))} 1 / ${clips.length}</span>
       <button onclick="videoNav(1)" ${clips.length <= 1 ? 'disabled' : ''} id="vnext">›</button>
     </div>` : ''}
   </div>`;
@@ -341,7 +343,7 @@ function videoNav(d) {
   vstate.idx = ni;
   const v = document.getElementById('vid');
   v.pause(); v.src = clips[ni].path; v.playbackRate = 1; v.play();
-  document.getElementById('vcount').textContent = `${clips[ni].label || ''} ${ni + 1} / ${clips.length}`;
+  document.getElementById('vcount').textContent = `${clipLabel(clips[ni])} ${ni + 1} / ${clips.length}`;
   document.getElementById('vprev').disabled = ni <= 0;
   document.getElementById('vnext').disabled = ni >= clips.length - 1;
   document.getElementById('rateBadge').style.display = 'none';

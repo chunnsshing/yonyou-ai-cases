@@ -10,8 +10,10 @@ products: [YonWork]
 demo_video:
   - path: demos/fin-travel-expense-claim/travel-request.mp4
     label: 出差申请
+    label_en: Travel Request
   - path: demos/fin-travel-expense-claim/reimbursement.mp4
     label: 费用报销
+    label_en: Reimbursement
 
 summary: 出差申请自动预估费用，报销单据AI自动整理并提交，人工只需核对
 

@@ -161,7 +161,9 @@ def normalize(case):
         "owner": s(case.get("owner")), "updated": s(case.get("updated")), "client": s(case.get("client")),
         "products": [s(x) for x in (case.get("products") or [])], "example": bool(case.get("example")),
         "system": s(case.get("system")) or "ERP",
-        "demo_video": [{"path": s(v.get("path")), "label": s(v.get("label"))} for v in case.get("demo_video") or []],
+        # dist/index.html 位于 dist/ 下，demos/ 在仓库根目录，需要多退一层
+        "demo_video": [{"path": "../" + s(v.get("path")), "label": s(v.get("label")), "label_en": s(v.get("label_en"))}
+                       for v in case.get("demo_video") or []],
         "zh": content(case), "en": content(case["en"]) if case.get("en") else None,
     }
 
