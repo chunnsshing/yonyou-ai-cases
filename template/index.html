@@ -50,6 +50,19 @@ button{font-family:inherit;cursor:pointer}
 .tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--c)}
 .tag.lg{height:28px;padding:0 12px;font-size:13px;border-radius:14px}
 .chip-ex{font-size:11px;color:var(--ink3);border:1px dashed var(--ink3);border-radius:4px;padding:1px 6px}
+.tag.play{cursor:pointer}
+.tag.play:hover{filter:brightness(.92)}
+
+/* ---------- Demo 视频页 ---------- */
+.video-page{position:absolute;inset:0;background:#0B0D10;display:flex;flex-direction:column}
+.video-page .vtop{height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 20px;color:#fff;font-size:13px}
+.video-page .vtop button{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:6px;height:26px;padding:0 12px;font-size:12px}
+.video-page .vbody{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;position:relative}
+.video-page video{max-width:100%;max-height:100%;background:#000}
+.video-page .vnav{height:44px;flex:none;display:flex;align-items:center;justify-content:center;gap:16px;color:#fff;font-size:13px}
+.video-page .vnav button{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:6px;height:26px;padding:0 10px;font-size:12px}
+.video-page .vnav button:disabled{opacity:.3;cursor:default}
+.video-page .rate-badge{position:absolute;top:14px;right:14px;background:rgba(0,0,0,.65);color:#fff;font-size:12px;font-weight:600;padding:3px 8px;border-radius:4px;display:none}
 
 /* ---------- 首页 ---------- */
 .home-head{padding:26px 36px 0;display:flex;align-items:flex-end;justify-content:space-between}
@@ -166,12 +179,12 @@ const UI = {
         example: '示例', steps: n => `AI × ${n} 环节`, empty: d => `该领域暂无场景<br>在 cases/${d}/ 下新增 yaml 文件即可`,
         built: '更新于', industry: '行业', products: '产品', client: '客户', owner: '负责人', updated: '更新',
         desc: '场景描述', pains: '业务痛点', flow: '标准流程 · AI 介入点', ai: 'AI 环节（YonWork）', manual: '例外 / 后续阶段', lanes: ['使用者', 'YonWork'], types: {decision: '判断', exception: '例外', future: '后续阶段'},
-        fallback: '', lang: 'EN', lang_tip: '按 L 切换英文' },
+        fallback: '', lang: 'EN', lang_tip: '按 L 切换英文', close: '关闭' },
   en: { export_domain: 'Export PDF', export: 'Export PDF', prev: '← Prev', next: 'Next →', back: 'Back',
         example: 'Sample', steps: n => `AI × ${n} step${n > 1 ? 's' : ''}`, empty: d => `No use cases yet<br>Add a yaml file under cases/${d}/`,
         built: 'Updated', industry: 'Industry', products: 'Products', client: 'Client', owner: 'Owner', updated: 'Updated',
         desc: 'Scenario', pains: 'Pain Points', flow: 'Standard Process · Where AI Fits', ai: 'AI step (YonWork)', manual: 'Exception / later phase', lanes: ['User', 'YonWork'], types: {decision: 'Decision', exception: 'Exception', future: 'Next phase'},
-        fallback: '中文 only', lang: '中文', lang_tip: 'Press L for Chinese' },
+        fallback: '中文 only', lang: '中文', lang_tip: 'Press L for Chinese', close: 'Close' },
 };
 let lang = S.default_lang === 'en' ? 'en' : 'zh';
 try { const q = new URLSearchParams(location.search).get('lang'); const m = localStorage.getItem('aicases-lang');
@@ -199,6 +212,11 @@ const stage = document.getElementById('stage');
 stage.addEventListener('click', e => { if (e.target.closest('.btn.lang')) setLang(lang === 'en' ? 'zh' : 'en'); });
 
 const tag = (sid, cls = '') => { const s = ST[sid]; return `<span class="tag ${cls}" style="--c:${s.color}" title="${esc(pick(s, 'desc'))}">${esc(pick(s, 'name'))}</span>`; };
+const tagsPlayable = (c, cls = '') => [...c.status].sort((a, b) => ST[a].order - ST[b].order).map(sid => {
+  if (sid !== 'demo' || !(c.demo_video || []).length) return tag(sid, cls);
+  const s = ST[sid];
+  return `<span class="tag play ${cls}" style="--c:${s.color}" title="${esc(pick(s, 'desc'))}" onclick="openVideo('${c.id}')">▶ ${esc(pick(s, 'name'))}</span>`;
+}).join('');
 const logo = () => DATA.logo ? `<div class="logo"><img src="${DATA.logo}" alt="yonyou"></div>` : `<div class="logo"><span class="ph">LOGO</span></div>`;
 const langBtn = () => `<button class="btn lang" title="${U().lang_tip}">${U().lang}<kbd>L</kbd></button>`;
 
@@ -251,7 +269,7 @@ function caseHTML(c, nav = true) {
   </div>
   <div class="case ${nav ? 'fade' : ''} ${lang}">
     <div class="c-head">
-      <div><h1>${esc(t.title)} ${tags(c, 'lg')}${fb(c)}${c.example ? `<span class="chip-ex">${u.example}</span>` : ''}</h1><div class="sum">${esc(t.summary)}</div></div>
+      <div><h1>${esc(t.title)} ${tagsPlayable(c, 'lg')}${fb(c)}${c.example ? `<span class="chip-ex">${u.example}</span>` : ''}</h1><div class="sum">${esc(t.summary)}</div></div>
       <div class="c-meta"><div class="kv">${meta.map(([k, v]) => `<span>${k} <b>${esc(v)}</b></span>`).join('')}</div></div>
     </div>
     <div class="c-mid">
@@ -299,12 +317,52 @@ function drawLinks(root = document) {
   });
 }
 
+/* ---------- Demo 视频页 ---------- */
+let vstate = null;   // { case, idx } 仅在视频页非空
+function openVideo(id) { window.open('#/video/' + id, '_blank'); }
+function renderVideo(c) {
+  const t = C(c), clips = c.demo_video;
+  vstate = { case: c, idx: 0 };
+  stage.innerHTML = `
+  <div class="video-page">
+    <div class="vtop"><span>${esc(t.title)}</span><button onclick="closeVideo()">${U().close}</button></div>
+    <div class="vbody"><video id="vid" src="${esc(clips[0].path)}" autoplay controls></video><div class="rate-badge" id="rateBadge">4x</div></div>
+    ${clips.length > 1 ? `<div class="vnav">
+      <button onclick="videoNav(-1)" disabled id="vprev">‹</button>
+      <span id="vcount">${esc(clips[0].label || '')} 1 / ${clips.length}</span>
+      <button onclick="videoNav(1)" ${clips.length <= 1 ? 'disabled' : ''} id="vnext">›</button>
+    </div>` : ''}
+  </div>`;
+}
+function videoNav(d) {
+  if (!vstate) return;
+  const clips = vstate.case.demo_video, ni = vstate.idx + d;
+  if (ni < 0 || ni >= clips.length) return;
+  vstate.idx = ni;
+  const v = document.getElementById('vid');
+  v.pause(); v.src = clips[ni].path; v.playbackRate = 1; v.play();
+  document.getElementById('vcount').textContent = `${clips[ni].label || ''} ${ni + 1} / ${clips.length}`;
+  document.getElementById('vprev').disabled = ni <= 0;
+  document.getElementById('vnext').disabled = ni >= clips.length - 1;
+  document.getElementById('rateBadge').style.display = 'none';
+}
+function closeVideo() {
+  const id = vstate ? vstate.case.id : null;
+  window.close();
+  setTimeout(() => { if (id) go('#/case/' + id); }, 50);
+}
+
 /* ---------- 路由 ---------- */
 let current = null;
 function go(h) { location.hash = h; }
 function route() {
   document.title = pick(S, 'title');
   const h = location.hash.replace(/^#\/?/, '');
+  vstate = null;
+  if (h.startsWith('video/')) {
+    const c = DATA.cases.find(x => x.id === h.slice(6));
+    if (c && (c.demo_video || []).length) { renderVideo(c); return; }
+  }
   if (h.startsWith('case/')) {
     const c = DATA.cases.find(x => x.id === h.slice(5));
     if (c) { current = c; state.domain = c.domain; stage.innerHTML = caseHTML(c); requestAnimationFrame(() => drawLinks(stage)); return; }
@@ -314,14 +372,31 @@ function route() {
   renderHome();
 }
 addEventListener('hashchange', route);
+let qTimer = null, qFast = false;
 addEventListener('keydown', e => {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
+  if (vstate) {
+    const v = document.getElementById('vid');
+    if (e.code === 'Space') { e.preventDefault(); v.paused ? v.play() : v.pause(); return; }
+    if ((e.key === 'q' || e.key === 'Q') && !e.repeat && !qTimer) {
+      qTimer = setTimeout(() => { qFast = true; v.playbackRate = 4; document.getElementById('rateBadge').style.display = 'block'; }, 350);
+      return;
+    }
+    if (e.key === 'Escape') return closeVideo();
+  }
   if (e.key === 'l' || e.key === 'L') return setLang(lang === 'en' ? 'zh' : 'en');
   if (!current) return;
   const list = byDomain(current.domain), i = list.findIndex(x => x.id === current.id);
   if (e.key === 'ArrowRight' && list[i + 1]) go('#/case/' + list[i + 1].id);
   if (e.key === 'ArrowLeft' && list[i - 1]) go('#/case/' + list[i - 1].id);
   if (e.key === 'Escape') go('#/' + current.domain);
+});
+addEventListener('keyup', e => {
+  if (!vstate || (e.key !== 'q' && e.key !== 'Q')) return;
+  const v = document.getElementById('vid');
+  if (qTimer) { clearTimeout(qTimer); qTimer = null; }
+  if (qFast) { qFast = false; v.playbackRate = 1; document.getElementById('rateBadge').style.display = 'none'; }
+  else if (v.duration) v.currentTime = Math.min(v.duration, v.currentTime + 5);
 });
 function printDomain() {
   const list = current ? [current] : byDomain(state.domain);

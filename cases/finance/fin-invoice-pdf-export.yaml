@@ -7,6 +7,8 @@ updated: 2026-09-26
 industry: 通用
 client: ""
 products: [YonWork]
+demo_video:
+  - path: demos/fin-invoice-pdf-export/invoice-pdf-export.mp4
 
 summary: 按条件查找发票，AI逐条生成独立PDF并自动上传共享文件夹，替代手动逐张打印
 

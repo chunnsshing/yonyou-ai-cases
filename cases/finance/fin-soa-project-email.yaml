@@ -7,6 +7,8 @@ updated: 2026-09-26
 industry: 通用
 client: ""
 products: [YonWork]
+demo_video:
+  - path: demos/fin-soa-project-email/soa-auto-send-email.mp4
 
 summary: 按客户逐项目自动核对应收对账单并发送邮件，替代逐项目手动查询发送
 

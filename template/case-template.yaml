@@ -14,6 +14,9 @@ industry: 通用                    # 选填。适用行业
 client: ""                       # 选填。公开仓库：未确认可公开的客户名一律不写，industry 写行业即可
 products: [YonWork, YonSuite]    # 选填。涉及产品，列表
 system: YonSuite                 # 选填。泳道图第三行（系统）的名字，如 YonSuite / YonBIP / NCC；默认 ERP
+demo_video:                       # 选填。status 含 demo 时才有意义；点击场景页的"可Demo"标签会在新页签打开视频
+  - path: demos/<场景id>/xxx.mp4  # 相对仓库根目录；demos/ 已 .gitignore，不进公开仓库，只在本机可播
+    label: 完整流程               # 选填。多条视频时显示在切换器上，用来区分片段
 
 summary: 一句话说明这个场景用AI解决什么问题     # 必填。≤ 40 字，显示在卡片和标题下
 
