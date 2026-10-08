@@ -1,4 +1,5 @@
 dist/
 raw/
+demos/
 .DS_Store
 __pycache__/

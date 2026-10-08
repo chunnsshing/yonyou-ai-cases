@@ -126,6 +126,9 @@ def validate(case, path, site, errors, warnings):
             E(f"status `{st}` 无效，可选 {sorted(statuses)}")
     if case.get("id") and path.stem != case["id"]:
         E(f"文件名应与 id 一致：{case['id']}.yaml")
+    for i, v in enumerate(case.get("demo_video") or [], 1):
+        if not isinstance(v, dict) or not v.get("path"):
+            E(f"demo_video 第{i}条需要 path")
     if upgrade_legacy(case):
         W("flow 是旧格式（step/role/ai），已自动转换为泳道；请改为 lane / note 写法")
     check_content(case, "zh", E, W)
@@ -158,6 +161,9 @@ def normalize(case):
         "owner": s(case.get("owner")), "updated": s(case.get("updated")), "client": s(case.get("client")),
         "products": [s(x) for x in (case.get("products") or [])], "example": bool(case.get("example")),
         "system": s(case.get("system")) or "ERP",
+        # dist/index.html 位于 dist/ 下，demos/ 在仓库根目录，需要多退一层
+        "demo_video": [{"path": "../" + s(v.get("path")), "label": s(v.get("label")), "label_en": s(v.get("label_en"))}
+                       for v in case.get("demo_video") or []],
         "zh": content(case), "en": content(case["en"]) if case.get("en") else None,
     }
 
