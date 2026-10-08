@@ -162,8 +162,9 @@ def normalize(case):
         "products": [s(x) for x in (case.get("products") or [])], "example": bool(case.get("example")),
         "system": s(case.get("system")) or "ERP",
         # dist/index.html 位于 dist/ 下，demos/ 在仓库根目录，需要多退一层
+        # 只链接本地存在的视频：demos/ 未入库，线上构建时没有视频，"可Demo"标签保持为普通标签
         "demo_video": [{"path": "../" + s(v.get("path")), "label": s(v.get("label")), "label_en": s(v.get("label_en"))}
-                       for v in case.get("demo_video") or []],
+                       for v in case.get("demo_video") or [] if (ROOT / s(v.get("path"))).is_file()],
         "zh": content(case), "en": content(case["en"]) if case.get("en") else None,
     }
 
