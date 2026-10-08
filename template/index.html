@@ -52,17 +52,19 @@ button{font-family:inherit;cursor:pointer}
 .chip-ex{font-size:11px;color:var(--ink3);border:1px dashed var(--ink3);border-radius:4px;padding:1px 6px}
 
 /* ---------- 首页 ---------- */
-.home-head{padding:26px 36px 0;display:flex;align-items:flex-end;justify-content:space-between}
-.home-head h1{font-size:28px;font-weight:700;letter-spacing:.02em}
-.home-head p{font-size:13px;color:var(--ink3);margin-top:4px;letter-spacing:.04em}
 .legend{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .legend .tag{cursor:pointer;transition:opacity .15s ease}
-.legend .tag.off{opacity:.3}
+.legend .tag.dim{opacity:.35}
+.legend .tag.on{box-shadow:0 0 0 2px color-mix(in srgb,var(--c) 45%,#fff)}
+.legend .clear{font-size:12px;color:var(--ink3);cursor:pointer;align-self:center;margin-left:2px}
+.legend .clear:hover{color:var(--brand)}
 .legend .tag span{font-weight:400;opacity:.8}
-.tabs{display:flex;gap:4px;padding:18px 36px 0;border-bottom:1px solid var(--line)}
+.tabs{display:flex;align-items:center;gap:4px;padding:10px 36px 0;border-bottom:1px solid var(--line)}
+.tabs .legend{margin-left:auto;padding-bottom:6px}
 .tab{border:none;background:none;padding:10px 18px 12px;font-size:15px;color:var(--ink2);position:relative;transition:color .15s ease}
 .tab small{font-size:12px;color:var(--ink3);margin-left:4px}
 .tab:hover{color:var(--ink)}
+.tab.zero{opacity:.4}
 .tab.on{color:var(--brand);font-weight:600}
 .tab.on::after{content:"";position:absolute;left:14px;right:14px;bottom:-1px;height:3px;border-radius:2px;background:var(--brand)}
 .grid-wrap{flex:1;overflow:auto;padding:22px 36px 28px;background:var(--soft)}
@@ -167,12 +169,12 @@ const esc = t => String(t ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt
 const UI = {
   zh: { export_domain: '导出本领域 PDF', export: '导出 PDF', prev: '← 上一个', next: '下一个 →', back: '返回',
         example: '示例', steps: n => `AI × ${n} 环节`, empty: d => `该领域暂无场景<br>在 cases/${d}/ 下新增 yaml 文件即可`,
-        built: '更新于', industry: '行业', products: '产品', client: '客户', owner: '负责人', updated: '更新',
+        built: '更新于', clear: '清除筛选', none: '当前筛选下没有场景', industry: '行业', products: '产品', client: '客户', owner: '负责人', updated: '更新',
         desc: '场景描述', pains: '业务痛点', flow: '标准流程 · AI 介入点', ai: 'AI 环节（YonWork）', manual: '例外 / 后续阶段', lanes: ['使用者', 'YonWork'], types: {decision: '判断', exception: '例外', future: '后续阶段'},
         fallback: '', lang: 'EN', lang_tip: '按 L 切换英文' },
   en: { export_domain: 'Export PDF', export: 'Export PDF', prev: '← Prev', next: 'Next →', back: 'Back',
         example: 'Sample', steps: n => `AI × ${n} step${n > 1 ? 's' : ''}`, empty: d => `No use cases yet<br>Add a yaml file under cases/${d}/`,
-        built: 'Updated', industry: 'Industry', products: 'Products', client: 'Client', owner: 'Owner', updated: 'Updated',
+        built: 'Updated', clear: 'Clear', none: 'No use cases match this filter', industry: 'Industry', products: 'Products', client: 'Client', owner: 'Owner', updated: 'Updated',
         desc: 'Scenario', pains: 'Pain Points', flow: 'Standard Process · Where AI Fits', ai: 'AI step (YonWork)', manual: 'Exception / later phase', lanes: ['User', 'YonWork'], types: {decision: 'Decision', exception: 'Exception', future: 'Next phase'},
         fallback: '中文 only', lang: '中文', lang_tip: 'Press L for Chinese' },
 };
@@ -197,7 +199,11 @@ const byDomain = id => DATA.cases.filter(c => c.domain === id)
 // 没有场景的领域页签 / 状态标签不显示（site.yaml 里保留定义，有场景后自动出现）
 const DOMS = S.domains.filter(d => DATA.cases.some(c => c.domain === d.id));
 const STATS = S.statuses.filter(s => DATA.cases.some(c => c.status.includes(s.id)));
-const state = { domain: (DOMS[0] || S.domains[0]).id, off: new Set() };
+const state = { domain: (DOMS[0] || S.domains[0]).id, sel: new Set() };   // sel 为空 = 全部显示
+const shown = c => !state.sel.size || c.status.some(s => state.sel.has(s));
+const visible = id => byDomain(id).filter(shown);
+// 场景页的上一个/下一个、导出：按当前筛选；若当前场景不在筛选内则用整个领域
+const navList = c => { const v = visible(c.domain); return v.some(x => x.id === c.id) ? v : byDomain(c.domain); };
 const stage = document.getElementById('stage');
 stage.addEventListener('click', e => { if (e.target.closest('.btn.lang')) setLang(lang === 'en' ? 'zh' : 'en'); });
 
@@ -216,31 +222,33 @@ addEventListener('resize', () => { fit(); drawLinks(stage); });
 /* ---------- 首页 ---------- */
 function renderHome() {
   const counts = {}; DATA.cases.forEach(c => c.status.forEach(s => counts[s] = (counts[s] || 0) + 1));
-  const list = byDomain(state.domain).filter(c => c.status.some(s => !state.off.has(s)));
+  const list = visible(state.domain);
   stage.innerHTML = `
   <div class="top">${logo()}<div class="sep"></div><div class="crumb"><b>${esc(pick(S, 'title'))}</b></div>
     <div class="right noprint"><button class="btn" onclick="printDomain()">${U().export_domain}</button>${langBtn()}</div></div>
-  <div class="home-head fade">
-    <div><h1>${esc(pick(S, 'title'))}</h1><p>${esc(pick(S, 'subtitle'))}</p></div>
-    <div class="legend">${STATS.map(s => `<span class="tag ${state.off.has(s.id) ? 'off' : ''}" style="--c:${s.color}" title="${esc(pick(s, 'desc'))}" onclick="toggle('${s.id}')">${esc(pick(s, 'name'))} <span>${counts[s.id] || 0}</span></span>`).join('')}</div>
+  <div class="tabs">${DOMS.map(d => `<button class="tab ${d.id === state.domain ? 'on' : ''} ${visible(d.id).length ? '' : 'zero'}" onclick="go('#/${d.id}')">${esc(pick(d, 'name'))}<small>${visible(d.id).length}</small></button>`).join('')}
+    <div class="legend">${STATS.map(s => `<span class="tag ${state.sel.has(s.id) ? 'on' : state.sel.size ? 'dim' : ''}" style="--c:${s.color}" title="${esc(pick(s, 'desc'))}" onclick="toggle('${s.id}')">${esc(pick(s, 'name'))} <span>${counts[s.id] || 0}</span></span>`).join('')}${state.sel.size ? `<span class="clear" onclick="state.sel.clear();renderHome()">${U().clear}</span>` : ''}</div>
   </div>
-  <div class="tabs">${DOMS.map(d => `<button class="tab ${d.id === state.domain ? 'on' : ''}" onclick="go('#/${d.id}')">${esc(pick(d, 'name'))}<small>${byDomain(d.id).length}</small></button>`).join('')}</div>
   <div class="grid-wrap"><div class="grid fade">
     ${list.length ? list.map(c => { const t = C(c); return `
       <div class="card" onclick="go('#/case/${c.id}')">
         <div class="row"><span class="tags">${tags(c)}</span><span>${fb(c)}${c.example ? `<span class="chip-ex">${U().example}</span>` : ''}</span></div>
         <h3>${esc(t.title)}</h3><p>${esc(t.summary)}</p>
         <div class="meta"><span class="ai">${U().steps(t.flow.filter(f => f.lane === 'ai').length)}</span><span>${esc(c.owner)}</span><span style="margin-left:auto">${esc(c.updated)}</span></div>
-      </div>`; }).join('') : `<div class="empty">${U().empty(esc(state.domain))}</div>`}
+      </div>`; }).join('') : `<div class="empty">${state.sel.size ? U().none : U().empty(esc(state.domain))}</div>`}
   </div></div>
   <div class="foot">${U().built} ${esc(DATA.built)}</div>`;
 }
-function toggle(id) { state.off.has(id) ? state.off.delete(id) : state.off.add(id); renderHome(); }
+function toggle(id) {
+  state.sel.has(id) ? state.sel.delete(id) : state.sel.add(id);
+  if (!visible(state.domain).length) { const d = DOMS.find(x => visible(x.id).length); if (d) state.domain = d.id; }   // 当前页签没有结果时跳到有结果的页签
+  renderHome();
+}
 
 /* ---------- 场景页 ---------- */
 function caseHTML(c, nav = true) {
   const t = C(c), u = U();
-  const list = byDomain(c.domain), i = list.findIndex(x => x.id === c.id);
+  const list = navList(c), i = list.findIndex(x => x.id === c.id);
   const n = t.flow.length, LN = {user: 1, ai: 2, erp: 3};
   const meta = [[u.industry, t.industry || c.zh.industry], [u.products, c.products.join(' / ')], [u.client, c.client], [u.owner, c.owner], [u.updated, c.updated]].filter(x => x[1]);
   return `
@@ -321,13 +329,13 @@ addEventListener('keydown', e => {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
   if (e.key === 'l' || e.key === 'L') return setLang(lang === 'en' ? 'zh' : 'en');
   if (!current) return;
-  const list = byDomain(current.domain), i = list.findIndex(x => x.id === current.id);
+  const list = navList(current), i = list.findIndex(x => x.id === current.id);
   if (e.key === 'ArrowRight' && list[i + 1]) go('#/case/' + list[i + 1].id);
   if (e.key === 'ArrowLeft' && list[i - 1]) go('#/case/' + list[i - 1].id);
   if (e.key === 'Escape') go('#/' + current.domain);
 });
 function printDomain() {
-  const list = current ? [current] : byDomain(state.domain);
+  const list = current ? [current] : visible(state.domain);
   if (!list.length) return;
   document.getElementById('print').innerHTML = list.map(c => `<div class="stage">${caseHTML(c, false)}</div>`).join('');
   requestAnimationFrame(() => { drawLinks(document.getElementById('print')); setTimeout(() => print(), 80); });

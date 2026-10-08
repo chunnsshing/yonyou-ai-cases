@@ -1,9 +1,9 @@
 # 全站配置：页签（领域）、状态标签、品牌。改这里即可全局生效。
 # 中英双语：name / name_en 等成对出现；页面按 L 键切换语言
-title: AI 场景案例库
-title_en: AI Use Case Library
-subtitle: Yonyou Singapore · AI 场景案例库
-subtitle_en: Yonyou Singapore · AI Use Case Library
+title: YonWork 场景案例库
+title_en: YonWork Use Case Library
+subtitle: Yonyou Singapore · YonWork 场景案例库
+subtitle_en: Yonyou Singapore · YonWork Use Case Library
 brand_color: "#E50014"      # 主色，取自官方 logo 红色
 logo: assets/logo.png        # 官方 logo（透明底），构建时自动内嵌
 default_lang: zh             # 默认语言 zh / en
