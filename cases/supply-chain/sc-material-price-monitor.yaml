@@ -1,0 +1,79 @@
+id: sc-material-price-monitor
+title: 物料采购价格监控
+domain: supply-chain
+status: demo
+owner: Elmond
+updated: 2026-10-15
+industry: 通用
+products: [YonWork, YonBIP]
+system: YonBIP
+
+summary: 采购价对比国际市场价，给出目标价、可节省金额、价格风险与相关新闻
+
+description: >
+  采购和老板想知道物料买贵了没有，需要把采购订单单价逐一与国际市场行情对比，再查看价格走势和相关新闻。
+  这些工作全靠人工搜索整理，物料一多就无法定期做，涨价风险也难以及早发现。
+
+pain_points:
+  - title: 价格对比靠人工
+    detail: 采购单价要逐一与市场行情对比
+  - title: 行情新闻分散
+    detail: 走势、展望和新闻需在多个网站查找
+  - title: 风险发现太晚
+    detail: 无法定期做，涨价影响难以提前看到
+
+flow:
+  - step: 发起价格监控
+    lane: user
+    note: 可按组织、供应商、物料筛选
+  - step: 读取采购订单
+    lane: erp
+    note: 已审批的采购订单行
+    edge: 范围
+  - step: 查找市场行情
+    lane: ai
+    note: 国际基准价、走势、展望与新闻
+  - step: 分析与判断
+    lane: ai
+    note: 价差、目标价、可节省金额
+  - step: 查看采购看板
+    lane: user
+    note: 建议行动按金额排序
+    edge: 看板
+
+en:
+  title: Material Price Monitor
+  industry: General
+  summary: Purchase prices vs international market prices, with target prices, savings, risk and news
+  description: >
+    Buyers and owners want to know whether they are overpaying. That means comparing each purchase order price with
+    international market prices, then checking price trends and related news. It is all done by manual searching,
+    so with many materials it is rarely done regularly and price rises are spotted late.
+  pain_points:
+    - title: Manual price comparison
+      detail: Each PO price is compared with the market by hand
+    - title: Scattered market news
+      detail: Trends, outlook and news sit across many sites
+    - title: Risk spotted late
+      detail: Not done regularly, so price rises surface late
+  flow:
+    - step: Start the monitor
+      lane: user
+      note: Filter by org, supplier or material if needed
+    - step: Read purchase orders
+      lane: erp
+      note: Approved PO lines
+      edge: Scope
+    - step: Find market prices
+      lane: ai
+      note: International benchmarks, trend, outlook, news
+    - step: Analyse
+      lane: ai
+      note: Price gap, target price, potential saving
+    - step: View the dashboard
+      lane: user
+      note: Actions ranked by money at stake
+      edge: Dashboard
+
+sources:
+  - Skill material-price-monitor (older version material-pricing)

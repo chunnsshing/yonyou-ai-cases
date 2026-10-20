@@ -1,0 +1,73 @@
+id: fin-company-financial-overview
+title: 公司财务状况一页总览
+domain: finance
+status: demo
+owner: Elmond
+updated: 2026-10-15
+industry: 通用
+products: [YonWork, YonBIP]
+system: YonBIP
+
+summary: 一句话询问财务状况，汇总总账、应收应付、现金流、银行余额等生成一页总览
+
+description: >
+  管理层想了解公司当前的财务状况，财务需要分别查询总账余额、应收应付账龄、现金流、银行余额、固定资产和存货成本，再整理成报表。
+  数据来自多个模块，每次都要重新整理，结果也难以随时更新。
+
+pain_points:
+  - title: 多模块分别查询
+    detail: 总账、应收应付、现金、资产要逐个查
+  - title: 整理耗时
+    detail: 每次汇总成报表都要重新手工整理
+  - title: 无法随时查看
+    detail: 管理层想看时，要等财务整理
+
+flow:
+  - step: 询问财务状况
+    lane: user
+    note: 可指定期间，默认本期
+  - step: 读取财务数据
+    lane: erp
+    note: 总账、应收应付、现金流、银行余额等
+    edge: 问题
+  - step: 汇总分析
+    lane: ai
+    note: 现金、应收应付、损益、资产
+  - step: 查看财务总览
+    lane: user
+    note: 一页总览与重点提示
+    edge: 总览
+
+en:
+  title: Company Financial Overview
+  industry: General
+  summary: Ask how the company is doing; GL, AR/AP, cash flow and bank balances become a one-page overview
+  description: >
+    When management asks how the company is doing, finance pulls GL balances, AR and AP ageing, cash flow, bank
+    balances, fixed assets and inventory cost one by one, then builds a report. The data spans several modules, the
+    report is rebuilt by hand each time, and it is soon out of date.
+  pain_points:
+    - title: Queried module by module
+      detail: GL, AR/AP, cash and assets are looked up separately
+    - title: Slow to compile
+      detail: Every summary report is rebuilt by hand
+    - title: Not on demand
+      detail: Management waits for finance to prepare it
+  flow:
+    - step: Ask for the overview
+      lane: user
+      note: Optional period; defaults to the current one
+    - step: Read finance data
+      lane: erp
+      note: GL, AR/AP, cash flow, bank balances and more
+      edge: Question
+    - step: Summarise
+      lane: ai
+      note: Cash, AR/AP, P&L, assets
+    - step: View the overview
+      lane: user
+      note: One page with key points
+      edge: Overview
+
+sources:
+  - Skill financial status (company-financial-overview)

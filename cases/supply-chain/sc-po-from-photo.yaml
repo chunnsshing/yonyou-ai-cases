@@ -1,0 +1,81 @@
+id: sc-po-from-photo
+title: 拍照生成采购订单
+domain: supply-chain
+status: demo
+owner: Elmond
+updated: 2026-10-15
+industry: 通用
+products: [YonWork, YonBIP]
+system: YonBIP
+
+summary: 拍一张供应商报价单或手写订单，自动匹配供应商与物料，确认预览后生成采购订单
+
+description: >
+  采购收到的供应商报价单、订单表或手写订单多为纸质或照片，需要人工逐行录入系统，并逐一查找对应的供应商和物料编码。
+  照片歪斜、字迹不清时容易录错，单价、数量出错要到对账时才发现。
+
+pain_points:
+  - title: 纸质单据靠手录
+    detail: 报价单、手写订单需逐行录入采购订单
+  - title: 编码要逐个查找
+    detail: 供应商、物料编码需人工在系统里查找匹配
+  - title: 录错难发现
+    detail: 数字、单价录入错误，到对账时才发现
+
+flow:
+  - step: 拍照上传
+    lane: user
+    note: 报价单、订单表或手写订单
+  - step: 识别照片
+    lane: ai
+    note: 自动扶正，逐行读出内容
+    edge: 照片
+  - step: 匹配编码
+    lane: ai
+    note: 供应商、物料逐一匹配，不猜测
+  - step: 核对预览
+    lane: user
+    note: 确认供应商、物料、数量与单价
+    edge: 预览
+  - step: 生成采购订单
+    lane: erp
+    note: 确认后才写入系统
+    edge: 确认
+
+en:
+  title: PO from Photo
+  industry: General
+  summary: A photo of a supplier quote or handwritten order becomes a PO after one preview check
+  description: >
+    Buyers receive supplier quotations, order forms and handwritten orders on paper or as photos. Each line is keyed
+    into the system by hand, and every supplier and material code has to be looked up. Tilted photos and unclear
+    handwriting cause errors in prices and quantities that only surface at reconciliation.
+  pain_points:
+    - title: Paper keyed by hand
+      detail: Quotes and handwritten orders are keyed into POs line by line
+    - title: Codes looked up one by one
+      detail: Supplier and material codes are searched for manually
+    - title: Errors found late
+      detail: Wrong digits or prices only surface at reconciliation
+  flow:
+    - step: Upload a photo
+      lane: user
+      note: Quote, order form or handwritten order
+    - step: Read the photo
+      lane: ai
+      note: Straightens it and reads each line
+      edge: Photo
+    - step: Match codes
+      lane: ai
+      note: Supplier and materials matched, never guessed
+    - step: Check the preview
+      lane: user
+      note: Supplier, materials, quantity and price
+      edge: Preview
+    - step: Create the PO
+      lane: erp
+      note: Written only after confirmation
+      edge: Confirmed
+
+sources:
+  - Skill po-from-photo

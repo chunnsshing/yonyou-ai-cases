@@ -21,3 +21,15 @@ python build.py --strict                                    # 校验 + 生成 di
 | 未来可能 | `future` | 方向性构想，依赖产品或技术演进 |
 
 协作规则和字段说明见 [BRIEFING.md](BRIEFING.md)。
+
+## Demo 视频 / 看板
+
+把视频（.mp4 / .mov / .webm）或结果看板（.html）放进 `videos/<场景id>/`，构建时会复制到 `dist/videos/`，
+场景自动加上「已就绪」标签，卡片和场景页出现「播放 Demo」。这是公开网站：只放演示/测试租户的内容，
+不放真实客户数据；视频先压缩（GitHub 单个文件上限 100MB），例如：
+
+```bash
+ffmpeg -i 原视频.mov -vf "scale='min(1920,iw)':-2,fps=30" -c:v libx264 -crf 26 -pix_fmt yuv420p -c:a aac -b:a 96k -movflags +faststart videos/<场景id>/demo.mp4
+```
+
+场景的 `updated` 日期保留在 yaml 和页面数据里（`DATA.cases[].updated`、`DATA.built`），但不在页面上显示。

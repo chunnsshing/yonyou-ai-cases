@@ -1,0 +1,75 @@
+id: fin-customer-credit-score
+title: 客户信用评分看板
+domain: finance
+status: demo
+owner: Elmond
+updated: 2026-10-15
+industry: 通用
+products: [YonWork, YonBIP]
+system: YonBIP
+
+summary: 输入客户名，汇总报价、订单、发票、收款与应收，给出0–100信用评分和看板
+
+description: >
+  判断一个客户的信用状况，需要分别查看信用额度、近12个月的报价、订单、发票、收款记录和应收账龄，再凭经验下结论。
+  数据分散在销售、财务和主数据多个模块，口径不一，每次评估都要重新整理。
+
+pain_points:
+  - title: 数据分散多模块
+    detail: 额度、订单、发票、收款、应收要分别查询
+  - title: 评估靠经验
+    detail: 没有统一的评分口径，结论因人而异
+
+flow:
+  - step: 询问客户信用
+    lane: user
+    note: 客户名称或编码
+  - step: 查找客户
+    lane: ai
+    note: 多个匹配时请用户选择
+    edge: 客户名
+  - step: 读取业务数据
+    lane: erp
+    note: 额度、报价、订单、发票、收款、应收
+  - step: 计算信用评分
+    lane: ai
+    note: 五项加权，缺数据明确标注
+  - step: 查看信用看板
+    lane: user
+    note: 评分、各项得分与原始数据
+    edge: 看板
+
+en:
+  title: Customer Credit Score
+  industry: General
+  summary: Enter a customer; quotes, orders, invoices, receipts and AR become a 0–100 score
+  description: >
+    Judging a customer's credit means checking the credit limit, the last 12 months of quotations, orders, invoices
+    and receipts, and AR ageing, then deciding from experience. The data sits across sales, finance and master data,
+    and has to be pulled together again every time.
+  pain_points:
+    - title: Data across modules
+      detail: Limit, orders, invoices, receipts and AR are looked up separately
+    - title: Judged by experience
+      detail: No common scoring basis, so conclusions vary by person
+  flow:
+    - step: Ask about a customer
+      lane: user
+      note: Customer name or code
+    - step: Find the customer
+      lane: ai
+      note: Asks the user to pick if several match
+      edge: Name
+    - step: Read business data
+      lane: erp
+      note: Limit, quotes, orders, invoices, receipts, AR
+    - step: Compute the score
+      lane: ai
+      note: Five weighted factors; missing data flagged
+    - step: View the dashboard
+      lane: user
+      note: Score, factor breakdown and raw data
+      edge: Dashboard
+
+sources:
+  - Skill customer-score (also customer-credit-profile, profile-analysis)

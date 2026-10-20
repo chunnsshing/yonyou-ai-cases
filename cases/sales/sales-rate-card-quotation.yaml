@@ -1,0 +1,89 @@
+id: sales-rate-card-quotation
+title: 一句话生成租赁报价单
+domain: sales
+status: demo
+owner: Elmond
+updated: 2026-10-15
+industry: 起重设备租赁
+products: [YonWork, YonBIP]
+system: YonBIP
+
+summary: 说出报价类型和客户，按标准费率表生成报价单与PDF，并附在单据上
+
+description: >
+  每天都有客户询价，销售要按设备类型从标准费率表逐行抄写报价，再补上固定条款、生效日期和销售员，手工排版成PDF发给客户。
+  一张报价单常有几十行，抄写和排版占用大量时间，费率和条款也容易抄错或用了旧版本。
+
+pain_points:
+  - title: 费率逐行抄写
+    detail: 按设备类型从费率表逐行抄入报价单
+  - title: PDF手工排版
+    detail: 费率表、备注与条款需手工排成PDF
+  - title: 版本容易出错
+    detail: 费率或条款抄错、用了旧版本
+
+flow:
+  - step: 说出报价需求
+    lane: user
+    note: 设备类型 + 客户，可指定销售员
+  - step: 解析并匹配
+    lane: ai
+    note: 客户、销售员、费率表行
+    edge: 一句话
+  - step: 确认摘要
+    lane: user
+    note: 客户、类型、日期、行数
+    edge: 摘要
+  - step: 生成报价单
+    lane: erp
+    note: 按标准费率逐行生成
+    edge: 确认
+  - step: 生成PDF
+    lane: ai
+    note: 费率表、备注与完整条款
+  - step: 收到报价PDF
+    lane: user
+    note: 报价单号，PDF已附在单据上
+    edge: PDF
+
+en:
+  title: One-Line Rental Quotation
+  industry: Crane rental
+  summary: Name the equipment and customer; a rate-card quotation is created with its PDF attached
+  description: >
+    Customers ask for rates every day. Sales copies each line from the standard rate card by equipment type, adds
+    the fixed terms, effective date and salesperson, and lays out a PDF by hand. A quotation often runs to dozens of
+    lines, so copying and formatting take time, and rates or terms get mistyped or come from an old version.
+  pain_points:
+    - title: Rates copied by hand
+      detail: Each line is copied from the rate card by equipment type
+    - title: PDF laid out by hand
+      detail: Rate tables, remarks and terms are formatted manually
+    - title: Wrong versions
+      detail: Rates or terms mistyped or taken from an old version
+  flow:
+    - step: Ask for a quote
+      lane: user
+      note: Equipment types + customer, optional salesperson
+    - step: Parse and match
+      lane: ai
+      note: Customer, salesperson, rate card rows
+      edge: One line
+    - step: Confirm summary
+      lane: user
+      note: Customer, types, dates, line count
+      edge: Summary
+    - step: Create quotation
+      lane: erp
+      note: One line per rate card row
+      edge: Confirmed
+    - step: Render the PDF
+      lane: ai
+      note: Rate tables, remarks and full terms
+    - step: Get the PDF
+      lane: user
+      note: Quote number; PDF attached to the record
+      edge: PDF
+
+sources:
+  - Skill yonbip-scm-sd-quote-streamlined-create (daily rate-card quotation variant)

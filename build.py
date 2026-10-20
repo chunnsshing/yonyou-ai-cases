@@ -7,7 +7,8 @@
   python build.py --check    # 只校验不输出
 依赖: pip install pyyaml
 """
-import base64, datetime, json, mimetypes, pathlib, re, sys
+import base64, datetime, json, mimetypes, os, pathlib, re, shutil, sys
+from urllib.parse import quote
 
 try:
     import yaml
@@ -15,6 +16,9 @@ except ImportError:
     sys.exit("缺少 PyYAML：pip install pyyaml")
 
 ROOT = pathlib.Path(__file__).resolve().parent
+OUT = ROOT / "dist"
+VIDEO_EXT = {".mp4", ".mov", ".m4v", ".webm"}
+HTML_EXT = {".html", ".htm"}       # 结果看板等 HTML Demo，点击直接打开
 LIMITS = {  # 字段: 最大长度（中文按字数，英文按字符数；超出=警告）
     "zh": {"title": 18, "summary": 40, "description": 140, "pain.title": 12, "pain.detail": 40,
            "flow.step": 9, "flow.note": 18, "flow.edge": 6},    # 7–8 步时的上限
@@ -156,17 +160,50 @@ def content(c):
 
 
 def normalize(case):
+    clips = demo_videos(case)
+    status = [x for x in status_list(case["status"]) if x != "ready"]
+    if clips:                     # 有视频或 HTML Demo 的场景自动加「Ready」标签
+        status.insert(0, "ready")
     return {
-        "id": s(case["id"]), "domain": s(case["domain"]), "status": status_list(case["status"]),
+        "id": s(case["id"]), "domain": s(case["domain"]), "status": status,
         "owner": s(case.get("owner")), "updated": s(case.get("updated")), "client": s(case.get("client")),
         "products": [s(x) for x in (case.get("products") or [])], "example": bool(case.get("example")),
         "system": s(case.get("system")) or "ERP",
-        # dist/index.html 位于 dist/ 下，demos/ 在仓库根目录，需要多退一层
-        # 只链接本地存在的视频：demos/ 未入库，线上构建时没有视频，"可Demo"标签保持为普通标签
-        "demo_video": [{"path": "../" + s(v.get("path")), "label": s(v.get("label")), "label_en": s(v.get("label_en"))}
-                       for v in case.get("demo_video") or [] if (ROOT / s(v.get("path"))).is_file()],
+        "demo_video": clips,
         "zh": content(case), "en": content(case["en"]) if case.get("en") else None,
     }
+
+
+def demo_videos(case):
+    """Demo：yaml 里 demo_video 列出的文件 + videos/<场景id>/ 下的所有视频 / HTML（按文件名排序）。
+    只收本地存在的文件；构建时复制到 dist/videos/<场景id>/，页面用相对路径链接。"""
+    cid, found, seen = s(case.get("id")), [], set()
+    for v in case.get("demo_video") or []:
+        f = ROOT / s(v.get("path"))
+        if f.is_file():
+            found.append((f, s(v.get("label")), s(v.get("label_en"))))
+            seen.add(f.resolve())
+    folder = ROOT / "videos" / cid
+    if folder.is_dir():
+        for f in sorted(folder.iterdir()):
+            if f.suffix.lower() in VIDEO_EXT | HTML_EXT and f.resolve() not in seen:
+                found.append((f, f.stem, f.stem))
+    return [{"src": f, "path": f"videos/{quote(cid)}/{quote(f.name)}", "label": a, "label_en": b,
+             "kind": "html" if f.suffix.lower() in HTML_EXT else "video"} for f, a, b in found]
+
+
+def publish_demos(cases):
+    """把 Demo 文件放进 dist/videos/（同盘时用硬链接，不占额外空间）"""
+    shutil.rmtree(OUT / "videos", ignore_errors=True)
+    for c in cases:
+        for v in c["demo_video"]:
+            dst = OUT / "videos" / c["id"] / v["src"].name
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            try:
+                os.link(v["src"], dst)
+            except OSError:
+                shutil.copy2(v["src"], dst)
+            del v["src"]
 
 
 def logo_data_uri(site):
@@ -205,16 +242,17 @@ def main():
     if check:
         return
 
-    data = {"site": {k: site[k] for k in ("title", "title_en", "subtitle", "subtitle_en", "brand_color", "default_lang", "domains", "statuses") if k in site},
+    OUT.mkdir(exist_ok=True)
+    publish_demos(cases)
+    data = {"site": {k: site[k] for k in ("title", "title_en", "subtitle", "subtitle_en", "brand_color", "default_lang", "bold_owner", "domains", "statuses") if k in site},
             "logo": logo_data_uri(site), "cases": cases,
             "built": datetime.datetime.now().strftime("%Y-%m-%d %H:%M")}
     html = (ROOT / "template" / "index.html").read_text(encoding="utf-8")
     payload = json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
     html = html.replace("/*__DATA__*/null", payload)
-    out = ROOT / "dist"
-    out.mkdir(exist_ok=True)
-    (out / "index.html").write_text(html, encoding="utf-8")
-    print(f"✅ 已输出 {out / 'index.html'}")
+    OUT.mkdir(exist_ok=True)
+    (OUT / "index.html").write_text(html, encoding="utf-8")
+    print(f"✅ 已输出 {OUT / 'index.html'}（Demo 文件 {sum(len(c['demo_video']) for c in cases)} 个）")
 
 
 if __name__ == "__main__":

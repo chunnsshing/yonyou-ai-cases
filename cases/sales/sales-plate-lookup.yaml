@@ -1,9 +1,9 @@
 id: sales-plate-lookup
 title: 车牌查询客户完整历史
 domain: sales
-status: [replicable, to-verify]
+status: [replicable, demo]
 owner: Elmond
-updated: 2026-09-28
+updated: 2026-10-15
 industry: 轮胎零售与汽车服务
 products: [YonWork, YonSuite]
 system: YonSuite

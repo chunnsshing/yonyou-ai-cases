@@ -1,0 +1,75 @@
+id: sales-pdf-to-sales-order
+title: PDF订单自动生成销售订单
+domain: sales
+status: demo
+owner: Elmond
+updated: 2026-10-15
+industry: 通用
+products: [YonWork, YonBIP]
+system: YonBIP
+
+summary: 客户PDF订单自动抽取表头与明细，校验金额后直接在系统生成销售订单
+
+description: >
+  客户通过邮件发来PDF格式的采购订单，销售助理需要打开文件，把客户、交期、品名、数量、单价逐行录入系统生成销售订单，
+  并手工核对金额合计。订单量大时录入耗时，金额核对也容易出错。
+
+pain_points:
+  - title: 逐行手工录入
+    detail: PDF订单的表头和明细需人工录入系统
+  - title: 金额核对靠人工
+    detail: 行金额与合计需逐一核对，容易遗漏
+
+flow:
+  - step: 客户发送PDF订单
+    lane: user
+    note: 邮件附件或直接上传
+  - step: 抽取订单内容
+    lane: ai
+    note: 客户、交期、品名、数量、单价
+    edge: PDF
+  - step: 校验金额
+    lane: ai
+    note: 行金额与合计逐一核对
+  - step: 生成销售订单
+    lane: erp
+    note: 无需人工确认
+  - step: 收到结果
+    lane: user
+    note: 订单号与明细汇总
+    edge: 回复
+
+en:
+  title: PDF Order to Sales Order
+  industry: General
+  summary: Customer PDF orders are read, the amounts checked, and the sales order created directly
+  description: >
+    Customers email purchase orders as PDFs. A sales assistant opens each file, keys the customer, delivery date,
+    items, quantities and prices into the system, and checks the totals by hand. At volume this takes time, and
+    totals are easy to get wrong.
+  pain_points:
+    - title: Keyed line by line
+      detail: Header and lines of each PDF order are typed into the system
+    - title: Totals checked by hand
+      detail: Line amounts and totals are checked manually and slip through
+  flow:
+    - step: Customer sends a PDF
+      lane: user
+      note: Email attachment or upload
+    - step: Extract the order
+      lane: ai
+      note: Customer, date, items, quantity, price
+      edge: PDF
+    - step: Check amounts
+      lane: ai
+      note: Line amounts and totals reconciled
+    - step: Create sales order
+      lane: erp
+      note: No manual confirmation step
+    - step: Get the result
+      lane: user
+      note: Order number and line summary
+      edge: Reply
+
+sources:
+  - Skill pdf-to-sales-order

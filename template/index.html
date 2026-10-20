@@ -4,11 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AI 场景案例库</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Rubik:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --brand:#E60012; --ink:#111827; --ink2:#4B5563; --ink3:#9CA3AF;
-  --line:#E5E7EB; --bg:#F3F4F6; --card:#FFFFFF; --soft:#F9FAFB;
-  --font:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC","Noto Sans SC",-apple-system,"Segoe UI",sans-serif;
+  --brand:#E60012; --ink:#2D2D2D; --ink2:#555555; --ink3:#9A9A9A;
+  --line:#E5E5E5; --bg:#F4F4F4; --card:#FFFFFF; --soft:#F7F7F7;
+  --cjk:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC","Noto Sans SC";
+  --font:Rubik,var(--cjk),-apple-system,"Segoe UI",sans-serif;
+  --display:Manrope,var(--cjk),-apple-system,"Segoe UI",sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;background:#E9EBEF;font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased}
@@ -19,17 +23,16 @@ button{font-family:inherit;cursor:pointer}
 
 /* ---------- 顶栏 ---------- */
 .top{height:60px;flex:none;display:flex;align-items:center;gap:16px;padding:0 36px;border-bottom:1px solid var(--line);position:relative}
-.top::before{content:"";position:absolute;left:0;top:0;right:0;height:4px;background:var(--brand)}
 .logo{height:26px;display:flex;align-items:center}
 .logo img{height:26px;width:auto;display:block}
 .logo .ph{height:26px;padding:0 10px;border:1.5px dashed var(--ink3);border-radius:4px;font-size:11px;color:var(--ink3);display:flex;align-items:center;letter-spacing:.1em}
 .top .sep{width:1px;height:22px;background:var(--line)}
-.crumb{font-size:14px;color:var(--ink2);display:flex;gap:8px;align-items:center;white-space:nowrap;overflow:hidden}
+.crumb{font-family:var(--display);font-weight:500;font-size:14px;color:var(--ink2);display:flex;gap:8px;align-items:center;white-space:nowrap;overflow:hidden}
 .crumb a{color:var(--ink2);text-decoration:none;cursor:pointer}
 .crumb a:hover{color:var(--brand)}
 .crumb b{color:var(--ink);font-weight:600}
 .top .right{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink3)}
-.btn{height:30px;padding:0 12px;border:1px solid var(--line);background:#fff;border-radius:6px;font-size:12px;color:var(--ink2);display:inline-flex;align-items:center;gap:6px;transition:all .15s ease}
+.btn{height:32px;padding:0 14px;border:1px solid var(--line);background:#fff;border-radius:4px;font-family:var(--display);font-weight:700;font-size:12.5px;color:var(--ink);display:inline-flex;align-items:center;gap:6px;transition:all .15s ease}
 .btn:hover{border-color:var(--brand);color:var(--brand)}
 .btn:disabled{opacity:.35;pointer-events:none}
 
@@ -45,7 +48,7 @@ button{font-family:inherit;cursor:pointer}
 .logo,.logo img{height:30px}
 
 /* ---------- 标签 ---------- */
-.tag{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:12px;font-size:12px;font-weight:600;white-space:nowrap;
+.tag{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:12px;font-family:var(--display);font-size:12px;font-weight:700;white-space:nowrap;
   color:var(--c);background:color-mix(in srgb,var(--c) 11%,#fff);border:1px solid color-mix(in srgb,var(--c) 28%,#fff)}
 .tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--c)}
 .tag.lg{height:28px;padding:0 12px;font-size:13px;border-radius:14px}
@@ -53,6 +56,11 @@ button{font-family:inherit;cursor:pointer}
 .tag.play{cursor:pointer}
 .tag.play:hover{filter:brightness(.92)}
 .tag.play::before{display:none}
+.play-btn{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 16px 0 14px;border-radius:4px;border:1px solid var(--brand);background:var(--brand);color:#fff;font-family:var(--display);font-size:13px;font-weight:700;white-space:nowrap;transition:filter .15s ease}
+.play-btn:hover{filter:brightness(.92)}
+.play-btn svg{width:10px;height:10px;fill:currentColor}
+.play-btn.off{background:#fff;color:var(--ink3);border:1px dashed var(--ink3);cursor:default}
+.play-btn.off:hover{filter:none}
 
 /* ---------- Demo 视频页 ---------- */
 .video-page{position:absolute;inset:0;background:#0B0D10;display:flex;flex-direction:column}
@@ -60,61 +68,85 @@ button{font-family:inherit;cursor:pointer}
 .video-page .vtop button{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:6px;height:26px;padding:0 12px;font-size:12px}
 .video-page .vbody{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;position:relative}
 .video-page video{width:100%;height:100%;object-fit:contain;background:#000}
+.video-page iframe{width:100%;height:100%;border:0;background:#fff}
 .video-page .vnav{height:44px;flex:none;display:flex;align-items:center;justify-content:center;gap:16px;color:#fff;font-size:13px}
 .video-page .vnav button{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:6px;height:26px;padding:0 10px;font-size:12px}
 .video-page .vnav button:disabled{opacity:.3;cursor:default}
 .video-page .vtoast{position:absolute;top:16px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);color:#fff;font-size:15px;font-weight:700;padding:5px 16px;border-radius:6px;display:none;letter-spacing:.02em}
 
-/* ---------- 首页 ---------- */
-.legend{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+/* ---------- 首页：按 yonyou.com.sg 风格的可滚动网页（场景页仍是 16:9 页面） ---------- */
+body.scroll #viewport{position:static;overflow:visible}
+body.scroll .stage{width:auto!important;height:auto!important;min-height:100vh;transform:none!important;overflow:visible;display:block}
+.wrap{max-width:1248px;margin:0 auto;padding:0 24px}
+.site{position:sticky;top:0;z-index:10;background:#fff;box-shadow:0 1px 0 var(--line)}
+.site .wrap{height:82px;display:flex;align-items:center;gap:24px}
+.site .logo,.site .logo img{height:28px}
+.site nav{margin-left:auto;display:flex;align-items:center;gap:22px}
+.site nav a.nav{font-family:var(--display);font-weight:700;font-size:14px;color:#313131;text-decoration:none}
+.site nav a.nav:hover{color:var(--brand)}
+.cta{display:inline-flex;align-items:center;height:42px;padding:0 20px;border-radius:4px;background:var(--brand);border:1px solid var(--brand);color:#fff;font-family:var(--display);font-weight:700;font-size:14px;text-decoration:none;transition:filter .15s ease}
+.cta:hover{filter:brightness(.9)}
+.cta,.btn{white-space:nowrap}
+.hero{color:#fff;text-align:center;padding:84px 0 92px;
+  background:radial-gradient(ellipse 70% 120% at 15% 0%,rgba(230,0,18,.38),transparent 60%),radial-gradient(ellipse 60% 100% at 100% 100%,rgba(230,0,18,.18),transparent 60%),linear-gradient(120deg,#14161a 0%,#262a31 100%)}
+.hero .eyebrow{font-family:var(--display);font-weight:600;font-size:16px;opacity:.85}
+.hero h1{font-family:var(--display);font-weight:800;font-size:54px;line-height:1.18;letter-spacing:-.015em;margin:14px 0 18px}
+.hero p{font-size:18px;line-height:1.6;opacity:.82;max-width:640px;margin:0 auto}
+.tabbar{border-bottom:1px solid var(--line);background:#fff}
+.tabbar .wrap{display:flex;justify-content:center;flex-wrap:wrap;gap:8px}
+.tab{border:none;background:none;padding:22px 22px 18px;font-family:var(--display);font-size:16px;font-weight:600;color:var(--ink);position:relative;transition:color .15s ease}
+.tab small{font-size:12px;color:var(--ink3);margin-left:6px;font-weight:500}
+.tab:hover{color:var(--brand)}
+.tab.zero{opacity:.4}
+.tab.on{color:var(--brand)}
+.tab.on::after{content:"";position:absolute;left:12px;right:12px;bottom:-1px;height:3px;background:var(--brand)}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:28px auto 22px}
+.legend{display:flex;gap:8px;flex-wrap:wrap}
 .legend .tag{cursor:pointer;transition:opacity .15s ease}
 .legend .tag.dim{opacity:.35}
 .legend .tag.on{box-shadow:0 0 0 2px color-mix(in srgb,var(--c) 45%,#fff)}
-.legend .clear{font-size:12px;color:var(--ink3);cursor:pointer;align-self:center;margin-left:2px}
+.legend .clear{font-size:13px;color:var(--ink3);cursor:pointer;align-self:center;margin-left:4px}
 .legend .clear:hover{color:var(--brand)}
-.legend .tag span{font-weight:400;opacity:.8}
-.tabs{display:flex;align-items:center;gap:4px;padding:10px 36px 0;border-bottom:1px solid var(--line)}
-.tabs .legend{margin-left:auto;padding-bottom:6px}
-.tab{border:none;background:none;padding:10px 18px 12px;font-size:15px;color:var(--ink2);position:relative;transition:color .15s ease}
-.tab small{font-size:12px;color:var(--ink3);margin-left:4px}
-.tab:hover{color:var(--ink)}
-.tab.zero{opacity:.4}
-.tab.on{color:var(--brand);font-weight:600}
-.tab.on::after{content:"";position:absolute;left:14px;right:14px;bottom:-1px;height:3px;border-radius:2px;background:var(--brand)}
-.grid-wrap{flex:1;overflow:auto;padding:22px 36px 28px;background:var(--soft)}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 18px 14px;cursor:pointer;display:flex;flex-direction:column;gap:10px;
-  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;min-height:168px}
-.card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(17,24,39,.08);border-color:color-mix(in srgb,var(--brand) 40%,#fff)}
-.card .row{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.card h3{font-size:17px;font-weight:600;line-height:1.35}
-.card p{font-size:13px;color:var(--ink2);line-height:1.6;flex:1}
-.card .meta{font-size:12px;color:var(--ink3);display:flex;gap:12px;border-top:1px solid var(--line);padding-top:10px}
-.card .meta .ai{color:var(--brand);font-weight:600}
-.empty{grid-column:1/-1;text-align:center;padding:80px 0;color:var(--ink3);font-size:14px;line-height:2}
+.legend .tag span{font-weight:500;opacity:.8}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding-bottom:80px}
+@media (max-width:1180px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:880px){.grid{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:40px}}
+@media (max-width:560px){.site .wrap{height:64px;gap:12px}.site nav{gap:10px}.site .logo,.site .logo img{height:22px}.cta{height:36px;padding:0 14px;font-size:13px}.grid{grid-template-columns:1fr}.hero{padding:56px 0 64px}.hero h1{font-size:32px}.site nav a.nav{display:none}.tab{padding:16px 12px 14px;font-size:15px}}
+.card{background:var(--bg);border-radius:8px;padding:24px;cursor:pointer;display:flex;flex-direction:column;gap:14px;min-height:196px;transition:background .18s ease,transform .18s ease}
+.card:hover{background:#EDEDED;transform:translateY(-2px)}
+.card .tags{display:flex;gap:6px;flex-wrap:wrap}
+.card h3{font-family:var(--display);font-size:18px;font-weight:700;line-height:1.4;color:var(--ink);flex:1}
+.card .links{display:flex;gap:18px;flex-wrap:wrap}
+.card .links span{font-family:var(--display);font-weight:700;font-size:14px;color:var(--brand)}
+.card .links .play:hover,.card:hover .links .more{text-decoration:underline}
+.empty{grid-column:1/-1;text-align:center;padding:80px 0;color:var(--ink3);font-size:15px;line-height:2}
+.sitefoot{border-top:1px solid var(--line);padding:26px 0;font-size:13px;color:var(--ink3)}
+.sitefoot .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.sitefoot a{color:var(--ink3);text-decoration:none}
+.sitefoot a:hover{color:var(--brand)}
 .foot{position:absolute;right:16px;bottom:8px;font-size:10px;color:var(--ink3)}
 
 /* ---------- 场景页 ---------- */
 .case{flex:1;display:flex;flex-direction:column;padding:22px 36px 20px;gap:16px;min-height:0}
 .c-head{display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
-.c-head h1{font-size:26px;font-weight:700;display:flex;align-items:center;gap:12px;line-height:1.25}
+.c-head h1{font-family:var(--display);font-size:28px;font-weight:800;letter-spacing:-.01em;display:flex;align-items:center;gap:12px;line-height:1.25}
 .c-head .sum{font-size:14px;color:var(--ink2);margin-top:6px}
 .c-meta{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex:0 1 auto;max-width:42%;padding-top:4px}
 .c-meta .kv{font-size:12px;color:var(--ink3);display:flex;flex-wrap:wrap;justify-content:flex-end;column-gap:14px;row-gap:4px}
 .c-meta .kv span{white-space:nowrap}
 .c-head > div:first-child{flex:1;min-width:0}
-.c-head h1{white-space:nowrap}
+.c-head h1{white-space:nowrap;flex-wrap:wrap;row-gap:8px}
 .c-meta .kv b{color:var(--ink2);font-weight:500}
 .c-mid{display:grid;grid-template-columns:420px 1fr;gap:16px;flex:1 1 186px;min-height:150px;max-height:290px}
-.box{border:1px solid var(--line);border-radius:10px;padding:14px 18px;background:#fff;min-height:0;overflow:hidden}
-.h{font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px;margin-bottom:10px;letter-spacing:.04em}
+.box{border:1px solid var(--line);border-radius:8px;padding:14px 18px;background:#fff;min-height:0;overflow:hidden}
+.h{font-family:var(--display);font-size:14px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:8px;margin-bottom:10px;letter-spacing:.04em}
 .h::before{content:"";width:4px;height:14px;border-radius:2px;background:var(--brand)}
 .desc{font-size:13px;line-height:1.62;color:var(--ink2)}
 .pains{display:grid;gap:8px;height:calc(100% - 30px)}
-.pain{background:var(--soft);border-radius:8px;padding:10px 12px;min-height:0;overflow:hidden}
+.pain{background:var(--bg);border-radius:8px;padding:10px 12px;min-height:0;overflow:hidden}
 .pain .pt{display:flex;gap:8px;align-items:center;margin-bottom:4px}
 .pain .n{flex:none;width:20px;height:20px;border-radius:50%;background:color-mix(in srgb,var(--brand) 12%,#fff);color:var(--brand);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;}
-.pain b{font-size:13.5px;line-height:1.3}
+.pain b{font-family:var(--display);font-weight:700;font-size:13.5px;line-height:1.3}
 .pain > span{display:block}
 .pain span{font-size:12.5px;color:var(--ink2);line-height:1.55}
 .c-flow{flex:1.6 0 auto;display:flex;flex-direction:column;min-height:0}
@@ -132,7 +164,7 @@ button{font-family:inherit;cursor:pointer}
 .node{position:relative;z-index:2;display:flex;align-items:center;min-height:0;padding:4px 0;opacity:0;transform:translateY(6px);animation:rise .45s cubic-bezier(.2,.7,.2,1) forwards}
 .nd{width:100%;border:1.5px solid #CBD5E1;background:#fff;border-radius:9px;padding:10px 7px 6px;text-align:center;position:relative;display:flex;flex-direction:column;justify-content:center;gap:3px}
 .nd .i{position:absolute;top:-9px;left:10px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:#fff;border:1.5px solid #CBD5E1;font-size:10.5px;color:var(--ink3);display:flex;align-items:center;justify-content:center;font-weight:700}
-.nd b{font-size:13px;font-weight:700;line-height:1.3}
+.nd b{font-family:var(--display);font-size:13px;font-weight:700;line-height:1.3}
 .nd small{font-size:11px;color:var(--ink2);line-height:1.35}
 .nd .edge{position:absolute;top:-9px;left:30px;max-width:calc(100% - 40px);height:16px;line-height:14px;padding:0 5px;border-radius:4px;background:#F1F5F9;border:1px solid #CBD5E1;color:var(--ink2);font-size:9.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .node.user .nd .edge{background:color-mix(in srgb,var(--brand) 8%,#fff);border-color:color-mix(in srgb,var(--brand) 35%,#fff);color:var(--brand)}
@@ -181,16 +213,20 @@ const esc = t => String(t ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt
 
 /* ---------- 语言 ---------- */
 const UI = {
-  zh: { export_domain: '导出本领域 PDF', export: '导出 PDF', prev: '← 上一个', next: '下一个 →', back: '返回',
+  zh: { export_domain: '导出本领域 PDF', export: '导出 PDF', prev: '← 上一个', next: '下一个 →', back: '← 返回',
         example: '示例', steps: n => `AI × ${n} 环节`, empty: d => `该领域暂无场景<br>在 cases/${d}/ 下新增 yaml 文件即可`,
         built: '更新于', clear: '清除筛选', none: '当前筛选下没有场景', industry: '行业', products: '产品', client: '客户', owner: '负责人', updated: '更新',
         desc: '场景描述', pains: '业务痛点', flow: '标准流程 · AI 介入点', ai: 'AI 环节（YonWork）', manual: '例外 / 后续阶段', lanes: ['使用者', 'YonWork'], types: {decision: '判断', exception: '例外', future: '后续阶段'},
-        fallback: '', lang: 'EN', lang_tip: '按 L 切换英文', close: '关闭' },
-  en: { export_domain: 'Export PDF', export: 'Export PDF', prev: '← Prev', next: 'Next →', back: 'Back',
+        fallback: '', lang: 'EN', lang_tip: '按 L 切换英文', close: '关闭',
+        play: '播放 Demo', more: '查看场景', site: '用友新加坡', cta: '预约演示', copy: '用友新加坡',
+        eyebrow: 'YonWork AI', hero: '看 AI 如何融入企业标准业务流程：按业务领域浏览场景、流程与 Demo' },
+  en: { export_domain: 'Export PDF', export: 'Export PDF', prev: '← Prev', next: 'Next →', back: '← Back',
         example: 'Sample', steps: n => `AI × ${n} step${n > 1 ? 's' : ''}`, empty: d => `No use cases yet<br>Add a yaml file under cases/${d}/`,
         built: 'Updated', clear: 'Clear', none: 'No use cases match this filter', industry: 'Industry', products: 'Products', client: 'Client', owner: 'Owner', updated: 'Updated',
         desc: 'Scenario', pains: 'Pain Points', flow: 'Standard Process · Where AI Fits', ai: 'AI step (YonWork)', manual: 'Exception / later phase', lanes: ['User', 'YonWork'], types: {decision: 'Decision', exception: 'Exception', future: 'Next phase'},
-        fallback: '中文 only', lang: '中文', lang_tip: 'Press L for Chinese', close: 'Close' },
+        fallback: '中文 only', lang: '中文', lang_tip: 'Press L for Chinese', close: 'Close',
+        play: 'Play Demo', more: 'View use case', site: 'Yonyou Singapore', cta: 'Free Demo', copy: 'Yonyou Singapore',
+        eyebrow: 'YonWork AI', hero: 'See where AI fits into standard business processes. Browse use cases, process flows and demos by business area.' },
 };
 let lang = S.default_lang === 'en' ? 'en' : 'zh';
 try { const q = new URLSearchParams(location.search).get('lang'); const m = localStorage.getItem('aicases-lang');
@@ -208,8 +244,10 @@ const ST = Object.fromEntries(S.statuses.map((s, i) => [s.id, {...s, order: i}])
 const DM = Object.fromEntries(S.domains.map(d => [d.id, d]));
 const rank = c => Math.min(...c.status.map(s => ST[s].order));   // 多个标签时按最靠前的状态排序
 const tags = (c, cls = '') => [...c.status].sort((a, b) => ST[a].order - ST[b].order).map(s => tag(s, cls)).join('');
+// bold_owner 的场景排在前面，其后按状态、标题排序
+const mine = c => !S.bold_owner || c.owner === S.bold_owner ? 1 : 0;
 const byDomain = id => DATA.cases.filter(c => c.domain === id)
-  .sort((a, b) => rank(a) - rank(b) || a.zh.title.localeCompare(b.zh.title, 'zh'));
+  .sort((a, b) => mine(b) - mine(a) || rank(a) - rank(b) || a.zh.title.localeCompare(b.zh.title, 'zh'));
 // 没有场景的领域页签 / 状态标签不显示（site.yaml 里保留定义，有场景后自动出现）
 const DOMS = S.domains.filter(d => DATA.cases.some(c => c.domain === d.id));
 const STATS = S.statuses.filter(s => DATA.cases.some(c => c.status.includes(s.id)));
@@ -222,15 +260,16 @@ const stage = document.getElementById('stage');
 stage.addEventListener('click', e => { if (e.target.closest('.btn.lang')) setLang(lang === 'en' ? 'zh' : 'en'); });
 
 const tag = (sid, cls = '') => { const s = ST[sid]; return `<span class="tag ${cls}" style="--c:${s.color}" title="${esc(pick(s, 'desc'))}">${esc(pick(s, 'name'))}</span>`; };
-const tagsPlayable = (c, cls = '') => [...c.status].sort((a, b) => ST[a].order - ST[b].order).map(sid => {
-  if (sid !== 'demo' || !(c.demo_video || []).length) return tag(sid, cls);
-  const s = ST[sid];
-  return `<span class="tag play ${cls}" style="--c:${s.color}" title="${esc(pick(s, 'desc'))}" onclick="openVideo('${c.id}')">▶ ${esc(pick(s, 'name'))}</span>`;
-}).join('');
+// 场景页标题旁的「播放 Demo」按钮：有视频时可点；状态含 demo 但还没视频时显示为虚线占位
+const playBtn = c => (c.demo_video || []).length
+  ? `<button class="play-btn noprint" onclick="openVideo('${c.id}')"><svg viewBox="0 0 10 10"><path d="M1 0.5 L9.5 5 L1 9.5 z"/></svg>${U().play}</button>` : '';
+// 非 site.yaml 中 bold_owner 负责的场景，标题用常规字重
+const plain = c => S.bold_owner && c.owner !== S.bold_owner ? 'plain' : '';
 const logo = () => DATA.logo ? `<div class="logo"><img src="${DATA.logo}" alt="yonyou"></div>` : `<div class="logo"><span class="ph">LOGO</span></div>`;
 const langBtn = () => `<button class="btn lang" title="${U().lang_tip}">${U().lang}<kbd>L</kbd></button>`;
 
-function fit() {   // 铺满整个窗口：按较小边缩放，另一边的逻辑尺寸随窗口比例延展
+function fit() {   // 铺满整个窗口：按较小边缩放，另一边的逻辑尺寸随窗口比例延展（首页为可滚动网页，不缩放）
+  if (document.body.classList.contains('scroll')) { stage.style.width = stage.style.height = stage.style.transform = ''; return; }
   const k = Math.min(innerWidth / 1280, innerHeight / 720);
   stage.style.width = innerWidth / k + 'px';
   stage.style.height = innerHeight / k + 'px';
@@ -243,20 +282,26 @@ function renderHome() {
   const counts = {}; DATA.cases.forEach(c => c.status.forEach(s => counts[s] = (counts[s] || 0) + 1));
   const list = visible(state.domain);
   stage.innerHTML = `
-  <div class="top">${logo()}<div class="sep"></div><div class="crumb"><b>${esc(pick(S, 'title'))}</b></div>
-    <div class="right noprint"><button class="btn" onclick="printDomain()">${U().export_domain}</button>${langBtn()}</div></div>
-  <div class="tabs">${DOMS.map(d => `<button class="tab ${d.id === state.domain ? 'on' : ''} ${visible(d.id).length ? '' : 'zero'}" onclick="go('#/${d.id}')">${esc(pick(d, 'name'))}<small>${visible(d.id).length}</small></button>`).join('')}
-    <div class="legend">${STATS.map(s => `<span class="tag ${state.sel.has(s.id) ? 'on' : state.sel.size ? 'dim' : ''}" style="--c:${s.color}" title="${esc(pick(s, 'desc'))}" onclick="toggle('${s.id}')">${esc(pick(s, 'name'))} <span>${counts[s.id] || 0}</span></span>`).join('')}${state.sel.size ? `<span class="clear" onclick="state.sel.clear();renderHome()">${U().clear}</span>` : ''}</div>
-  </div>
-  <div class="grid-wrap"><div class="grid fade">
+  <header class="site"><div class="wrap">
+    <a class="logo" href="https://www.yonyou.com.sg/">${DATA.logo ? `<img src="${DATA.logo}" alt="Yonyou Singapore">` : 'yonyou'}</a>
+    <nav class="noprint"><a class="nav" href="https://www.yonyou.com.sg/">${U().site}</a>${langBtn()}
+      <a class="cta" href="https://www.yonyou.com.sg/contact-us/" target="_blank" rel="noopener">${U().cta}</a></nav>
+  </div></header>
+  <section class="hero"><div class="wrap"><div class="eyebrow">${U().eyebrow}</div><h1>${esc(pick(S, 'title'))}</h1><p>${U().hero}</p></div></section>
+  <div class="tabbar"><div class="wrap">${DOMS.map(d => `<button class="tab ${d.id === state.domain ? 'on' : ''} ${visible(d.id).length ? '' : 'zero'}" onclick="go('#/${d.id}')">${esc(pick(d, 'name'))}<small>${visible(d.id).length}</small></button>`).join('')}</div></div>
+  <div class="wrap">
+    <div class="toolbar"><div class="legend">${STATS.map(s => `<span class="tag ${state.sel.has(s.id) ? 'on' : state.sel.size ? 'dim' : ''}" style="--c:${s.color}" title="${esc(pick(s, 'desc'))}" onclick="toggle('${s.id}')">${esc(pick(s, 'name'))} <span>${counts[s.id] || 0}</span></span>`).join('')}${state.sel.size ? `<span class="clear" onclick="state.sel.clear();renderHome()">${U().clear}</span>` : ''}</div>
+      <button class="btn noprint" onclick="printDomain()">${U().export_domain}</button></div>
+    <div class="grid fade">
     ${list.length ? list.map(c => { const t = C(c); return `
       <div class="card" onclick="go('#/case/${c.id}')">
-        <div class="row"><span class="tags">${tags(c)}</span><span>${fb(c)}${c.example ? `<span class="chip-ex">${U().example}</span>` : ''}</span></div>
-        <h3>${esc(t.title)}</h3><p>${esc(t.summary)}</p>
-        <div class="meta"><span class="ai">${U().steps(t.flow.filter(f => f.lane === 'ai').length)}</span><span>${esc(c.owner)}</span><span style="margin-left:auto">${esc(c.updated)}</span></div>
+        <div class="tags">${tags(c)}${fb(c)}${c.example ? `<span class="chip-ex">${U().example}</span>` : ''}</div>
+        <h3 class="${plain(c)}">${esc(t.title)}</h3>
+        <div class="links"><span class="more">${U().more} ›</span>${(c.demo_video || []).length ? `<span class="play" onclick="event.stopPropagation();openVideo('${c.id}')">▶ ${U().play}</span>` : ''}</div>
       </div>`; }).join('') : `<div class="empty">${state.sel.size ? U().none : U().empty(esc(state.domain))}</div>`}
-  </div></div>
-  <div class="foot">${U().built} ${esc(DATA.built)}</div>`;
+    </div>
+  </div>
+  <footer class="sitefoot"><div class="wrap"><span>© ${new Date().getFullYear()} ${U().copy} · ${esc(pick(S, 'title'))}</span><a href="https://www.yonyou.com.sg/">www.yonyou.com.sg</a></div></footer>`;
 }
 function toggle(id) {
   state.sel.has(id) ? state.sel.delete(id) : state.sel.add(id);
@@ -267,21 +312,18 @@ function toggle(id) {
 /* ---------- 场景页 ---------- */
 function caseHTML(c, nav = true) {
   const t = C(c), u = U();
-  const list = navList(c), i = list.findIndex(x => x.id === c.id);
   const n = t.flow.length, LN = {user: 1, ai: 2, erp: 3};
-  const meta = [[u.industry, t.industry || c.zh.industry], [u.products, c.products.join(' / ')], [u.client, c.client], [u.owner, c.owner], [u.updated, c.updated]].filter(x => x[1]);
+  const meta = [[u.industry, t.industry || c.zh.industry], [u.client, c.client]].filter(x => x[1]);
   return `
-  <div class="top">${logo()}<div class="sep"></div>
+  <div class="top">${nav ? `<button class="btn back noprint" onclick="go('#/${c.domain}')">${u.back}</button>` : ''}${logo()}<div class="sep"></div>
     <div class="crumb"><a onclick="go('#/')">${esc(pick(S, 'title'))}</a>›<a onclick="go('#/${c.domain}')">${esc(pick(DM[c.domain], 'name'))}</a>›<b>${esc(t.title)}</b></div>
-    ${nav ? `<div class="right noprint"><span>${i + 1} / ${list.length}</span>
-      <button class="btn" ${i <= 0 ? 'disabled' : ''} onclick="go('#/case/${list[i - 1]?.id}')">${u.prev}</button>
-      <button class="btn" ${i >= list.length - 1 ? 'disabled' : ''} onclick="go('#/case/${list[i + 1]?.id}')">${u.next}</button>
+    ${nav ? `<div class="right noprint">
       <button class="btn" onclick="printDomain()">${u.export}</button>
-      <button class="btn" onclick="go('#/${c.domain}')">${u.back}</button>${langBtn()}</div>` : ''}
+${langBtn()}</div>` : ''}
   </div>
   <div class="case ${nav ? 'fade' : ''} ${lang}">
     <div class="c-head">
-      <div><h1>${esc(t.title)} ${tagsPlayable(c, 'lg')}${fb(c)}${c.example ? `<span class="chip-ex">${u.example}</span>` : ''}</h1><div class="sum">${esc(t.summary)}</div></div>
+      <div><h1 class="${plain(c)}">${esc(t.title)} ${tags(c, 'lg')}${playBtn(c)}${fb(c)}${c.example ? `<span class="chip-ex">${u.example}</span>` : ''}</h1><div class="sum">${esc(t.summary)}</div></div>
       <div class="c-meta"><div class="kv">${meta.map(([k, v]) => `<span>${k} <b>${esc(v)}</b></span>`).join('')}</div></div>
     </div>
     <div class="c-mid">
@@ -331,7 +373,11 @@ function drawLinks(root = document) {
 
 /* ---------- Demo 视频页 ---------- */
 let vstate = null;   // { case, idx } 仅在视频页非空
-function openVideo(id) { window.open('#/video/' + id, '_blank'); }
+function openVideo(id) {   // 只有一个 HTML Demo 时直接打开该页面；否则进入播放页
+  const clips = DATA.cases.find(x => x.id === id).demo_video;
+  window.open(clips.length === 1 && clips[0].kind === 'html' ? clips[0].path : '#/video/' + id, '_blank');
+}
+const clipHTML = v => v.kind === 'html' ? `<iframe id="vid" src="${esc(v.path)}"></iframe>` : `<video id="vid" src="${esc(v.path)}" autoplay controls></video>`;
 const clipLabel = v => (lang === 'en' && v.label_en) || v.label || '';
 function renderVideo(c) {
   const t = C(c), clips = c.demo_video;
@@ -339,7 +385,7 @@ function renderVideo(c) {
   stage.innerHTML = `
   <div class="video-page">
     <div class="vtop"><span>${esc(t.title)}</span><button onclick="closeVideo()">${U().close}</button></div>
-    <div class="vbody"><video id="vid" src="${esc(clips[0].path)}" autoplay controls></video><div class="vtoast" id="vtoast"></div></div>
+    <div class="vbody" id="vbody">${clipHTML(clips[0])}<div class="vtoast" id="vtoast"></div></div>
     ${clips.length > 1 ? `<div class="vnav">
       <button onclick="videoNav(-1)" disabled id="vprev">‹</button>
       <span id="vcount">${esc(clipLabel(clips[0]))} 1 / ${clips.length}</span>
@@ -353,7 +399,8 @@ function videoNav(d) {
   if (ni < 0 || ni >= clips.length) return;
   vstate.idx = ni;
   const v = document.getElementById('vid');
-  v.pause(); v.src = clips[ni].path; v.playbackRate = 1; v.play();
+  if (v.pause) v.pause();
+  v.outerHTML = clipHTML(clips[ni]);
   document.getElementById('vcount').textContent = `${clipLabel(clips[ni])} ${ni + 1} / ${clips.length}`;
   document.getElementById('vprev').disabled = ni <= 0;
   document.getElementById('vnext').disabled = ni >= clips.length - 1;
@@ -380,6 +427,11 @@ function route() {
   document.title = pick(S, 'title');
   const h = location.hash.replace(/^#\/?/, '');
   vstate = null;
+  const home = !h.startsWith('video/') && !h.startsWith('case/');
+  const wasHome = document.body.classList.contains('scroll');
+  document.body.classList.toggle('scroll', home);   // 首页：可滚动网页；场景页 / 视频页：16:9 缩放页面
+  fit();
+  if (!home || !wasHome) scrollTo(0, 0);
   if (h.startsWith('video/')) {
     const c = DATA.cases.find(x => x.id === h.slice(6));
     if (c && (c.demo_video || []).length) { renderVideo(c); return; }
@@ -398,6 +450,8 @@ addEventListener('keydown', e => {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
   if (vstate) {
     const v = document.getElementById('vid');
+    if (e.key === 'Escape') return closeVideo();
+    if (!v || v.tagName !== 'VIDEO') return;   // HTML Demo：不拦截按键
     if (e.code === 'Space') { e.preventDefault(); v.paused ? v.play() : v.pause(); return; }
     if ((e.key === 'q' || e.key === 'Q') && !e.repeat && !qTimer) {
       qTimer = setTimeout(() => { qFast = true; v.playbackRate = 4; showToast('×4', true); }, 350);
@@ -415,6 +469,7 @@ addEventListener('keydown', e => {
 addEventListener('keyup', e => {
   if (!vstate || (e.key !== 'q' && e.key !== 'Q')) return;
   const v = document.getElementById('vid');
+  if (!v || v.tagName !== 'VIDEO') return;
   if (qTimer) { clearTimeout(qTimer); qTimer = null; }
   if (qFast) { qFast = false; v.playbackRate = 1; hideToast(); }
   else { if (v.duration) v.currentTime = Math.min(v.duration, v.currentTime + 5); showToast('+5s'); }

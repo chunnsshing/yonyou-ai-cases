@@ -7,6 +7,7 @@ subtitle_en: Yonyou Singapore · YonWork Use Case Library
 brand_color: "#E50014"      # 主色，取自官方 logo 红色
 logo: assets/logo.png        # 官方 logo（透明底），构建时自动内嵌
 default_lang: zh             # 默认语言 zh / en
+bold_owner: Elmond           # 只有这位负责人的场景标题加粗，其他人的场景标题为常规字重
 
 # 领域 = 首页页签，顺序即显示顺序。id 必须与 cases/ 下的文件夹名一致
 domains:
@@ -31,6 +32,12 @@ domains:
 
 # 场景状态标签（固定5种），顺序即图例顺序
 statuses:
+  - id: ready                # 自动标签：videos/<场景id>/ 里有视频或 HTML 时由构建自动加上，无需写进 yaml
+    name: 已就绪
+    name_en: Ready
+    color: "#DB2777"
+    desc: Demo 视频或结果看板已备好，点「播放 Demo」即可查看
+    desc_en: Demo video or result dashboard is ready; click Play Demo
   - id: delivered
     name: 已交付
     name_en: Delivered
@@ -45,19 +52,19 @@ statuses:
     desc_en: Proven solution, ready to roll out to other clients
   - id: demo
     name: 可Demo
-    name_en: Demo Ready
+    name_en: Can Demo
     color: "#7C3AED"
     desc: 有可演示的Demo环境
     desc_en: A working demo environment is available
   - id: to-verify
+    name: 开发中
+    name_en: Developing
+    color: "#D97706"
+    desc: 正在开发，尚不能演示
+    desc_en: In development; not ready to demo yet
+  - id: future
     name: 待验证
     name_en: To Verify
-    color: "#D97706"
-    desc: 方案已设计，需技术/业务验证
-    desc_en: Designed; needs technical or business validation
-  - id: future
-    name: 未来可能
-    name_en: Future
     color: "#0891B2"
-    desc: 方向性构想，依赖产品或技术演进
-    desc_en: Directional idea, depends on product or technology evolution
+    desc: 方向性构想，需技术/业务验证
+    desc_en: Directional idea; needs technical or business validation

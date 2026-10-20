@@ -14,8 +14,10 @@ industry: 通用                    # 选填。适用行业
 client: ""                       # 选填。公开仓库：未确认可公开的客户名一律不写，industry 写行业即可
 products: [YonWork, YonSuite]    # 选填。涉及产品，列表
 system: YonSuite                 # 选填。泳道图第三行（系统）的名字，如 YonSuite / YonBIP / NCC；默认 ERP
-demo_video:                       # 选填。status 含 demo 时才有意义；点击场景页的"可Demo"标签会在新页签打开视频
-  - path: demos/<场景id>/xxx.mp4  # 相对仓库根目录；demos/ 已 .gitignore，不进公开仓库，只在本机可播
+# Demo：把视频（.mp4/.mov/.webm）或结果看板（.html）放进 videos/<场景id>/ 即可，构建时自动加「已就绪」标签和「播放 Demo」按钮，无需写进 yaml。
+#   ⚠️ 公开网站：只放演示/测试租户的内容，不放真实客户数据（姓名、电话、车牌、发票、银行账号等）；视频先压缩（单个文件 < 100MB）
+demo_video:                       # 选填。仅当视频不在 videos/<场景id>/ 下时才需要写
+  - path: videos/<场景id>/xxx.mp4  # 相对仓库根目录
     label: 完整流程               # 选填。多条视频时显示在切换器上，用来区分片段
     label_en: Full flow           # 选填。label 的英文版，切到英文页面时显示
 

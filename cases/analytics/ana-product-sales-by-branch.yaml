@@ -1,0 +1,69 @@
+id: ana-product-sales-by-branch
+title: 月度产品分门店销售看板
+domain: analytics
+status: demo
+owner: Elmond
+updated: 2026-10-15
+industry: 轮胎零售与汽车服务
+products: [YonWork, YonBIP]
+system: YonBIP
+
+summary: 每月自动汇总销售出库，按产品排名并展开各门店明细，版式每月一致
+
+description: >
+  每月初，管理层需要知道上个月各产品卖了多少、主要卖在哪些门店。目前要从系统导出销售出库单，
+  在Excel里按产品和门店手工透视、排序、做图，版式每次不同，月与月之间也难以对比。
+
+pain_points:
+  - title: 手工透视做图
+    detail: 导出出库单后在Excel里按产品门店汇总
+  - title: 版式每次不同
+    detail: 每月报表样式不一，难以对比
+
+flow:
+  - step: 要上月销售看板
+    lane: user
+    note: 默认上一个完整月份
+  - step: 读取销售出库
+    lane: erp
+    note: 只计产品出库类型
+    edge: 请求
+  - step: 汇总与排名
+    lane: ai
+    note: 产品×门店，从高到低
+  - step: 查看销售看板
+    lane: user
+    note: 首页排名，每个产品一页明细
+    edge: 看板
+
+en:
+  title: Monthly Product Sales by Branch
+  industry: Tyre retail & auto service
+  summary: Monthly sales issues ranked by product with a branch breakdown, same layout every month
+  description: >
+    At the start of each month, management wants to know how much of each product sold last month and at which
+    branches. Today the sales issue documents are exported, then pivoted, sorted and charted by hand in Excel, so
+    the layout changes each month and months are hard to compare.
+  pain_points:
+    - title: Manual pivots and charts
+      detail: Sales issues are exported and summarised by product and branch in Excel
+    - title: Layout changes monthly
+      detail: Each month's report looks different, so comparison is hard
+  flow:
+    - step: Ask for last month
+      lane: user
+      note: Defaults to the last full month
+    - step: Read sales issues
+      lane: erp
+      note: Product Issue transactions only
+      edge: Request
+    - step: Aggregate and rank
+      lane: ai
+      note: Product × branch, high to low
+    - step: View the dashboard
+      lane: user
+      note: Ranking page, then one page per product
+      edge: Dashboard
+
+sources:
+  - Skill yonwork-sales-dashboard
