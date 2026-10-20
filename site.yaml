@@ -32,39 +32,40 @@ domains:
 
 # 场景状态标签（固定5种），顺序即图例顺序
 statuses:
-  - id: ready                # 自动标签：videos/<场景id>/ 里有视频或 HTML 时由构建自动加上，无需写进 yaml
-    name: 已就绪
-    name_en: Ready
+# 对外显示的名称面向客户（公开网站）；id 和内部含义不变，见每条的注释。
+  - id: ready                # 内部：videos/<场景id>/ 里有视频或 HTML，构建自动加上，无需写进 yaml
+    name: 观看演示
+    name_en: Watch Demo
     color: "#DB2777"
-    desc: Demo 视频或结果看板已备好，点「播放 Demo」即可查看
-    desc_en: Demo video or result dashboard is ready; click Play Demo
-  - id: delivered
-    name: 已交付
-    name_en: Delivered
+    desc: 可直接观看演示视频或示例看板
+    desc_en: A demo video or sample dashboard is available to view
+  - id: delivered            # 内部：已在客户现场上线交付
+    name: 客户已上线
+    name_en: Live at Clients
     color: "#16A34A"
-    desc: 已在客户现场上线交付
-    desc_en: Live at a client site
-  - id: replicable
-    name: 可复制
-    name_en: Replicable
+    desc: 已在客户业务中上线运行
+    desc_en: Running in production at client sites
+  - id: replicable           # 内部：方案成熟，可直接复制到其他客户
+    name: 成熟方案
+    name_en: Proven
     color: "#2563EB"
-    desc: 方案成熟，可直接复制到其他客户
-    desc_en: Proven solution, ready to roll out to other clients
-  - id: demo
-    name: 可Demo
-    name_en: Can Demo
+    desc: 成熟方案，可快速部署到您的业务
+    desc_en: A proven solution that can be rolled out to your business quickly
+  - id: demo                 # 内部：有可演示的 Demo 环境
+    name: 可预约演示
+    name_en: Demo Available
     color: "#7C3AED"
-    desc: 有可演示的Demo环境
-    desc_en: A working demo environment is available
-  - id: to-verify
-    name: 开发中
-    name_en: Developing
+    desc: 可预约现场或线上演示
+    desc_en: Book a live demo with our team
+  - id: to-verify            # 内部：开发中，尚不能演示
+    name: 按需定制
+    name_en: Tailored
     color: "#D97706"
-    desc: 正在开发，尚不能演示
-    desc_en: In development; not ready to demo yet
-  - id: future
-    name: 待验证
-    name_en: To Verify
+    desc: 结合您的流程与数据定制交付
+    desc_en: Configured to your processes and data as part of delivery
+  - id: future               # 内部：方向性构想，需技术/业务验证
+    name: 联合共创
+    name_en: Co-innovation
     color: "#0891B2"
-    desc: 方向性构想，需技术/业务验证
-    desc_en: Directional idea; needs technical or business validation
+    desc: 与客户共同设计、联合落地的创新场景
+    desc_en: Designed and built together with clients

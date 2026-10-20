@@ -56,7 +56,7 @@ button{font-family:inherit;cursor:pointer}
 .tag.play{cursor:pointer}
 .tag.play:hover{filter:brightness(.92)}
 .tag.play::before{display:none}
-.play-btn{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 16px 0 14px;border-radius:4px;border:1px solid var(--brand);background:var(--brand);color:#fff;font-family:var(--display);font-size:13px;font-weight:700;white-space:nowrap;transition:filter .15s ease}
+.play-btn{text-decoration:none;display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 16px 0 14px;border-radius:4px;border:1px solid var(--brand);background:var(--brand);color:#fff;font-family:var(--display);font-size:13px;font-weight:700;white-space:nowrap;transition:filter .15s ease}
 .play-btn:hover{filter:brightness(.92)}
 .play-btn svg{width:10px;height:10px;fill:currentColor}
 .play-btn.off{background:#fff;color:var(--ink3);border:1px dashed var(--ink3);cursor:default}
@@ -117,7 +117,7 @@ body.scroll .stage{width:auto!important;height:auto!important;min-height:100vh;t
 .card .tags{display:flex;gap:6px;flex-wrap:wrap}
 .card h3{font-family:var(--display);font-size:18px;font-weight:700;line-height:1.4;color:var(--ink);flex:1}
 .card .links{display:flex;gap:18px;flex-wrap:wrap}
-.card .links span{font-family:var(--display);font-weight:700;font-size:14px;color:var(--brand)}
+.card .links span,.card .links a{text-decoration:none;font-family:var(--display);font-weight:700;font-size:14px;color:var(--brand)}
 .card .links .play:hover,.card:hover .links .more{text-decoration:underline}
 .empty{grid-column:1/-1;text-align:center;padding:80px 0;color:var(--ink3);font-size:15px;line-height:2}
 .sitefoot{border-top:1px solid var(--line);padding:26px 0;font-size:13px;color:var(--ink3)}
@@ -261,8 +261,10 @@ stage.addEventListener('click', e => { if (e.target.closest('.btn.lang')) setLan
 
 const tag = (sid, cls = '') => { const s = ST[sid]; return `<span class="tag ${cls}" style="--c:${s.color}" title="${esc(pick(s, 'desc'))}">${esc(pick(s, 'name'))}</span>`; };
 // 场景页标题旁的「播放 Demo」按钮：有视频时可点；状态含 demo 但还没视频时显示为虚线占位
+// Play Demo 是普通链接（target=_blank），浏览器一定在新页签打开，不会替换当前页
+const demoHref = c => { const v = c.demo_video || []; return v.length === 1 && v[0].kind === 'html' ? v[0].path : '#/video/' + c.id; };
 const playBtn = c => (c.demo_video || []).length
-  ? `<button class="play-btn noprint" onclick="openVideo('${c.id}')"><svg viewBox="0 0 10 10"><path d="M1 0.5 L9.5 5 L1 9.5 z"/></svg>${U().play}</button>` : '';
+  ? `<a class="play-btn noprint" href="${esc(demoHref(c))}" target="_blank" rel="noopener"><svg viewBox="0 0 10 10"><path d="M1 0.5 L9.5 5 L1 9.5 z"/></svg>${U().play}</a>` : '';
 // 非 site.yaml 中 bold_owner 负责的场景，标题用常规字重
 const plain = c => S.bold_owner && c.owner !== S.bold_owner ? 'plain' : '';
 const logo = () => DATA.logo ? `<div class="logo"><img src="${DATA.logo}" alt="yonyou"></div>` : `<div class="logo"><span class="ph">LOGO</span></div>`;
@@ -284,7 +286,7 @@ function renderHome() {
   stage.innerHTML = `
   <header class="site"><div class="wrap">
     <a class="logo" href="https://www.yonyou.com.sg/">${DATA.logo ? `<img src="${DATA.logo}" alt="Yonyou Singapore">` : 'yonyou'}</a>
-    <nav class="noprint"><a class="nav" href="https://www.yonyou.com.sg/">${U().site}</a>${langBtn()}
+    <nav class="noprint">${langBtn()}
       <a class="cta" href="https://www.yonyou.com.sg/contact-us/" target="_blank" rel="noopener">${U().cta}</a></nav>
   </div></header>
   <section class="hero"><div class="wrap"><div class="eyebrow">${U().eyebrow}</div><h1>${esc(pick(S, 'title'))}</h1><p>${U().hero}</p></div></section>
@@ -297,7 +299,7 @@ function renderHome() {
       <div class="card" onclick="go('#/case/${c.id}')">
         <div class="tags">${tags(c)}${fb(c)}${c.example ? `<span class="chip-ex">${U().example}</span>` : ''}</div>
         <h3 class="${plain(c)}">${esc(t.title)}</h3>
-        <div class="links"><span class="more">${U().more} ›</span>${(c.demo_video || []).length ? `<span class="play" onclick="event.stopPropagation();openVideo('${c.id}')">▶ ${U().play}</span>` : ''}</div>
+        <div class="links"><span class="more">${U().more} ›</span>${(c.demo_video || []).length ? `<a class="play" href="${esc(demoHref(c))}" target="_blank" rel="noopener" onclick="event.stopPropagation()">▶ ${U().play}</a>` : ''}</div>
       </div>`; }).join('') : `<div class="empty">${state.sel.size ? U().none : U().empty(esc(state.domain))}</div>`}
     </div>
   </div>
@@ -373,10 +375,6 @@ function drawLinks(root = document) {
 
 /* ---------- Demo 视频页 ---------- */
 let vstate = null;   // { case, idx } 仅在视频页非空
-function openVideo(id) {   // 只有一个 HTML Demo 时直接打开该页面；否则进入播放页
-  const clips = DATA.cases.find(x => x.id === id).demo_video;
-  window.open(clips.length === 1 && clips[0].kind === 'html' ? clips[0].path : '#/video/' + id, '_blank');
-}
 const clipHTML = v => v.kind === 'html' ? `<iframe id="vid" src="${esc(v.path)}"></iframe>` : `<video id="vid" src="${esc(v.path)}" autoplay controls></video>`;
 const clipLabel = v => (lang === 'en' && v.label_en) || v.label || '';
 function renderVideo(c) {
