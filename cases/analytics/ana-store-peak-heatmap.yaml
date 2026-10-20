@@ -1,9 +1,9 @@
 id: ana-store-peak-heatmap
 title: 门店高峰时段热力图
 domain: analytics
-status: [demo, replicable]
+status: [delivered, demo, replicable]
 owner: Elmond
-updated: 2026-09-28
+updated: 2026-10-20
 industry: 轮胎零售与汽车服务
 products: [YonWork, YonSuite]
 system: YonSuite
