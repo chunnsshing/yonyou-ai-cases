@@ -115,6 +115,7 @@ body.scroll .stage{width:auto!important;height:auto!important;min-height:100vh;t
 .card{background:var(--bg);border-radius:8px;padding:24px;cursor:pointer;display:flex;flex-direction:column;gap:14px;min-height:196px;transition:background .18s ease,transform .18s ease}
 .card:hover{background:#EDEDED;transform:translateY(-2px)}
 .card .tags{display:flex;gap:6px;flex-wrap:wrap}
+.card .tags:empty{display:none}
 .card h3{font-family:var(--display);font-size:18px;font-weight:700;line-height:1.4;color:var(--ink);flex:1}
 .card .links{display:flex;gap:18px;flex-wrap:wrap}
 .card .links span,.card .links a{text-decoration:none;font-family:var(--display);font-weight:700;font-size:14px;color:var(--brand)}
@@ -245,7 +246,7 @@ const DM = Object.fromEntries(S.domains.map(d => [d.id, d]));
 DM.all = { id: 'all', name: '全部', name_en: 'All' };
 const rank = c => Math.min(...c.status.map(s => ST[s].order));   // 多个标签时按最靠前的状态排序
 // 「观看演示」(ready) 只用作顶部筛选；卡片和场景页已有「播放 Demo」，不再重复显示这个标签
-const tags = (c, cls = '') => c.status.filter(s => s !== 'ready').sort((a, b) => ST[a].order - ST[b].order).map(s => tag(s, cls)).join('');
+const tags = (c, cls = '') => c.status.filter(s => s !== 'ready' && PUB(s)).sort((a, b) => ST[a].order - ST[b].order).map(s => tag(s, cls)).join('');
 // bold_owner 的场景排在前面，其后按状态、标题排序
 const mine = c => !S.bold_owner || c.owner === S.bold_owner ? 1 : 0;
 const byDomain = id => DATA.cases.filter(c => c.domain === id)
@@ -254,7 +255,9 @@ const byDomain = id => DATA.cases.filter(c => c.domain === id)
 const AREAS = S.domains.filter(d => DATA.cases.some(c => c.domain === d.id));
 const ALL = { id: 'all', name: '全部', name_en: 'All' };
 const DOMS = [ALL, ...AREAS];   // 「全部」页签在最前，也是默认页签
-const STATS = S.statuses.filter(s => DATA.cases.some(c => c.status.includes(s.id)));
+// public: false 的状态只在内部跟踪，网站上不显示、不进筛选
+const PUB = s => ST[s] && ST[s].public !== false;
+const STATS = S.statuses.filter(s => s.public !== false && DATA.cases.some(c => c.status.includes(s.id)));
 const state = { domain: 'all', sel: new Set() };   // sel 为空 = 全部显示
 const shown = c => !state.sel.size || c.status.some(s => state.sel.has(s));
 const visible = id => (id === 'all' ? AREAS.flatMap(d => byDomain(d.id)) : byDomain(id)).filter(shown);

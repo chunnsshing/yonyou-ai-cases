@@ -33,6 +33,7 @@ domains:
 # 场景状态标签（固定5种），顺序即图例顺序
 statuses:
 # 对外显示的名称面向客户（公开网站）；id 和内部含义不变，见每条的注释。
+# public: false = 只在内部跟踪（yaml 里照常填写），网站上不显示该标签，也不出现在筛选里。
   - id: ready                # 内部：videos/<场景id>/ 里有视频或 HTML，构建自动加上，无需写进 yaml
     name: 观看演示
     name_en: Watch Demo
@@ -46,24 +47,28 @@ statuses:
     desc: 已在客户业务中上线运行
     desc_en: Running in production at client sites
   - id: replicable           # 内部：方案成熟，可直接复制到其他客户
+    public: false
     name: 成熟方案
     name_en: Proven
     color: "#2563EB"
     desc: 成熟方案，可快速部署到您的业务
     desc_en: A proven solution that can be rolled out to your business quickly
   - id: demo                 # 内部：有可演示的 Demo 环境
+    public: false
     name: 可预约演示
     name_en: Demo Available
     color: "#7C3AED"
     desc: 可预约现场或线上演示
     desc_en: Book a live demo with our team
   - id: to-verify            # 内部：开发中，尚不能演示
+    public: false
     name: 按需定制
     name_en: Tailored
     color: "#D97706"
     desc: 结合您的流程与数据定制交付
     desc_en: Configured to your processes and data as part of delivery
   - id: future               # 内部：方向性构想，需技术/业务验证
+    public: false
     name: 联合共创
     name_en: Co-innovation
     color: "#0891B2"
