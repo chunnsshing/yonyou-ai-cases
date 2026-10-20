@@ -242,18 +242,22 @@ function setLang(l) {
 
 const ST = Object.fromEntries(S.statuses.map((s, i) => [s.id, {...s, order: i}]));
 const DM = Object.fromEntries(S.domains.map(d => [d.id, d]));
+DM.all = { id: 'all', name: '全部', name_en: 'All' };
 const rank = c => Math.min(...c.status.map(s => ST[s].order));   // 多个标签时按最靠前的状态排序
-const tags = (c, cls = '') => [...c.status].sort((a, b) => ST[a].order - ST[b].order).map(s => tag(s, cls)).join('');
+// 「观看演示」(ready) 只用作顶部筛选；卡片和场景页已有「播放 Demo」，不再重复显示这个标签
+const tags = (c, cls = '') => c.status.filter(s => s !== 'ready').sort((a, b) => ST[a].order - ST[b].order).map(s => tag(s, cls)).join('');
 // bold_owner 的场景排在前面，其后按状态、标题排序
 const mine = c => !S.bold_owner || c.owner === S.bold_owner ? 1 : 0;
 const byDomain = id => DATA.cases.filter(c => c.domain === id)
   .sort((a, b) => mine(b) - mine(a) || rank(a) - rank(b) || a.zh.title.localeCompare(b.zh.title, 'zh'));
 // 没有场景的领域页签 / 状态标签不显示（site.yaml 里保留定义，有场景后自动出现）
-const DOMS = S.domains.filter(d => DATA.cases.some(c => c.domain === d.id));
+const AREAS = S.domains.filter(d => DATA.cases.some(c => c.domain === d.id));
+const ALL = { id: 'all', name: '全部', name_en: 'All' };
+const DOMS = [ALL, ...AREAS];   // 「全部」页签在最前，也是默认页签
 const STATS = S.statuses.filter(s => DATA.cases.some(c => c.status.includes(s.id)));
-const state = { domain: (DOMS[0] || S.domains[0]).id, sel: new Set() };   // sel 为空 = 全部显示
+const state = { domain: 'all', sel: new Set() };   // sel 为空 = 全部显示
 const shown = c => !state.sel.size || c.status.some(s => state.sel.has(s));
-const visible = id => byDomain(id).filter(shown);
+const visible = id => (id === 'all' ? AREAS.flatMap(d => byDomain(d.id)) : byDomain(id)).filter(shown);
 // 场景页的上一个/下一个、导出：按当前筛选；若当前场景不在筛选内则用整个领域
 const navList = c => { const v = visible(c.domain); return v.some(x => x.id === c.id) ? v : byDomain(c.domain); };
 const stage = document.getElementById('stage');
@@ -317,8 +321,8 @@ function caseHTML(c, nav = true) {
   const n = t.flow.length, LN = {user: 1, ai: 2, erp: 3};
   const meta = [[u.industry, t.industry || c.zh.industry], [u.client, c.client]].filter(x => x[1]);
   return `
-  <div class="top">${nav ? `<button class="btn back noprint" onclick="go('#/${c.domain}')">${u.back}</button>` : ''}${logo()}<div class="sep"></div>
-    <div class="crumb"><a onclick="go('#/')">${esc(pick(S, 'title'))}</a>›<a onclick="go('#/${c.domain}')">${esc(pick(DM[c.domain], 'name'))}</a>›<b>${esc(t.title)}</b></div>
+  <div class="top">${nav ? `<button class="btn back noprint" onclick="go('#/' + state.domain)">${u.back}</button>` : ''}${logo()}<div class="sep"></div>
+    <div class="crumb"><a onclick="go('#/all')">${esc(pick(S, 'title'))}</a>›<a onclick="go('#/${c.domain}')">${esc(pick(DM[c.domain], 'name'))}</a>›<b>${esc(t.title)}</b></div>
     ${nav ? `<div class="right noprint">
       <button class="btn" onclick="printDomain()">${u.export}</button>
 ${langBtn()}</div>` : ''}
@@ -436,7 +440,7 @@ function route() {
   }
   if (h.startsWith('case/')) {
     const c = DATA.cases.find(x => x.id === h.slice(5));
-    if (c) { current = c; state.domain = c.domain; stage.innerHTML = caseHTML(c); requestAnimationFrame(() => drawLinks(stage)); return; }
+    if (c) { current = c; if (state.domain !== 'all') state.domain = c.domain; stage.innerHTML = caseHTML(c); requestAnimationFrame(() => drawLinks(stage)); return; }
   }
   current = null;
   if (DM[h]) state.domain = h;
@@ -462,7 +466,7 @@ addEventListener('keydown', e => {
   const list = navList(current), i = list.findIndex(x => x.id === current.id);
   if (e.key === 'ArrowRight' && list[i + 1]) go('#/case/' + list[i + 1].id);
   if (e.key === 'ArrowLeft' && list[i - 1]) go('#/case/' + list[i - 1].id);
-  if (e.key === 'Escape') go('#/' + current.domain);
+  if (e.key === 'Escape') go('#/' + state.domain);
 });
 addEventListener('keyup', e => {
   if (!vstate || (e.key !== 'q' && e.key !== 'Q')) return;
