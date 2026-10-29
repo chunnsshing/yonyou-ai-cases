@@ -288,7 +288,8 @@ addEventListener('resize', () => { fit(); drawLinks(stage); });
 
 /* ---------- 首页 ---------- */
 function renderHome() {
-  const counts = {}; DATA.cases.forEach(c => c.status.forEach(s => counts[s] = (counts[s] || 0) + 1));
+  const counts = {};   // 只统计当前页签的场景，不受已选筛选影响
+  (state.domain === 'all' ? AREAS.flatMap(d => byDomain(d.id)) : byDomain(state.domain)).forEach(c => c.status.forEach(s => counts[s] = (counts[s] || 0) + 1));
   const list = visible(state.domain);
   stage.innerHTML = `
   <header class="site"><div class="wrap">
