@@ -1,14 +1,12 @@
 id: fin-invoice-pdf-export
 title: 发票批量导出PDF并上传
 domain: finance
-status: demo
+status: [delivered, demo]
 owner: Fanfan
-updated: 2026-09-26
+updated: 2026-10-29
 industry: 通用
-client: ""
-products: [YonWork]
-demo_video:
-  - path: demos/fin-invoice-pdf-export/invoice-pdf-export.mp4
+products: [YonWork, YonBIP]
+system: YonBIP
 
 summary: 按条件查找发票，AI逐条生成独立PDF并自动上传共享文件夹，替代手动逐张打印
 
@@ -29,21 +27,22 @@ pain_points:
 flow:
   - step: 设定查询条件
     lane: user
-    note: 财务人员
-  - step: 读取符合条件发票
+    note: AR或销售发票的筛选条件
+  - step: 查找发票
     lane: erp
-    note: 系统按条件返回匹配的发票清单
+    note: 返回符合条件的发票清单
     edge: 查询条件
-  - step: 选择导出发票
+  - step: 财务勾选发票
     lane: user
-    note: 财务人员
+    note: 选出要导出的发票
     edge: 发票清单
-  - step: 生成独立PDF
+  - step: 逐张生成PDF
     lane: ai
-    note: 每张发票自动生成一个独立PDF文件，不合并
+    note: 按打印模板，一张发票一个文件
+    edge: 已选发票
   - step: 上传共享文件夹
     lane: ai
-    note: 生成的PDF自动上传到客户指定的共享文件夹服务器
+    note: 传到客户指定的服务器目录
 
 en:
   title: Invoice PDF Export & Upload
@@ -65,18 +64,19 @@ en:
   flow:
     - step: Set search criteria
       lane: user
-      note: Finance staff
-    - step: Read matching invoices
+      note: Filters for AR or sales invoices
+    - step: Find invoices
       lane: erp
-      note: System returns invoices matching the criteria
+      note: Invoices matching the criteria
       edge: Criteria
-    - step: Select invoices
+    - step: Finance picks invoices
       lane: user
-      note: Finance staff
+      note: The ones to export
       edge: Invoice list
-    - step: Generate PDFs
+    - step: One PDF per invoice
       lane: ai
-      note: Auto-generate one standalone PDF per invoice, no merging
-    - step: Upload to shared drive
+      note: Print template, one file per invoice
+      edge: Selected
+    - step: Upload to shared folder
       lane: ai
-      note: Generated PDFs are automatically uploaded to the customer's shared folder server
+      note: To the customer's server folder
