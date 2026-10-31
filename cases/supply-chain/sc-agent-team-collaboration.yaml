@@ -1,0 +1,92 @@
+id: sc-agent-team-collaboration
+title: 供应链智能体团队协作
+domain: supply-chain
+status: best-practice
+owner: Fanfan
+updated: 2026-10-31
+industry: 通用
+products: [YonWork, YonSuite]
+system: YonSuite
+
+summary: 主管智能体分派任务给销售、采购、生产智能体，协作分析订单执行并汇总报告
+
+description: >
+  供应链主管要同时盯销售、采购、生产订单的执行情况，逾期和异常要逐项查询、分头跟进，
+  再汇总成报告。单个智能体受上下文窗口限制，难以独自完成这类复杂任务，需要多个智能体分工协作。
+
+pain_points:
+  - title: 单智能体有局限
+    detail: 受上下文窗口限制，难以独自完成复杂任务
+  - title: 订单跟进跨多条线
+    detail: 销售、采购、生产订单要分别查询和跟进
+  - title: 协作规则不统一
+    detail: 任务分派、结果回报和执行要求缺少统一约定
+  - title: 进度成果分散
+    detail: 任务量、完成情况和交付物缺少统一查看入口
+
+flow:
+  - step: 用户下达指令
+    lane: user
+    note: 在对话中提出订单执行分析任务
+  - step: 查询订单数据
+    lane: erp
+    note: 销售、采购、生产订单明细
+    edge: 指令
+  - step: 分析订单状态
+    lane: ai
+    note: 主管智能体梳理未交付、逾期和异常
+    edge: 订单明细
+  - step: 判断分派任务
+    lane: ai
+    type: decision
+    note: 按需交给销售、采购、生产智能体
+  - step: 专员回报结果
+    lane: ai
+    note: 各智能体完成后把结果交回主管
+    edge: 分派任务
+  - step: 汇总执行报告
+    lane: ai
+    note: 在对话中汇报，成果存入交付物中心
+    edge: 回报结果
+
+en:
+  title: Supply Chain Agent Team
+  industry: General
+  summary: A supervisor agent assigns work to sales, procurement and production agents and reports back
+  description: >
+    A supply chain supervisor has to watch sales, purchase and production orders at once, looking up and chasing
+    each overdue or abnormal item before compiling a report. A single AI agent is limited by its context window
+    and can't handle this alone, so several agents need to share the work.
+  pain_points:
+    - title: One agent has limits
+      detail: A context window restricts what a single agent can complete alone
+    - title: Orders span several teams
+      detail: Sales, purchase and production orders are checked and chased separately
+    - title: No shared working rules
+      detail: Task handoffs, reporting and execution standards aren't agreed in one place
+    - title: Progress is scattered
+      detail: No single view of task volume, completion status and deliverables
+  flow:
+    - step: User gives instruction
+      lane: user
+      note: Asks for an order execution analysis in chat
+    - step: Query order data
+      lane: erp
+      note: Sales, purchase and production order details
+      edge: Instruction
+    - step: Analyse order status
+      lane: ai
+      note: Supervisor agent reviews undelivered, overdue and abnormal orders
+      edge: Order details
+    - step: Decide on handoffs
+      lane: ai
+      type: decision
+      note: Passes work to sales, procurement or production agents as needed
+    - step: Agents report back
+      lane: ai
+      note: Each agent returns its results to the supervisor
+      edge: Handoff
+    - step: Consolidate the report
+      lane: ai
+      note: Reports in chat and saves results to the Deliverables Center
+      edge: Results

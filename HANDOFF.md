@@ -75,11 +75,12 @@ Follow `BRIEFING.md` section 4 for content. In short:
 
 ### Tags (`status:`)
 
-Write the internal status honestly; the site decides what clients see. Only two tags are public.
+Write the internal status honestly; the site decides what clients see. Only three tags are public.
 
 | `status` id | Internal meaning | Shown on the site as |
 |---|---|---|
 | `delivered` | Running in production at a real client | **Live at Clients** (green tag + filter) |
+| `best-practice` | Flagship use case proven with Yonyou clients in China. Goes in its normal area | **Best Practice** (amber tag + filter) |
 | `replicable` | Proven, can be rolled out to other clients | not shown (internal) |
 | `demo` | A demo environment exists | not shown (internal) |
 | `to-verify` | Being developed, can't demo yet | not shown (internal) |

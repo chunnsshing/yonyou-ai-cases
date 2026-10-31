@@ -1,0 +1,90 @@
+id: sc-procurement-analysis
+title: 采购分析助理
+domain: supply-chain
+status: best-practice
+owner: Fanfan
+updated: 2026-10-30
+industry: 通用
+products: [YonWork, YonBIP]
+system: YonBIP
+
+summary: 对话式分析采购支出、供应商结构与履约健康度，自动评分、找根因、给出改进建议
+
+description: >
+  采购支出、供应商绩效与履约数据分散在不同系统，缺少整体视图。异常支出靠人工盯，
+  供应商评价维度单一，分析报告要手工整理，关键指标难以实时量化，采购管理效率低。
+
+pain_points:
+  - title: 数据孤岛严重
+    detail: 支出、供应商与履约数据分散，难做综合分析
+  - title: 异常支出靠人工
+    detail: 人工监控发现慢，风险响应滞后造成损失
+  - title: 供应商评价单一
+    detail: 评价维度有限，优化供应商网络缺少数据支撑
+  - title: 报告整理费时
+    detail: 手工汇编报告，关键指标难以实时量化
+
+flow:
+  - step: 采购经理提问
+    lane: user
+    note: 选择支出、供应商或履约分析
+  - step: 汇总采购数据
+    lane: erp
+    note: 采购支出、订单履约与供应商数据
+    edge: 分析主题
+  - step: 计算健康指标
+    lane: ai
+    note: 集中度、履约率等指标加权评分
+    edge: 多源数据
+  - step: 判断风险等级
+    lane: ai
+    type: decision
+    note: 超出阈值的指标标为高风险
+  - step: 生成分析报告
+    lane: ai
+    note: 评分、根因分析与改进建议
+  - step: 采购经理决策
+    lane: user
+    note: 优化、替换或调整供应商分配
+    edge: 分析报告
+
+en:
+  title: Procurement Analysis Assistant
+  industry: General
+  summary: Chat to analyse spend, supplier mix and fulfilment health, with scores, root causes and actions
+  description: >
+    Procurement spend, supplier performance and fulfilment data sit in separate systems with no single view.
+    Abnormal spend is watched by hand, suppliers are judged on few dimensions, reports are compiled manually
+    and key metrics can't be measured in real time, so procurement is managed inefficiently.
+  pain_points:
+    - title: Data in silos
+      detail: Spend, supplier and fulfilment data are fragmented and hard to analyse together
+    - title: Spend watched by hand
+      detail: Manual monitoring finds anomalies late, so risk response lags
+    - title: Narrow supplier review
+      detail: Few evaluation dimensions; supplier network decisions lack data
+    - title: Reports take time
+      detail: Reports are compiled by hand and key metrics can't be tracked live
+  flow:
+    - step: Buyer asks
+      lane: user
+      note: Picks spend, supplier or fulfilment analysis
+    - step: Gather procurement data
+      lane: erp
+      note: Spend, order fulfilment and supplier data
+      edge: Topic
+    - step: Score health metrics
+      lane: ai
+      note: Weighted score from concentration, fulfilment rate and more
+      edge: Multi-source
+    - step: Rate the risk
+      lane: ai
+      type: decision
+      note: Metrics past their threshold are flagged high risk
+    - step: Write the report
+      lane: ai
+      note: Score, root causes and recommended actions
+    - step: Buyer decides
+      lane: user
+      note: Optimise, replace or reallocate suppliers
+      edge: Report

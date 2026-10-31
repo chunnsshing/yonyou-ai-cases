@@ -288,7 +288,8 @@ addEventListener('resize', () => { fit(); drawLinks(stage); });
 
 /* ---------- 首页 ---------- */
 function renderHome() {
-  const counts = {}; DATA.cases.forEach(c => c.status.forEach(s => counts[s] = (counts[s] || 0) + 1));
+  const counts = {};   // 只统计当前页签的场景，不受已选筛选影响；当前页签没有的标签不显示（已选中的除外，便于取消）
+  (state.domain === 'all' ? AREAS.flatMap(d => byDomain(d.id)) : byDomain(state.domain)).forEach(c => c.status.forEach(s => counts[s] = (counts[s] || 0) + 1));
   const list = visible(state.domain);
   stage.innerHTML = `
   <header class="site"><div class="wrap">
@@ -299,7 +300,7 @@ function renderHome() {
   <section class="hero"><div class="wrap"><div class="eyebrow">${U().eyebrow}</div><h1>${esc(pick(S, 'title'))}</h1><p>${U().hero}</p></div></section>
   <div class="tabbar"><div class="wrap">${DOMS.map(d => `<button class="tab ${d.id === state.domain ? 'on' : ''} ${visible(d.id).length ? '' : 'zero'}" onclick="go('#/${d.id}')">${esc(pick(d, 'name'))}<small>${visible(d.id).length}</small></button>`).join('')}</div></div>
   <div class="wrap">
-    <div class="toolbar"><div class="legend">${STATS.map(s => `<span class="tag ${state.sel.has(s.id) ? 'on' : state.sel.size ? 'dim' : ''}" style="--c:${s.color}" title="${esc(pick(s, 'desc'))}" onclick="toggle('${s.id}')">${esc(pick(s, 'name'))} <span>${counts[s.id] || 0}</span></span>`).join('')}${state.sel.size ? `<span class="clear" onclick="state.sel.clear();renderHome()">${U().clear}</span>` : ''}</div>
+    <div class="toolbar"><div class="legend">${STATS.filter(s => counts[s.id] || state.sel.has(s.id)).map(s => `<span class="tag ${state.sel.has(s.id) ? 'on' : state.sel.size ? 'dim' : ''}" style="--c:${s.color}" title="${esc(pick(s, 'desc'))}" onclick="toggle('${s.id}')">${esc(pick(s, 'name'))} <span>${counts[s.id] || 0}</span></span>`).join('')}${state.sel.size ? `<span class="clear" onclick="state.sel.clear();renderHome()">${U().clear}</span>` : ''}</div>
       <button class="btn noprint" onclick="printDomain()">${U().export_domain}</button></div>
     <div class="grid fade">
     ${list.length ? list.map(c => { const t = C(c); return `

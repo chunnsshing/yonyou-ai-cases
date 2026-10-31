@@ -46,6 +46,12 @@ statuses:
     color: "#16A34A"
     desc: 已在客户业务中上线运行
     desc_en: Running in production at client sites
+  - id: best-practice        # 内部：国内做得好的标杆案例，放在各自领域里，靠这个标签区分
+    name: 最佳实践
+    name_en: Best Practice
+    color: "#B45309"
+    desc: 已在中国区客户规模落地的标杆场景
+    desc_en: A flagship use case proven with Yonyou clients in China
   - id: replicable           # 内部：方案成熟，可直接复制到其他客户
     public: false
     name: 成熟方案

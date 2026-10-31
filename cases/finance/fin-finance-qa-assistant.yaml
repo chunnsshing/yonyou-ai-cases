@@ -1,0 +1,86 @@
+id: fin-finance-qa-assistant
+title: 财务综合问答智能客服
+domain: finance
+status: best-practice
+owner: Fanfan
+updated: 2026-10-30
+industry: 通用
+products: [YonWork, YonBIP]
+system: YonBIP
+
+summary: 员工一句话问制度和系统操作，AI按知识库精准作答，答不了的自动生成工单
+
+description: >
+  在财务共享服务中，员工常就报销标准、差旅政策和系统操作向财务提问。目前要翻阅费用、资金制度文档，
+  或在系统里层层点菜单查找；知识库没覆盖的问题还得自己找入口提报，财务客服重复答疑多。
+
+pain_points:
+  - title: 制度文档难查
+    detail: 费用、资金制度分散在文档里，员工要翻阅很久才找到答案
+  - title: 系统操作不会填
+    detail: 司库等系统流程复杂，员工常卡在关键选项上
+  - title: 问题提报无门
+    detail: 个性化问题不知去哪提，工单进度也不透明
+
+flow:
+  - step: 员工提问
+    lane: user
+    note: 报销标准、差旅政策或系统操作
+  - step: 检索知识库
+    lane: ai
+    note: 费用、资金制度与系统操作说明
+    edge: 问题
+  - step: 给出答案
+    lane: ai
+    note: 引用制度原文，并推荐相关问题
+  - step: 判断能否解答
+    lane: ai
+    type: decision
+    note: 知识库未覆盖的转为工单
+  - step: 生成问题工单
+    lane: erp
+    note: 区分操作级或业务需求级
+    edge: 未覆盖
+  - step: 后台客服处理
+    lane: user
+    note: 编号、紧急程度与进度实时反馈
+    edge: 工单
+
+en:
+  title: Finance Q&A Service Assistant
+  industry: General
+  summary: Staff ask about policies or system steps; AI answers from the knowledge base or raises a ticket
+  description: >
+    In finance shared services, staff keep asking finance about claim limits, travel policy and system steps.
+    Today they search expense and treasury policy documents or click through layers of menus, and anything the
+    knowledge base doesn't cover means finding the right place to raise it, so finance answers the same questions again and again.
+  pain_points:
+    - title: Policies hard to find
+      detail: Expense and treasury policies sit in documents that take long to search
+    - title: System steps unclear
+      detail: Treasury and other system flows are complex; staff get stuck on key fields
+    - title: Nowhere to raise issues
+      detail: Specific issues have no clear entry point and ticket progress is opaque
+  flow:
+    - step: Employee asks
+      lane: user
+      note: Claim limits, travel policy or system steps
+    - step: Search knowledge base
+      lane: ai
+      note: Expense and treasury policies, system guides
+      edge: Question
+    - step: Answer
+      lane: ai
+      note: Quotes the policy and suggests follow-up questions
+    - step: Can it answer?
+      lane: ai
+      type: decision
+      note: Anything the knowledge base lacks becomes a ticket
+    - step: Create ticket
+      lane: erp
+      note: Classed as how-to or business request
+      edge: Not covered
+    - step: Support handles it
+      lane: user
+      note: Ticket number, urgency and progress shown live
+      edge: Ticket

@@ -1,14 +1,12 @@
 id: fin-soa-project-email
 title: 按项目核对对账单并发邮件
 domain: finance
-status: demo
+status: [delivered, demo]
 owner: Fanfan
-updated: 2026-09-26
+updated: 2026-10-29
 industry: 通用
-client: ""
-products: [YonWork]
-demo_video:
-  - path: demos/fin-soa-project-email/soa-auto-send-email.mp4
+products: [YonWork, YonBIP]
+system: YonBIP
 
 summary: 按客户逐项目自动核对应收对账单并发送邮件，替代逐项目手动查询发送
 
@@ -27,26 +25,27 @@ pain_points:
     detail: 核对后需逐项目查询、点击发送，耗时且容易漏发
 
 flow:
-  - step: 选择客户
+  - step: 财务选择客户
     lane: user
-    note: 财务专员
-  - step: 查询项目对账单
+    note: 客户名称或编码
+  - step: 筛选客户项目
     lane: ai
-    note: 按客户自动过滤所属项目
-    edge: 客户
-  - step: 读取对账单余额
+    note: 只取该客户名下的项目
+    edge: 客户名
+  - step: 读取对账单
     lane: erp
-    note: 系统返回各项目对账单余额
+    note: 各项目应收余额与明细
     edge: 项目清单
-  - step: 核对余额差异
+  - step: 核对余额
     lane: ai
-    note: 自动核对余额并标出有欠款或异常的项目
-  - step: 生成邮件内容
+    type: decision
+    note: 标出欠款或异常的项目
+  - step: 生成对账邮件
     lane: ai
-    note: 自动生成对账单邮件内容并附对应项目明细
+    note: 按项目附上对账单明细
   - step: 发送邮件
     lane: ai
-    note: 自动逐客户、逐项目发送对账单邮件
+    note: 逐客户、逐项目发出
 
 en:
   title: Project-Based SOA Check & Email
@@ -67,23 +66,24 @@ en:
     - title: Manual email sending
       detail: After checking, staff reopen each project to click send — slow and easy to miss
   flow:
-    - step: Select customer
+    - step: Finance picks customer
       lane: user
-      note: AR accountant
-    - step: Query project SOAs
+      note: Customer name or code
+    - step: Filter projects
       lane: ai
-      note: Auto-filter projects by customer
+      note: Only that customer's projects
       edge: Customer
-    - step: Read SOA balances
+    - step: Read statements
       lane: erp
-      note: System returns each project's SOA balance
-      edge: Project list
-    - step: Check differences
+      note: AR balance and lines per project
+      edge: Projects
+    - step: Check balances
       lane: ai
-      note: Automatically flag projects with outstanding or unusual balances
-    - step: Draft email content
+      type: decision
+      note: Flags overdue or unusual projects
+    - step: Draft emails
       lane: ai
-      note: Auto-generate the SOA email with matching project details
-    - step: Send email
+      note: Statement details per project
+    - step: Send emails
       lane: ai
-      note: Automatically send the SOA email per customer and project
+      note: Per customer and per project
