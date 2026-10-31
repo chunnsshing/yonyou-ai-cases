@@ -1,0 +1,88 @@
+id: sales-cost-estimate-quotation
+title: 多工厂成本测算与报价建议
+domain: sales
+status: best-practice
+owner: Fanfan
+updated: 2026-10-30
+industry: 制造业
+products: [YonWork, YonBIP]
+system: YonBIP
+
+summary: 输入订单即测算各工厂生产与物流总成本，按历史毛利率给出报价区间
+
+description: >
+  多工厂制造企业接到新订单时，销售经理要选定生产工厂并报价。目前需要分别向各工厂要BOM、工艺和费用数据，
+  再手工叠加物流成本、对照历史订单毛利，才能定出报价，耗时且容易遗漏成本项。
+
+pain_points:
+  - title: 多工厂成本难比较
+    detail: 各工厂BOM、工时与费率不同，手工逐项测算耗时
+  - title: 物流成本常被漏算
+    detail: 只看生产成本，忽略工厂到收货地的运费差异
+  - title: 报价缺少依据
+    detail: 历史毛利数据分散，报价凭经验，难兼顾竞争力与利润
+
+flow:
+  - step: 销售经理发起测算
+    lane: user
+    note: 输入订单号，要求比较各工厂
+  - step: 读取BOM与费率
+    lane: erp
+    note: 产品BOM、工艺路线、物流费率
+    edge: 订单号
+  - step: 测算各厂成本
+    lane: ai
+    note: 汇总料工费，按距离加物流成本
+    edge: 成本数据
+  - step: 比较总成本
+    lane: ai
+    type: decision
+    note: 找出总成本最低的工厂
+  - step: 给出报价建议
+    lane: ai
+    note: 按历史订单毛利率给出报价区间
+    edge: 历史毛利
+  - step: 销售确认报价
+    lane: user
+    note: 结合交期选定工厂与报价
+    edge: 报价建议
+
+en:
+  title: Multi-factory Costing & Quoting
+  industry: Manufacturing
+  summary: Enter an order to compare each factory's total cost and get a quote range from past margins
+  description: >
+    When a multi-factory manufacturer receives a new order, the sales manager has to choose the factory and set a
+    price. Today that means collecting BOM, routing and rate data from each factory, adding logistics cost by hand
+    and checking past order margins before quoting: slow, and cost items get missed.
+  pain_points:
+    - title: Factories hard to compare
+      detail: Each factory has its own BOM, labour hours and rates; costing by hand is slow
+    - title: Logistics cost missed
+      detail: Only production cost is compared, not freight from factory to delivery city
+    - title: Quotes lack a basis
+      detail: Past margin data is scattered, so pricing relies on experience
+  flow:
+    - step: Sales manager asks
+      lane: user
+      note: Enters the order number and asks to compare factories
+    - step: Read BOM and rates
+      lane: erp
+      note: Product BOM, routing and logistics rates
+      edge: Order no.
+    - step: Cost each factory
+      lane: ai
+      note: Sums material, labour and overhead, adds freight by distance
+      edge: Cost data
+    - step: Compare total cost
+      lane: ai
+      type: decision
+      note: Finds the factory with the lowest total cost
+    - step: Suggest a quote
+      lane: ai
+      note: Gives a price range based on past order margins
+      edge: Past margins
+    - step: Sales confirms quote
+      lane: user
+      note: Picks factory and price, weighing delivery time
+      edge: Quote advice
