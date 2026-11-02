@@ -7,6 +7,7 @@ updated: 2026-09-28
 industry: 人力资源服务
 products: [YonWork]
 system: ERP
+visual: split
 
 summary: 从合同读取费率自动计算每个派遣的毛利，按规则分摊到部门并逐级汇总到顾问与公司
 

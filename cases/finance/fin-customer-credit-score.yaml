@@ -7,6 +7,7 @@ updated: 2026-10-15
 industry: 通用
 products: [YonWork, YonBIP]
 system: YonBIP
+visual: gauge
 
 summary: 输入客户名，汇总报价、订单、发票、收款与应收，给出0–100信用评分和看板
 

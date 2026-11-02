@@ -7,6 +7,7 @@ updated: 2026-09-28
 industry: 人力资源服务
 products: [YonWork]
 system: 文档库
+visual: graph
 
 summary: 文件入库时自动分类、抽取实体并互相关联，一句话提问返回答案及所有关联记录
 

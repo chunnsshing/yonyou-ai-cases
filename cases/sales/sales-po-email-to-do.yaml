@@ -7,6 +7,7 @@ updated: 2026-10-20
 industry: 工作服供应
 products: [YonWork, YonBIP]
 system: YonBIP
+visual: order
 
 summary: 客户PO邮件自动转报价单、销售订单，审批只需回复邮件，库存足够即生成发货单
 
