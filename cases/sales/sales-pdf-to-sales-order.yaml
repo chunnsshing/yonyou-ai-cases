@@ -7,6 +7,7 @@ updated: 2026-10-15
 industry: 通用
 products: [YonWork, YonBIP]
 system: YonBIP
+visual: doc
 
 summary: 客户PDF订单自动抽取表头与明细，校验金额后直接在系统生成销售订单
 

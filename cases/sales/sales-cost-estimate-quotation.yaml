@@ -7,6 +7,7 @@ updated: 2026-10-30
 industry: 制造业
 products: [YonWork, YonBIP]
 system: YonBIP
+visual: compare
 
 summary: 输入订单即测算各工厂生产与物流总成本，按历史毛利率给出报价区间
 

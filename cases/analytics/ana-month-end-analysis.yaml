@@ -7,6 +7,7 @@ updated: 2026-10-15
 industry: 人力资源服务
 products: [YonWork]
 system: ERP
+visual: forecast
 
 summary: 关账后自动读取月结数据，做逐月对比、偏差分析、滚动预算与预测
 

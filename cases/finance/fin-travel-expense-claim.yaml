@@ -7,6 +7,7 @@ updated: 2026-10-29
 industry: 通用
 products: [YonWork, YonBIP]
 system: YonBIP
+visual: batch
 demo_video:
   - path: videos/fin-travel-expense-claim/01-travel-request.mp4
     label: 出差申请

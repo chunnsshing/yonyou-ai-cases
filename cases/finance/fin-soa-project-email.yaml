@@ -7,6 +7,7 @@ updated: 2026-10-29
 industry: 通用
 products: [YonWork, YonBIP]
 system: YonBIP
+visual: send
 
 summary: 按客户逐项目自动核对应收对账单并发送邮件，替代逐项目手动查询发送
 

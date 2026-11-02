@@ -7,6 +7,7 @@ updated: 2026-10-20
 industry: 轮胎零售与汽车服务
 products: [YonWork, YonSuite]
 system: YonSuite
+visual: heat
 
 summary: 一句话询问，即按小时×星期生成各门店热力图，回答今天的高峰时段与客户数
 

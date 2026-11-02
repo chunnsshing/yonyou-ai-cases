@@ -7,6 +7,7 @@ updated: 2026-10-20
 industry: 轮胎零售与汽车服务
 products: [YonWork, YonSuite]
 system: YonSuite
+visual: batch
 
 summary: 一次上传多张手写零售单、收货单照片，逐张识别，确认一次后分别生成系统单据
 

@@ -7,6 +7,7 @@ updated: 2026-10-15
 industry: 通用
 products: [YonWork, YonBIP]
 system: YonBIP
+visual: doc
 
 summary: 拍一张供应商报价单或手写订单，自动匹配供应商与物料，确认预览后生成采购订单
 

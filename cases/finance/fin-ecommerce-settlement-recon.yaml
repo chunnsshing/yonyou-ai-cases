@@ -7,6 +7,7 @@ updated: 2026-09-28
 industry: 宠物食品与用品分销
 products: [YonWork, NCC]
 system: NCC
+visual: match
 
 summary: 平台结算报告自动拆出费用并与订单、发票、收款匹配，财务只处理例外
 

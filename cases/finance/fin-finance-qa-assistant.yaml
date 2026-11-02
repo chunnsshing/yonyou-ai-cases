@@ -7,6 +7,7 @@ updated: 2026-10-30
 industry: 通用
 products: [YonWork, YonBIP]
 system: YonBIP
+visual: chat
 
 summary: 员工一句话问制度和系统操作，AI按知识库精准作答，答不了的自动生成工单
 
