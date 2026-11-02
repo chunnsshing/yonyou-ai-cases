@@ -30,6 +30,9 @@ LANES = ("user", "ai", "erp")        # 泳道：使用者 / YonWork / 系统
 TYPES = ("decision", "exception", "future")
 REQUIRED = ["id", "title", "domain", "status", "owner", "updated", "summary", "description", "pain_points", "flow"]
 EN_REQUIRED = ["title", "summary", "description", "pain_points", "flow"]
+# 卡片示意图，与 template/index.html 的 VIS 一一对应
+VISUALS = ("bars", "forecast", "hbars", "dash", "stock", "trend", "heat", "gauge", "radar", "compare", "doc", "batch",
+           "order", "pay", "send", "folder", "ask", "chat", "graph", "rank", "team", "profile", "split", "match")
 
 
 def load_yaml(p):
@@ -125,6 +128,10 @@ def validate(case, path, site, errors, warnings):
         E(f"domain `{case['domain']}` 不在 site.yaml 领域列表 {sorted(domains)}")
     if case.get("domain") and path.parent.name != case.get("domain"):
         E(f"文件应放在 cases/{case.get('domain')}/ 下（当前在 {path.parent.name}/）")
+    if not case.get("visual"):
+        W(f"缺少 `visual`（卡片示意图），可选 {sorted(VISUALS)}")
+    elif case["visual"] not in VISUALS:
+        E(f"visual `{case['visual']}` 无效，可选 {sorted(VISUALS)}")
     for st in status_list(case.get("status")):
         if st not in statuses:
             E(f"status `{st}` 无效，可选 {sorted(statuses)}")
@@ -168,7 +175,7 @@ def normalize(case):
         "id": s(case["id"]), "domain": s(case["domain"]), "status": status,
         "owner": s(case.get("owner")), "updated": s(case.get("updated")), "client": s(case.get("client")),
         "products": [s(x) for x in (case.get("products") or [])], "example": bool(case.get("example")),
-        "system": s(case.get("system")) or "ERP",
+        "system": s(case.get("system")) or "ERP", "visual": s(case.get("visual")),
         "demo_video": clips,
         "zh": content(case), "en": content(case["en"]) if case.get("en") else None,
     }

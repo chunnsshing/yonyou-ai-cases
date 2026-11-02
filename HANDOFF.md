@@ -62,7 +62,7 @@ Follow `BRIEFING.md` section 4 for content. In short:
 
 - File: `cases/<area>/<id>.yaml`, file name = `id`, folder = `domain`. Areas: `finance`,
   `supply-chain`, `manufacturing`, `hr`, `sales`, `analytics` (new areas need Elmond).
-- Required: `id, title, domain, status, owner, updated, summary, description, pain_points, flow`,
+- Required: `id, title, domain, status, owner, updated, visual, summary, description, pain_points, flow`,
   plus a full English `en:` block with the same number of pain points and flow steps, and the same
   `lane`/`type` on every step.
 - Flow = the **standard business process**, 3–8 steps, in three lanes: `user` (a person), `ai`
@@ -85,14 +85,66 @@ Write the internal status honestly; the site decides what clients see. Only thre
 | `demo` | A demo environment exists | not shown (internal) |
 | `to-verify` | Being developed, can't demo yet | not shown (internal) |
 | `future` | Idea, needs validation | not shown (internal) |
-| `ready` | **Automatic** — never write it. Added by the build when `videos/<id>/` has a file | **Watch Demo** filter + red ▶ Play Demo link |
+| `ready` | **Automatic** — never write it. Added by the build when `videos/<id>/` has a file | **Watch Demo** filter + red ▶ button on the card + Play Demo button on the case page |
 
 - `status` can be a list: `status: [delivered, demo]`.
 - **`delivered` only when your user confirms the case is live at a client.** It is the strongest claim
   on the site. Don't infer it from "replicable" or a successful demo.
 - Which tags are public is controlled by `public: false` in `site.yaml` (shared file).
-- Cases are listed with the `bold_owner` set in `site.yaml` (currently Elmond) first and in bold;
-  everyone else's cases follow in regular weight. That is expected, not a bug.
+- Cases are listed with the `bold_owner` set in `site.yaml` (currently Elmond) first; everyone else's
+  cases follow. That is expected, not a bug.
+
+### Card picture (`visual:`)
+
+Every card on the home page is a **picture plus a title**, so a client can scan the page without
+reading. Each case picks one ready-made drawing with a single line in its yaml, right after `system:`:
+
+```yaml
+system: YonBIP
+visual: doc
+```
+
+**Choose by what the result looks like, not by the topic or the area.** Ask "what does the client get
+at the end?" and take the closest row below. Sharing a picture with another case is fine.
+
+| `visual` | The picture | Use it when the result is… | Example case |
+|---|---|---|---|
+| `bars` | Bar chart, one bar in red | A comparison that highlights what changed | `ana-marketing-intelligence` |
+| `hbars` | Ranked horizontal bars | A ranking by product, branch, etc. | `ana-product-sales-by-branch` |
+| `forecast` | Bars, then dashed future bars | Actuals followed by a forecast or budget | `ana-month-end-analysis` |
+| `dash` | KPI tiles above a small chart | A one-page overview or dashboard | `fin-company-financial-overview` |
+| `trend` | Line crossing a target, red alert dot | Monitoring a value with an alert | `sc-material-price-monitor` |
+| `stock` | Line falling to a limit | Something running out; a latest-action date | `sc-replenishment-forecast` |
+| `heat` | Heatmap grid with a red peak | Patterns by time, place or category | `ana-store-peak-heatmap` |
+| `gauge` | Half-circle gauge | One overall score or rating | `fin-customer-credit-score` |
+| `radar` | Five-point radar | A score across several dimensions | `sc-procurement-analysis` |
+| `compare` | Stacked columns, best one in red | Choosing between options | `sales-cost-estimate-quotation` |
+| `doc` | Tilted paper → system document | One photo or PDF becomes a system record | `sc-po-from-photo` |
+| `batch` | Stack of paper → several documents | Many inputs become records in one go | `sc-batch-doc-capture` |
+| `order` | Email → document → truck | An order runs from request to delivery | `sales-po-email-to-do` |
+| `pay` | Invoice → approved → bank | An invoice runs through to payment | `fin-p2p-vendor-invoice` |
+| `send` | Document → emails | Documents are checked and sent to people | `fin-soa-project-email` |
+| `folder` | Document → folder | Files are generated and filed or uploaded | `fin-invoice-pdf-export` |
+| `ask` | Speech bubble → document | One sentence creates a document | `sales-rate-card-quotation` |
+| `split` | Document branching into rows | One source is split or allocated | `fin-contract-gross-profit` |
+| `match` | Two columns linked, one dashed red | Reconciliation; exceptions stand out | `fin-ecommerce-settlement-recon` |
+| `chat` | Question and answer bubbles | The AI answers questions | `fin-finance-qa-assistant` |
+| `graph` | Files linked to a red hub | Linked search across documents or records | `ana-document-query` |
+| `rank` | Prioritised list, top row red | A ranked work queue or brief | `sc-daily-fulfilment-queue` |
+| `team` | Red lead linked to three agents | Several agents working together | `sc-agent-team-collaboration` |
+| `profile` | Person with a timeline | A full history of one customer or item | `sales-plate-lookup` |
+
+Keep the card style, so the page stays calm as it grows:
+
+- **Don't add text to the card.** It shows the picture, the title, the public tags and, on the All
+  tab, the area. `summary` belongs on the case page, not the card.
+- **No screenshots, photos or per-case artwork on cards.** Demo screens are unreadable at card size
+  and need a privacy check. Show the demo through the red ▶ button, which the build adds for you.
+- **Pictures have no words or numbers.** They work in both languages and can't be mistaken for a real
+  result. `visual` goes at the top level only, not in `en:`.
+- **Use a row from the table.** A new picture is a shared-file change, so it needs Elmond's OK. Add it
+  to `VIS` in `template/index.html` and `VISUALS` in `build.py`, then add a row here. Draw it in the
+  same 240×135 frame and grey palette, with one red focus point and no text.
 
 ## 5. Privacy — the checklist (do this every time)
 
@@ -139,7 +191,8 @@ Put files in **`videos/<case-id>/`** (folder name = the case `id`). That is all.
 
 - copies them to `dist/videos/<case-id>/`,
 - adds the automatic `ready` status (the **Watch Demo** filter),
-- shows a red **▶ Play Demo** link on the card and the case page. It always opens in a **new tab**.
+- shows a red **▶** button on the card and a **Play Demo** button on the case page. Both always open
+  in a **new tab**.
 
 | You add | Play Demo opens |
 |---|---|
@@ -187,6 +240,7 @@ about a minute (hard-refresh to bypass the cache).
 - [ ] `git pull --rebase` done; no one else already wrote this case (`ls cases/*/`)
 - [ ] `build.py --strict` → 0 errors, 0 warnings
 - [ ] Both languages checked in the local preview; nothing overflows on the case page
+- [ ] `visual` chosen from the table in section 4 and the card checked on the home page
 - [ ] `delivered` only if your user confirmed it is live at a client
 - [ ] Privacy checklist (section 5) done for text, videos and dashboards
 - [ ] Videos compressed; every file under 100 MB
@@ -204,6 +258,7 @@ The build prints its messages in Chinese:
   `en.pain_points 条数必须与中文一致`**: the English block must mirror the Chinese one exactly.
 - **`… 超长 n/limit`** (too long): shorten. The limits keep each case on one 16:9 page and in the PDF export.
 - **`status … 无效`**: use one of the ids in section 4; never write `ready`.
+- **`缺少 visual` / `visual … 无效`**: add `visual:` with a name from the table in section 4.
 - **Push rejected (non-fast-forward)**: `git pull --rebase`, rebuild, push again.
 - **Push rejected, file too large**: compress the video (section 6); if it is already in a commit,
   `git reset --soft HEAD~1`, replace the file, recommit.
