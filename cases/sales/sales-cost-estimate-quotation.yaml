@@ -9,78 +9,86 @@ products: [YonWork, YonBIP]
 system: YonBIP
 visual: compare
 
-summary: 输入订单即比较各工厂的生产加运费总成本，参考历史订单给出两套报价方案
+summary: 销售直接问 AI 各工厂成本、运费和历史毛利，按需快速整理数据，帮助报价
 
 description: >
-  多工厂制造企业接到新订单，要决定用哪家工厂生产、报什么价：报高了可能丢单，报低了利润太薄。所需信息分散在三个部门：生产有BOM和工时，物流有运费，财务有历史订单毛利。通常要人工逐个部门收集再测算，客户只能等，成本项也容易漏算。
+  多工厂制造企业接到新订单，销售要决定用哪家工厂生产、报什么价。所需数据分散在不同部门：生产有BOM和工时，物流有运费，财务有历史订单毛利。销售要逐个部门去要数据，再自己整理测算，费时费力，客户也只能等报价。
 
 pain_points:
-  - title: 多工厂成本难比较
-    detail: 各工厂BOM、工时与费率不同，手工逐项测算耗时
-  - title: 物流成本常被漏算
-    detail: 只比生产成本，漏掉工厂到收货地的运费差异
-  - title: 报价缺少依据
-    detail: 历史毛利和交期数据分散，报价凭经验，难兼顾价格与交期
+  - title: 数据分散在多个部门
+    detail: BOM、工时、运费和历史毛利分属生产、物流、财务
+  - title: 收集整理费时费力
+    detail: 要逐个部门去要数据，再手工汇总测算
+  - title: 客户等报价
+    detail: 数据凑齐才能报价，响应慢
 
 flow:
-  - step: 发起成本测算
+  - step: 问各厂成本
     lane: user
-    note: 输入订单号，要求比较各工厂
-  - step: 读取BOM与费率
+    note: 用大白话问新订单在各厂的成本
+  - step: 读取成本数据
     lane: erp
-    note: 产品BOM、工艺路线、物流费率
-    edge: 订单号
+    note: 产品BOM、工时与费率
+    edge: 订单
   - step: 测算各厂成本
     lane: ai
-    note: 逐项算料工费，说明差异原因和降本建议
+    note: 逐项算料工费，说明差异原因
     edge: 成本数据
+  - step: 按需继续追问
+    lane: user
+    note: 再问运费、历史毛利等
+    edge: 测算结果
   - step: 比较总成本
     lane: ai
     type: decision
-    note: 叠加运费后，找出总成本最低的工厂
+    note: 加上运费，比较各厂总成本
   - step: 给出报价方案
     lane: ai
-    note: 参考历史订单的毛利和交期，给出两套报价
+    note: 参考毛利和交期给两套报价
     edge: 历史订单
   - step: 确认工厂与报价
     lane: user
-    note: 按客户更看重价格还是交期，选定工厂和报价
+    note: 结合客户需求定工厂和价格
     edge: 报价方案
 
 en:
   title: Multi-factory Costing & Quoting
   industry: Manufacturing
-  summary: "Enter an order to compare each factory's total cost with freight, and get two quote options"
+  summary: Sales asks AI for each factory’s cost, freight and margins, and gets the data fast
   description: >
-    A multi-factory manufacturer gets a new order and must choose a factory and a price. Quote too high and it may lose the deal; too low and the margin is thin. The data sits in three departments: production has the BOM and labour hours, logistics the freight rates, finance the past margins. Collecting it takes time while the customer waits, and costs get missed.
+    A multi-factory manufacturer gets a new order, and the salesperson has to choose a factory and a price. The data sits with different teams: production has the BOM and labour hours, logistics the freight rates, finance the past margins. The salesperson has to ask each team and put it all together by hand. That takes time and effort, and the customer waits for the quotation.
   pain_points:
-    - title: Factories hard to compare
-      detail: Each factory has its own BOM, labour hours and rates; costing by hand is slow
-    - title: Logistics cost missed
-      detail: Only production cost is compared, not freight from factory to delivery location
-    - title: Quotes lack a basis
-      detail: Past margins and lead times are scattered, so quotes rely on experience
+    - title: Data across teams
+      detail: BOM, labour hours, freight and past margins sit with different teams
+    - title: Slow to pull together
+      detail: Asking each team and compiling by hand takes time and effort
+    - title: Customer waits
+      detail: The quotation can only go out once all the data is in
   flow:
-    - step: User starts costing
+    - step: Ask factory costs
       lane: user
-      note: Enters the order number and asks to compare factories
-    - step: Read BOM and rates
+      note: Asks the order cost in each factory
+    - step: Read cost data
       lane: erp
-      note: Product BOM, routing and logistics rates
-      edge: Order no.
+      note: BOM, labour hours and rates
+      edge: Order
     - step: Cost each factory
       lane: ai
-      note: Costs materials, labour and overhead, explains gaps and how to cut cost
+      note: Costs each item and explains the gaps
       edge: Cost data
+    - step: Ask for more
+      lane: user
+      note: Asks for freight, past margins as needed
+      edge: Results
     - step: Compare total cost
       lane: ai
       type: decision
-      note: Adds freight and finds the factory with the lowest total cost
+      note: Adds freight and compares the factories
     - step: Suggest two quotes
       lane: ai
-      note: Gives two quote options based on past margins and lead times
+      note: Uses past margins and lead times
       edge: Past orders
-    - step: Confirm factory & quote
+    - step: Confirm the quote
       lane: user
-      note: Chooses by whether the customer values price or lead time more
+      note: Picks factory and price for the customer
       edge: Quote options
