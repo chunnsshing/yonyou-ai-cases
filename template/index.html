@@ -200,7 +200,11 @@ svg.links text.hot{fill:var(--brand);font-weight:600}
 /* ---------- 打印：每个场景一页横版 ---------- */
 #print{display:none}
 @page{size:1280px 720px;margin:0}
+/* 标签说明：自己画的提示框，鼠标一放上去就出现（浏览器自带的 title 要等一秒多） */
+#tip{position:fixed;z-index:9999;max-width:280px;padding:6px 10px;border-radius:6px;background:#1F2937;color:#fff;font-size:12px;line-height:1.5;pointer-events:none;opacity:0;transition:opacity .08s ease;left:0;top:0}
+#tip.show{opacity:1}
 @media print{
+  #tip{display:none}
   html,body{background:#fff}
   #viewport{display:none}
   #print{display:block}
@@ -274,7 +278,7 @@ const navList = c => { const v = visible(c.domain); return v.some(x => x.id === 
 const stage = document.getElementById('stage');
 stage.addEventListener('click', e => { if (e.target.closest('.btn.lang')) setLang(lang === 'en' ? 'zh' : 'en'); });
 
-const tag = (sid, cls = '') => { const s = ST[sid]; return `<span class="tag ${cls}" style="--c:${s.color}" title="${esc(pick(s, 'desc'))}">${esc(pick(s, 'name'))}</span>`; };
+const tag = (sid, cls = '') => { const s = ST[sid]; return `<span class="tag ${cls}" style="--c:${s.color}" data-tip="${esc(pick(s, 'desc'))}">${esc(pick(s, 'name'))}</span>`; };
 // 场景页标题旁的「播放 Demo」按钮：有视频时可点；状态含 demo 但还没视频时显示为虚线占位
 // Play Demo 是普通链接（target=_blank），浏览器一定在新页签打开，不会替换当前页
 const demoHref = c => { const v = c.demo_video || []; return v.length === 1 && v[0].kind === 'html' ? v[0].path : '#/video/' + c.id; };
@@ -344,7 +348,7 @@ function renderHome() {
   <section class="hero"><div class="wrap"><div class="eyebrow">${U().eyebrow}</div><h1>${esc(pick(S, 'title'))}</h1><p>${U().hero}</p></div></section>
   <div class="tabbar"><div class="wrap">${DOMS.map(d => `<button class="tab ${d.id === state.domain ? 'on' : ''} ${visible(d.id).length ? '' : 'zero'}" onclick="go('#/${d.id}')">${esc(pick(d, 'name'))}<small>${visible(d.id).length}</small></button>`).join('')}</div></div>
   <div class="wrap">
-    <div class="toolbar"><div class="legend">${STATS.filter(s => counts[s.id] || state.sel.has(s.id)).map(s => `<span class="tag ${state.sel.has(s.id) ? 'on' : state.sel.size ? 'dim' : ''}" style="--c:${s.color}" title="${esc(pick(s, 'desc'))}" onclick="toggle('${s.id}')">${esc(pick(s, 'name'))} <span>${counts[s.id] || 0}</span></span>`).join('')}${state.sel.size ? `<span class="clear" onclick="state.sel.clear();renderHome()">${U().clear}</span>` : ''}</div>
+    <div class="toolbar"><div class="legend">${STATS.filter(s => counts[s.id] || state.sel.has(s.id)).map(s => `<span class="tag ${state.sel.has(s.id) ? 'on' : state.sel.size ? 'dim' : ''}" style="--c:${s.color}" data-tip="${esc(pick(s, 'desc'))}" onclick="toggle('${s.id}')">${esc(pick(s, 'name'))} <span>${counts[s.id] || 0}</span></span>`).join('')}${state.sel.size ? `<span class="clear" onclick="state.sel.clear();renderHome()">${U().clear}</span>` : ''}</div>
       <button class="btn noprint" onclick="printDomain()">${U().export_domain}</button></div>
     <div class="grid fade">
     ${list.length ? list.map(c => { const t = C(c); return `
@@ -533,6 +537,23 @@ function printDomain() {
   requestAnimationFrame(() => { drawLinks(document.getElementById('print')); setTimeout(() => print(), 80); });
 }
 document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
+const tipEl = document.createElement('div');
+tipEl.id = 'tip';
+document.body.appendChild(tipEl);
+const hideTip = () => tipEl.classList.remove('show');
+document.addEventListener('mouseover', e => {
+  const t = e.target.closest && e.target.closest('[data-tip]');
+  if (!t || !t.dataset.tip) { hideTip(); return; }
+  tipEl.textContent = t.dataset.tip;
+  const r = t.getBoundingClientRect(), w = tipEl.offsetWidth, h = tipEl.offsetHeight;
+  const x = Math.max(8, Math.min(r.left + r.width / 2 - w / 2, innerWidth - w - 8));
+  const y = r.bottom + 8 + h > innerHeight - 8 ? r.top - h - 8 : r.bottom + 8;
+  tipEl.style.left = x + 'px'; tipEl.style.top = y + 'px';
+  tipEl.classList.add('show');
+});
+document.addEventListener('mouseleave', hideTip);
+addEventListener('scroll', hideTip, true);
+addEventListener('click', hideTip, true);
 fit(); route();
 </script>
 </body>

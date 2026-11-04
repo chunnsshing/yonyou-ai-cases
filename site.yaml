@@ -50,8 +50,8 @@ statuses:
     name: 最佳实践
     name_en: Best Practice
     color: "#B45309"
-    desc: 已在中国区客户规模落地的标杆场景
-    desc_en: A flagship use case proven with Yonyou clients in China
+    desc: 做得比较完善、比较复杂、效果好的标杆案例
+    desc_en: One of our most complete and complex use cases, proven to work well
   - id: replicable           # 内部：方案成熟，可直接复制到其他客户
     public: false
     name: 成熟方案
