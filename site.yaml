@@ -38,20 +38,20 @@ statuses:
     name: 观看演示
     name_en: Watch Demo
     color: "#DB2777"
-    desc: 可直接观看演示视频或示例看板
-    desc_en: A demo video or sample dashboard is available to view
+    desc: 有演示视频或示例看板可以看
+    desc_en: Demo video or sample dashboard to watch
   - id: delivered            # 内部：已在客户现场上线交付
     name: 客户已上线
     name_en: Live at Clients
     color: "#16A34A"
     desc: 已在客户业务中上线运行
-    desc_en: Running in production at client sites
+    desc_en: Already running at client sites
   - id: best-practice        # 内部：国内做得好的标杆案例，放在各自领域里，靠这个标签区分
     name: 最佳实践
     name_en: Best Practice
     color: "#B45309"
-    desc: 做得比较完善、比较复杂、效果好的标杆案例
-    desc_en: One of our most complete and complex use cases, proven to work well
+    desc: 做得比较完善、效果好的案例
+    desc_en: More complete cases that work well
   - id: replicable           # 内部：方案成熟，可直接复制到其他客户
     public: false
     name: 成熟方案
