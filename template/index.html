@@ -72,6 +72,25 @@ button{font-family:inherit;cursor:pointer}
 .video-page .vnav{height:44px;flex:none;display:flex;align-items:center;justify-content:center;gap:16px;color:#fff;font-size:13px}
 .video-page .vnav button{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:6px;height:26px;padding:0 10px;font-size:12px}
 .video-page .vnav button:disabled{opacity:.3;cursor:default}
+.video-page .vctl{height:48px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;color:#fff;font-size:13px;font-variant-numeric:tabular-nums}
+.video-page .vctl button{background:none;border:0;width:34px;height:34px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.video-page .vctl button:hover{background:rgba(255,255,255,.14)}
+.video-page .vctl svg{width:18px;height:18px;fill:#fff}
+.video-page .vctl svg.s{fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.video-page .vtime{white-space:nowrap;min-width:96px}
+.video-page .vseek{flex:1;height:28px;position:relative;display:flex;align-items:center;cursor:pointer;touch-action:none}
+.video-page .vseek .tr{position:absolute;left:0;right:0;height:4px;border-radius:2px;background:rgba(255,255,255,.25);overflow:hidden;transition:height .1s ease}
+.video-page .vseek:hover .tr,.video-page .vseek.drag .tr{height:6px}
+.video-page .vseek .hv,.video-page .vseek .fl{position:absolute;left:0;top:0;bottom:0;width:0}
+.video-page .vseek .hv{background:rgba(255,255,255,.3);display:none}
+.video-page .vseek .fl{background:var(--brand)}
+.video-page .vseek .th{position:absolute;left:0;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:#fff;opacity:0;transition:opacity .1s ease}
+.video-page .vseek .tip{position:absolute;bottom:26px;transform:translateX(-50%);background:rgba(0,0,0,.85);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:12px;font-weight:700;padding:3px 8px;border-radius:4px;white-space:nowrap;pointer-events:none;display:none}
+.video-page .vseek:hover .hv,.video-page .vseek:hover .tip,.video-page .vseek.drag .tip{display:block}
+.video-page .vseek:hover .th,.video-page .vseek.drag .th{opacity:1}
+.video-page .vbig{position:absolute;left:50%;top:50%;width:72px;height:72px;margin:-36px 0 0 -36px;border-radius:50%;border:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.video-page .vbig:hover{background:var(--brand)}
+.video-page .vbig svg{width:28px;height:28px;margin-left:4px;fill:#fff}
 .video-page .vtoast{position:absolute;top:16px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);color:#fff;font-size:15px;font-weight:700;padding:5px 16px;border-radius:6px;display:none;letter-spacing:.02em}
 
 /* ---------- 首页：按 yonyou.com.sg 风格的可滚动网页（场景页仍是 16:9 页面） ---------- */
@@ -230,14 +249,14 @@ const UI = {
         example: '示例', steps: n => `AI × ${n} 环节`, empty: d => `该领域暂无场景<br>在 cases/${d}/ 下新增 yaml 文件即可`,
         built: '更新于', clear: '清除筛选', none: '当前筛选下没有场景', industry: '行业', products: '产品', client: '客户', owner: '负责人', updated: '更新',
         desc: '场景描述', pains: '业务痛点', flow: '标准流程 · AI 介入点', ai: 'AI 环节（YonWork）', manual: '例外 / 后续阶段', lanes: ['使用者', 'YonWork'], types: {decision: '判断', exception: '例外', future: '后续阶段'},
-        fallback: '', lang: 'EN', lang_tip: '按 L 切换英文', close: '关闭',
+        fallback: '', lang: 'EN', lang_tip: '按 L 切换英文', close: '关闭', vplay: '播放（空格）', vpause: '暂停（空格）', mute: '静音', unmute: '取消静音', full: '全屏',
         play: '播放 Demo', site: '用友新加坡', cta: '预约演示', copy: '用友新加坡',
         eyebrow: 'YonWork AI', hero: '看 AI 如何融入企业标准业务流程：按业务领域浏览场景、流程与 Demo' },
   en: { export_domain: 'Export PDF', export: 'Export PDF', prev: '← Prev', next: 'Next →', back: '← Back',
         example: 'Sample', steps: n => `AI × ${n} step${n > 1 ? 's' : ''}`, empty: d => `No use cases yet<br>Add a yaml file under cases/${d}/`,
         built: 'Updated', clear: 'Clear', none: 'No use cases match this filter', industry: 'Industry', products: 'Products', client: 'Client', owner: 'Owner', updated: 'Updated',
         desc: 'Scenario', pains: 'Pain Points', flow: 'Standard Process · Where AI Fits', ai: 'AI step (YonWork)', manual: 'Exception / later phase', lanes: ['User', 'YonWork'], types: {decision: 'Decision', exception: 'Exception', future: 'Next phase'},
-        fallback: '中文 only', lang: '中文', lang_tip: 'Press L for Chinese', close: 'Close',
+        fallback: '中文 only', lang: '中文', lang_tip: 'Press L for Chinese', close: 'Close', vplay: 'Play (Space)', vpause: 'Pause (Space)', mute: 'Mute', unmute: 'Unmute', full: 'Full screen',
         play: 'Play Demo', site: 'Yonyou Singapore', cta: 'Free Demo', copy: 'Yonyou Singapore',
         eyebrow: 'YonWork AI', hero: 'See where AI fits into standard business processes. Browse use cases, process flows and demos by business area.' },
 };
@@ -433,7 +452,7 @@ function drawLinks(root = document) {
 
 /* ---------- Demo 视频页 ---------- */
 let vstate = null;   // { case, idx } 仅在视频页非空
-const clipHTML = v => v.kind === 'html' ? `<iframe id="vid" src="${esc(v.path)}"></iframe>` : `<video id="vid" src="${esc(v.path)}" autoplay controls></video>`;
+const clipHTML = v => v.kind === 'html' ? `<iframe id="vid" src="${esc(v.path)}"></iframe>` : `<video id="vid" src="${esc(v.path)}" preload="auto" playsinline></video>`;   // 不自动播放，用下方自绘播放条（原生进度条悬停不显示时间）
 const clipLabel = v => (lang === 'en' && v.label_en) || v.label || '';
 function renderVideo(c) {
   const t = C(c), clips = c.demo_video;
@@ -441,13 +460,21 @@ function renderVideo(c) {
   stage.innerHTML = `
   <div class="video-page">
     <div class="vtop"><span>${esc(t.title)}</span><button onclick="closeVideo()">${U().close}</button></div>
-    <div class="vbody" id="vbody">${clipHTML(clips[0])}<div class="vtoast" id="vtoast"></div></div>
+    <div class="vbody" id="vbody">${clipHTML(clips[0])}<button class="vbig" id="vbig" title="${U().vplay}" onmousedown="event.preventDefault()" onclick="togglePlay()"><svg viewBox="0 0 24 24">${ICON.play}</svg></button><div class="vtoast" id="vtoast"></div></div>
+    <div class="vctl" id="vctl">
+      <button id="vpp" onmousedown="event.preventDefault()" onclick="togglePlay()"></button>
+      <span class="vtime" id="vtime">0:00 / 0:00</span>
+      <div class="vseek" id="vseek"><div class="tr"><div class="hv" id="vhov"></div><div class="fl" id="vfill"></div></div><div class="th" id="vthumb"></div><div class="tip" id="vtip">0:00</div></div>
+      <button id="vmute" onmousedown="event.preventDefault()" onclick="toggleMute()"></button>
+      <button title="${U().full}" onmousedown="event.preventDefault()" onclick="toggleFull()"><svg class="s" viewBox="0 0 24 24"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
+    </div>
     ${clips.length > 1 ? `<div class="vnav">
       <button onclick="videoNav(-1)" disabled id="vprev">‹</button>
       <span id="vcount">${esc(clipLabel(clips[0]))} 1 / ${clips.length}</span>
       <button onclick="videoNav(1)" ${clips.length <= 1 ? 'disabled' : ''} id="vnext">›</button>
     </div>` : ''}
   </div>`;
+  bindVideo();
 }
 function videoNav(d) {
   if (!vstate) return;
@@ -461,6 +488,49 @@ function videoNav(d) {
   document.getElementById('vprev').disabled = ni <= 0;
   document.getElementById('vnext').disabled = ni >= clips.length - 1;
   hideToast();
+  bindVideo();
+}
+const ICON = { play: '<path d="M7 4.5v15l13-7.5z"/>', pause: '<path d="M6 4h4v16H6zM14 4h4v16h-4z"/>',
+  vol: '<path d="M4 9v6h4l5 4V5L8 9z" fill="#fff" stroke="none"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/>',
+  muted: '<path d="M4 9v6h4l5 4V5L8 9z" fill="#fff" stroke="none"/><path d="M16 9.5l5 5M21 9.5l-5 5"/>' };
+const fmt = s => { s = Math.max(0, Math.floor(s || 0)); const m = Math.floor(s / 60) % 60, hr = Math.floor(s / 3600), ss = String(s % 60).padStart(2, '0');
+  return hr ? `${hr}:${String(m).padStart(2, '0')}:${ss}` : `${m}:${ss}`; };
+const vid = () => { const v = document.getElementById('vid'); return v && v.tagName === 'VIDEO' ? v : null; };
+const togglePlay = () => { const v = vid(); if (v) v.paused ? v.play() : v.pause(); };
+const toggleMute = () => { const v = vid(); if (v) { v.muted = !v.muted; syncVideo(); } };
+const toggleFull = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+function syncVideo() {   // 播放条跟随视频状态
+  const v = vid(), $ = id => document.getElementById(id);
+  if (!v) return;
+  const d = v.duration || 0, pct = d ? v.currentTime / d * 100 : 0;
+  $('vfill').style.width = $('vthumb').style.left = pct + '%';
+  $('vtime').textContent = `${fmt(v.currentTime)} / ${fmt(d)}`;
+  $('vpp').innerHTML = `<svg viewBox="0 0 24 24">${v.paused ? ICON.play : ICON.pause}</svg>`;
+  $('vpp').title = v.paused ? U().vplay : U().vpause;
+  $('vmute').innerHTML = `<svg class="s" viewBox="0 0 24 24">${v.muted ? ICON.muted : ICON.vol}</svg>`;
+  $('vmute').title = v.muted ? U().unmute : U().mute;
+}
+function bindVideo() {
+  const v = vid(), $ = id => document.getElementById(id), seek = $('vseek');
+  $('vctl').style.display = v ? '' : 'none';   // HTML Demo 没有播放条
+  $('vbig').style.display = v ? '' : 'none';
+  if (!v) return;
+  ['timeupdate', 'loadedmetadata', 'play', 'pause', 'ended', 'seeked', 'volumechange'].forEach(ev => v.addEventListener(ev, syncVideo));
+  v.addEventListener('play', () => { $('vbig').style.display = 'none'; });   // 大播放按钮只在第一次播放前显示
+  v.onclick = togglePlay;
+  syncVideo();
+  // 进度条：悬停显示该位置的时间；点击或拖动跳到该时间
+  const at = e => { const r = seek.getBoundingClientRect(); return Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)); };
+  const hover = e => {
+    const f = at(e), tip = $('vtip'), w = seek.offsetWidth, half = tip.offsetWidth / 2;
+    tip.textContent = fmt(f * (v.duration || 0));
+    tip.style.left = Math.min(w - half, Math.max(half, f * w)) + 'px';
+    $('vhov').style.width = f * 100 + '%';
+  };
+  const jump = e => { if (v.duration) { v.currentTime = at(e) * v.duration; syncVideo(); } };
+  seek.onpointermove = e => { hover(e); if (seek.classList.contains('drag')) jump(e); };
+  seek.onpointerdown = e => { seek.setPointerCapture(e.pointerId); seek.classList.add('drag'); hover(e); jump(e); };
+  seek.onpointerup = seek.onpointercancel = () => seek.classList.remove('drag');
 }
 let toastTimer = null;
 function showToast(text, persist) {

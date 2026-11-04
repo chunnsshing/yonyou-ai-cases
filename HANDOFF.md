@@ -197,7 +197,7 @@ Put files in **`videos/<case-id>/`** (folder name = the case `id`). That is all.
 | You add | Play Demo opens |
 |---|---|
 | one `.html` file | that dashboard directly, in a new tab |
-| one or more videos (`.mp4` `.mov` `.m4v` `.webm`) | the built-in player in a new tab (‹ › between clips, Space pause, hold Q for 4×, tap Q for +5 s) |
+| one or more videos (`.mp4` `.mov` `.m4v` `.webm`) | the built-in player in a new tab, paused at the start (Space or click to play/pause, hover the progress bar to see the time, click or drag to jump, ‹ › between clips, hold Q for 4×, tap Q for +5 s) |
 
 Rules:
 
