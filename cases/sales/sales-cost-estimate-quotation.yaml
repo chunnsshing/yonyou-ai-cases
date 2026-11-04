@@ -57,7 +57,7 @@ en:
     - title: Factories hard to compare
       detail: Each factory has its own BOM, labour hours and rates; costing by hand is slow
     - title: Logistics cost missed
-      detail: Only production cost is compared, not freight from factory to delivery city
+      detail: Only production cost is compared, not freight from factory to delivery location
     - title: Quotes lack a basis
       detail: Past margins and lead times are scattered, so quotes rely on experience
   flow:
