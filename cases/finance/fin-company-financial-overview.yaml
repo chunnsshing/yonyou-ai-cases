@@ -5,8 +5,9 @@ status: demo
 owner: Elmond
 updated: 2026-10-15
 industry: 通用
+systems: [YonBIP, YonSuite, NCC]
 products: [YonWork, YonBIP]
-system: YonBIP
+system: ERP
 visual: dash
 
 summary: 一句话询问财务状况，汇总总账、应收应付、现金流、银行余额等生成一页总览

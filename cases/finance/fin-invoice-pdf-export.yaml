@@ -7,7 +7,7 @@ updated: 2026-10-29
 industry: 通用
 systems: [YonBIP, YonSuite, NCC]
 products: [YonWork, YonBIP]
-system: YonBIP
+system: ERP
 visual: folder
 
 summary: 按条件查找发票，AI逐条生成独立PDF并自动上传共享文件夹，替代手动逐张打印
