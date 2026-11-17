@@ -114,7 +114,7 @@ at the end?" and take the closest row below. Sharing a picture with another case
 |---|---|---|---|
 | `bars` | Bar chart, one bar in red | A comparison that highlights what changed | `ana-marketing-intelligence` |
 | `hbars` | Ranked horizontal bars | A ranking by product, branch, etc. | `ana-product-sales-by-branch` |
-| `forecast` | Bars, then dashed future bars | Actuals followed by a forecast or budget | `ana-month-end-analysis` |
+| `forecast` | Bars, then dashed future bars | Actuals followed by a forecast or budget | — |
 | `dash` | KPI tiles above a small chart | A one-page overview or dashboard | `fin-company-financial-overview` |
 | `trend` | Line crossing a target, red alert dot | Monitoring a value with an alert | `sc-material-price-monitor` |
 | `stock` | Line falling to a limit | Something running out; a latest-action date | `sc-replenishment-forecast` |
@@ -125,14 +125,14 @@ at the end?" and take the closest row below. Sharing a picture with another case
 | `doc` | Tilted paper → system document | One photo or PDF becomes a system record | `sc-po-from-photo` |
 | `batch` | Stack of paper → several documents | Many inputs become records in one go | `sc-batch-doc-capture` |
 | `order` | Email → document → truck | An order runs from request to delivery | `sales-po-email-to-do` |
-| `pay` | Invoice → approved → bank | An invoice runs through to payment | `fin-p2p-vendor-invoice` |
+| `pay` | Invoice → approved → bank | An invoice runs through to payment | — |
 | `send` | Document → emails | Documents are checked and sent to people | `fin-soa-project-email` |
 | `folder` | Document → folder | Files are generated and filed or uploaded | `fin-invoice-pdf-export` |
 | `ask` | Speech bubble → document | One sentence creates a document | `sales-rate-card-quotation` |
-| `split` | Document branching into rows | One source is split or allocated | `fin-contract-gross-profit` |
+| `split` | Document branching into rows | One source is split or allocated | — |
 | `match` | Two columns linked, one dashed red | Reconciliation; exceptions stand out | `fin-ecommerce-settlement-recon` |
 | `chat` | Question and answer bubbles | The AI answers questions | `fin-finance-qa-assistant` |
-| `graph` | Files linked to a red hub | Linked search across documents or records | `ana-document-query` |
+| `graph` | Files linked to a red hub | Linked search across documents or records | — |
 | `rank` | Prioritised list, top row red | A ranked work queue or brief | `sc-daily-fulfilment-queue` |
 | `team` | Red lead linked to three agents | Several agents working together | `sc-agent-team-collaboration` |
 | `profile` | Person with a timeline | A full history of one customer or item | `sales-plate-lookup` |
