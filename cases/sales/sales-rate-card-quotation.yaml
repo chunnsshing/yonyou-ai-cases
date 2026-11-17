@@ -5,8 +5,9 @@ status: demo
 owner: Elmond
 updated: 2026-10-15
 industry: 起重设备租赁
+systems: [YonBIP, YonSuite, NCC]
 products: [YonWork, YonBIP]
-system: YonBIP
+system: ERP
 visual: ask
 
 summary: 说出报价类型和客户，按标准费率表生成报价单与PDF，并附在单据上

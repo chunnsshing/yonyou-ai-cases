@@ -5,8 +5,9 @@ status: to-verify
 owner: Elmond
 updated: 2026-09-28
 industry: 宠物食品与用品分销
+systems: [YonBIP, YonSuite, NCC]
 products: [YonWork, NCC]
-system: NCC
+system: ERP
 visual: stock
 
 summary: 按SKU预测需求与断货日期，给出最晚下单日和建议采购量，提前补货

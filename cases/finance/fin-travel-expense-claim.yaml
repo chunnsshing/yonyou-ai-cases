@@ -7,7 +7,7 @@ updated: 2026-10-29
 industry: 通用
 systems: [YonBIP, YonSuite]
 products: [YonWork, YonBIP]
-system: YonBIP
+system: ERP
 visual: batch
 demo_video:
   - path: videos/fin-travel-expense-claim/01-travel-request.mp4

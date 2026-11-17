@@ -5,8 +5,9 @@ status: [replicable, to-verify]
 owner: Elmond
 updated: 2026-09-28
 industry: 宠物食品与用品分销
+systems: [YonBIP, YonSuite, NCC]
 products: [YonWork, NCC]
-system: NCC
+system: ERP
 visual: rank
 
 summary: 每天早上汇总已确认订单并核对库存，排出发货优先级，标出需处理的例外

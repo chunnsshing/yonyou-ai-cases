@@ -5,8 +5,9 @@ status: [delivered, replicable, demo]
 owner: Elmond
 updated: 2026-10-20
 industry: 轮胎零售与汽车服务
+systems: [YonBIP, YonSuite, NCC]
 products: [YonWork, YonSuite]
-system: YonSuite
+system: ERP
 visual: batch
 
 summary: 一次上传多张手写零售单、收货单照片，逐张识别，确认一次后分别生成系统单据

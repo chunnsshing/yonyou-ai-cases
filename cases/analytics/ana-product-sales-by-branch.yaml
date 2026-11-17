@@ -5,8 +5,9 @@ status: demo
 owner: Elmond
 updated: 2026-10-15
 industry: 轮胎零售与汽车服务
+systems: [YonBIP, YonSuite, NCC]
 products: [YonWork, YonBIP]
-system: YonBIP
+system: ERP
 visual: hbars
 
 summary: 每月自动汇总销售出库，按产品排名并展开各门店明细，版式每月一致

@@ -5,8 +5,9 @@ status: demo
 owner: Elmond
 updated: 2026-10-15
 industry: 通用
+systems: [YonBIP, YonSuite, NCC]
 products: [YonWork, YonBIP]
-system: YonBIP
+system: ERP
 visual: doc
 
 summary: 拍一张供应商报价单或手写订单，自动匹配供应商与物料，确认预览后生成采购订单

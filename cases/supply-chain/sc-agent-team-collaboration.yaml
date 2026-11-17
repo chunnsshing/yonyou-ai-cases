@@ -7,7 +7,7 @@ updated: 2026-11-04
 industry: 通用
 systems: [YonBIP, YonSuite, NCC]
 products: [YonWork, YonSuite]
-system: YonSuite
+system: ERP
 visual: team
 
 summary: 用户只交一个任务，主管智能体分派给销售、采购、生产智能体，协作完成并汇总报告
