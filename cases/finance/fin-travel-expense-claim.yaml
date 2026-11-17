@@ -5,6 +5,7 @@ status: demo
 owner: Fanfan
 updated: 2026-10-29
 industry: 通用
+systems: [YonBIP, YonSuite]
 products: [YonWork, YonBIP]
 system: YonBIP
 visual: batch
