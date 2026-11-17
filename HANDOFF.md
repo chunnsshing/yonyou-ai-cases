@@ -67,6 +67,9 @@ Follow `BRIEFING.md` section 4 for content. In short:
   `lane`/`type` on every step.
 - Flow = the **standard business process**, 3–8 steps, in three lanes: `user` (a person), `ai`
   (YonWork), `erp` (the system). At least one step must be `lane: ai`.
+- `systems` (optional): which Yonyou systems the case applies to, shown under Industry on the case page. A list of
+  the short names `YonBIP`, `YonSuite`, `NCC` only, e.g. `systems: [YonBIP, NCC]`. Ask your user; don't guess. It is
+  separate from `system:`, which only names the third swimlane.
 - `owner`: your user's name. Don't edit cases another owner holds unless they agree.
 - `updated`: today's date, YYYY-MM-DD. **It is not shown on the site** (clients don't need it); it is
   kept in the yaml and in the page data for the team.

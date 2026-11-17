@@ -5,6 +5,7 @@ status: best-practice
 owner: Fanfan
 updated: 2026-11-04
 industry: 制造业
+systems: [YonBIP, YonSuite, NCC]
 products: [YonWork, YonBIP]
 system: YonBIP
 visual: compare

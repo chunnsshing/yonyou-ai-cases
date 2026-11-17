@@ -31,6 +31,8 @@ TYPES = ("decision", "exception", "future")
 REQUIRED = ["id", "title", "domain", "status", "owner", "updated", "summary", "description", "pain_points", "flow"]
 EN_REQUIRED = ["title", "summary", "description", "pain_points", "flow"]
 # 卡片示意图，与 template/index.html 的 VIS 一一对应
+# 适用系统（场景页「行业」下面一行），写简称
+SYSTEMS = ("YonBIP", "YonSuite", "NCC")
 VISUALS = ("bars", "forecast", "hbars", "dash", "stock", "trend", "heat", "gauge", "radar", "compare", "doc", "batch",
            "order", "pay", "send", "folder", "ask", "chat", "graph", "rank", "team", "profile", "split", "match")
 
@@ -132,6 +134,9 @@ def validate(case, path, site, errors, warnings):
         W(f"缺少 `visual`（卡片示意图），可选 {sorted(VISUALS)}")
     elif case["visual"] not in VISUALS:
         E(f"visual `{case['visual']}` 无效，可选 {sorted(VISUALS)}")
+    sy = case.get("systems")
+    if sy is not None and (not isinstance(sy, list) or any(x not in SYSTEMS for x in sy)):
+        E(f"systems `{sy}` 无效，写成列表，可选 {list(SYSTEMS)}，如 systems: [YonBIP, NCC]")
     for st in status_list(case.get("status")):
         if st not in statuses:
             E(f"status `{st}` 无效，可选 {sorted(statuses)}")
@@ -176,6 +181,7 @@ def normalize(case):
         "owner": s(case.get("owner")), "updated": s(case.get("updated")), "client": s(case.get("client")),
         "products": [s(x) for x in (case.get("products") or [])], "example": bool(case.get("example")),
         "system": s(case.get("system")) or "ERP", "visual": s(case.get("visual")),
+        "systems": [x for x in SYSTEMS if x in (case.get("systems") or [])],   # 固定按 SYSTEMS 的顺序显示
         "demo_video": clips,
         "zh": content(case), "en": content(case["en"]) if case.get("en") else None,
     }

@@ -5,6 +5,7 @@ status: best-practice
 owner: Fanfan
 updated: 2026-10-30
 industry: 通用
+systems: [YonBIP, YonSuite]
 products: [YonWork, YonBIP]
 system: YonBIP
 visual: chat
